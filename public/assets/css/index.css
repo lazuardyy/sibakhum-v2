@@ -1,0 +1,89 @@
+.background__primary {
+  background-color: #F3EFCC;
+}
+
+.my-card {
+  background-color: #ECE7B4 !important;
+}
+
+.my__card-text {
+  margin-bottom: 0 !important;
+}
+
+.description {
+  text-align: justify;
+}
+
+.link__item {
+    display: flex;
+    gap: .6rem;
+    align-items: center;
+}
+
+.link__item i {
+    width: 16px;
+    margin-left: 0;
+}
+
+.link__item i:not(.chart) {
+  margin-left: 5px;
+}
+
+.active {
+    background-color: rgb(22 101 52);
+}
+
+.card__login {
+    /* border: 1px solid rgba($color: #000000, $alpha: 0.5); */
+    border: 1px solid rgba(0, 0, 0, .5);
+}
+
+.login__main-card {
+    position: relative !important;
+}
+
+.login__img-thumb {
+    position: absolute;
+    width: 100px;
+    padding: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    top: -4rem;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+}
+
+.login__img-thumb img {
+    width: 100%;
+    object-fit: cover;
+}
+
+#login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    background-image: url('../img/wave.svg'), url('../img/wave-2.svg');
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
+
+/* layout main background */
+html {
+  background-image: url('../img/unj_bg.png');
+}
+
+
+@media screen and (min-width: 720px) {
+    .login__img-thumb {
+        top: -4rem;
+    }
+}
+
+.show {
+  display: inline-block;
+  border-radius: 0.25rem;
+}

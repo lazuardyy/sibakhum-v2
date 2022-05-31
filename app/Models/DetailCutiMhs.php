@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class DetailCutiMhs extends Model
+{
+  use HasFactory;
+
+  protected $guarded = ['id'];
+  // protected $with = ['students', 'lecturers'];
+
+  public function students () {
+    return $this -> belongsTo(Student::class, 'nim', 'nim');
+    // return $this -> belongsTo(Cuti::class);
+  }
+
+  public function lecturers () {
+    return $this -> belongsTo(Lecturer::class, 'nidn', 'nidn');
+  }
+}

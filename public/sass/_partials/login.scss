@@ -1,0 +1,37 @@
+.card__login {
+    border: 1px solid rgba($color: #000000, $alpha: 0.5);
+}
+
+.login__main-card {
+    position: relative !important;
+
+    .login__img-thumb {
+        position: absolute;
+        width: 100px;
+        padding: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+        top: -4rem;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+
+        img {
+            width: 100%;
+            object-fit: cover;
+        }
+
+        @media screen and (min-width: 720px) {
+            top: -4rem;
+        }
+    }
+
+}
+
+#login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
