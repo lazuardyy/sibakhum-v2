@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Auth;
 // use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 use Auth;
 
 class LoginController extends Controller
@@ -46,31 +47,21 @@ class LoginController extends Controller
       }
       else if (Auth::user()->role === 'dosen')
       {
-        return redirect()->intended('home/dosen');
+        return redirect()->intended('dosen/' . Auth::user()->kodeProdi);
       }
       else if (Auth::user()->role === 'faculty')
       {
-        // return redirect()->intended('faculty/' . Auth::user()->faculty_id);
-        return redirect()->route('faculty.show', Auth::user()->faculty_id);
+        return redirect()->intended('faculty/' . Auth::user()->kodeFakultas);
       }
       else {
         return redirect()->intended('home/mahasiswa');
       }
-
     }
 
     return back()->withErrors([
       'username' => 'The provided credentials do not match our records.',
     ])->onlyInput('username');
   }
-
-  // public function redirectTo ()
-  // {
-  //   if(Auth::user()->role === 'faculty')
-  //   {
-  //     return $this->redirecTo = url('faculty', Auth::user()->faculty_id);
-  //   }
-  // }
 
   public function logout(Request $request)
   {

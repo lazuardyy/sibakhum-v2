@@ -71,7 +71,7 @@ class StudentController extends Controller
     Student::create([
       'nim' => $request->nim,
       'nama' => $request->nama,
-      'prodi' => $request->prodi,
+      'prodi_id' => $request->prodi_id,
       'jenis_kelamin' => $request->jenis_kelamin,
       'faculty_id' => $request->faculty_id,
       'no_telp' => $request->no_telp,
@@ -95,7 +95,7 @@ class StudentController extends Controller
    */
   public function show($id)
   {
-      //
+
   }
 
   /**

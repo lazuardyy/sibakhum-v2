@@ -21,12 +21,12 @@ class Student extends Model
   protected $guarded = ['id'];
   // protected $with = ['dosen','detailCutiMhs'];
 
-  public function detailCutiMhs () {
-    return $this -> hasMany(DetailCutiMhs::class, 'nim');
+  public function studyProgram () {
+    return $this -> belongsTo(StudyProgram::class, 'kodeProdi', 'kodeProdi');
   }
 
   public function faculty ()
   {
-    return $this -> belongsTo(Faculty::class, 'faculty_id');
+    return $this -> belongsTo(Faculty::class, 'kodeFakultas', 'kodeFakultas');
   }
 }

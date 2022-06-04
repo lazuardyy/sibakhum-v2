@@ -45,13 +45,13 @@ class FacultyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($kodeFakultas)
     {
-      $faculty = Faculty::where('id', $id)->first();
+      $faculty = Faculty::where('kodeFakultas', $kodeFakultas)->first();
       return view('dashboard_fk.index', [
         'title' => 'fakultas',
         'faculty' => $faculty,
-        'header' => 'Dashboard ' . $faculty->name,
+        'header' => 'Dashboard ' . $faculty->namaFakultas,
       ]);
     }
 

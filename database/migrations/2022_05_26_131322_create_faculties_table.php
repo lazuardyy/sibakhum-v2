@@ -15,7 +15,10 @@ return new class extends Migration
     {
         Schema::create('faculties', function (Blueprint $table) {
             $table->id();
-            $table->text('name');
+            $table->string('kodeFakultas')->unique()->nullable();
+            $table->text('namaFakultas');
+            $table->string('nidn');
+            $table->string('jabatan');
             $table->timestamps();
         });
     }

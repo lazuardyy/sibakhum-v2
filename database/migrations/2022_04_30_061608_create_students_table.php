@@ -20,9 +20,9 @@ return new class extends Migration
             // $table->foreignId('dosen_id');
             $table->bigIncrements('nim')->unique();
             $table->text('nama');
-            $table->string('prodi', 100);
+            $table->foreignId('kodeProdi');
             $table->tinyInteger('jenis_kelamin');
-            $table->foreignIdFor(Faculty::class);
+            $table->foreignId('kodeFakultas');
             $table->string('no_telp', 15);
             $table->year('tahun_angkatan');
             $table->text('keterangan');

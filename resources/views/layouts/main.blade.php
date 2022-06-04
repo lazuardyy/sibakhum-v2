@@ -60,7 +60,7 @@
 
     <main class="grid ml-12 lg:ml-48 mt-12">
         <div class="w-full pl-2 lg:pl-0 pr-2 pt-3">
-          @yield('content')
+        @yield('content')
         </div>
     </main>
   </div>

@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('confirm_password');
             $table->enum('role', ['superAdmin', 'admin', 'student', 'dosen', 'faculty'])->default('student');
-            $table->integer('faculty_id')->nullable();
+            $table->string('kodeFakultas')->unique()->nullable();
+            $table->string('kodeProdi')->nullable();
+            $table->string('nidn')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

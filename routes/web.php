@@ -8,6 +8,7 @@ use App\Http\Controllers\DetailCutiMhsController;
 use App\Http\Controllers\Mahasiswa\StudentController;
 use App\Http\Controllers\Dosen\LecturerController;
 use App\Http\Controllers\FacultyController;
+use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,17 @@ use App\Http\Controllers\FacultyController;
 */
 
 Route::get('/', [LoginController::class, 'index'])->name('login')->middleware('guest');
+
+Route::get('/welcome', function(){
+  $data = Http::get('http://103.8.12.212:36880/siakad_api/api/as400/fakultas/All');
+  $datas = json_encode($data['isi']);
+  $final = json_decode($datas);
+  return view('test', [
+    'datas' => $final,
+    'data' => $data,
+  ]);
+});
+
 Route::post('/', [LoginController::class, 'authenticate']);
 // Route::post('/', [LoginController::class, 'redirectTo']);
 Route::post('/logout', [LoginController::class, 'logout']);
@@ -34,7 +46,7 @@ Route::get('home/mahasiswa', [StudentController::class, 'index'])->middleware('c
 Route::get('mahasiswa/status-pengajuan', [StudentController::class, 'status']) -> middleware('can:isStudent');
 
 // dosen routes
-Route::get('home/dosen', [LecturerController::class, 'index'])->middleware('can:isDosen');
+Route::resource('dosen', LecturerController::class)->middleware('can:isDosen');
 
 // dashboard routes
 Route::get('data-grafik/fakultas', [DashboardController::class, 'fakultas']) -> middleware('can:isSuperAdminAdmin');

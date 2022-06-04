@@ -21,10 +21,11 @@ return new class extends Migration
           // $table->foreignIdfor(DetailCutiMhs::class);
             // $table->id();
             $table->bigIncrements('nidn');
+            $table->foreignId('faculty_id')->nullable();
             // $table->foreignId('id_siakad');
-            $table->string('nama');
-            $table->string('email')->unique();
-            $table->string('no_telp', 15);
+            $table->string('jabatan');
+            // $table->string('email')->unique();
+            // $table->string('no_telp', 15);
             $table->timestamps();
         });
     }

@@ -13,6 +13,6 @@ class Lecturer extends Model
   // protected $with = ['detailCutiMhs'];
 
   public function detailCutiMhs () {
-    return $this->hasMany(DetailCutiMhs::class, 'nidn');
+    return $this->hasMany(DetailCutiMhs::class, 'nim');
   }
 }

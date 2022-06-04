@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('detail_cuti_mhs', function (Blueprint $table) {
           $table->id();
           $table->foreignId('nim');
-          $table->foreignId('nidn');
+          $table->foreignId('kodeProdi');
           // $table->string('keterangan_cuti_mhs');
           $table->string('semester_cuti_mhs');
           $table->enum('status_persetujuan_pa', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
