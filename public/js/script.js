@@ -22,4 +22,5 @@ $(function() {
 
   $('#tabel-data').DataTable();
   $('#tabel-dosen').DataTable();
+  $('#tabel-mhs').DataTable();
 });

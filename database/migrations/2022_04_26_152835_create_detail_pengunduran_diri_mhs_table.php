@@ -13,26 +13,26 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('detail_pengunduran_diri_mhs', function (Blueprint $table) {
-          $table->id();
-          $table->foreignId('nim');
-          $table->foreignId('kodeProdi');
-          $table->string('keterangan_md_mhs');
-          $table->string('semester_md_mhs');
-          $table->enum('status_persetujuan_pa', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
-          $table->enum('status_persetujuan_koorprodi', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
-          $table->enum('status_persetujuan_wd1', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
-          $table->enum('status_persetujuan_wr1', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
-          $table->enum('status_bakhum', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
-          $table->date('tanggal_pengajuan_md_mhs');
-          $table->date('tanggal_persetujuan_pa');
-          $table->date('tanggal_persetujuan_koorprodi');
-          $table->date('tanggal_persetujuan_wd1');
-          $table->date('tanggal_persetujuan_wr1');
-          $table->date('tanggal_persetujuan_bakhum');
-          $table->binary('file_pengajuan_md')->nullable();
-          $table->timestamps();
-        });
+      Schema::create('detail_pengunduran_diri_mhs', function (Blueprint $table) {
+        $table->id();
+        $table->string('nim');
+        $table->string('nidn');
+        $table->string('keterangan_md_mhs');
+        $table->string('semester_md_mhs')->nullable();
+        $table->enum('status_persetujuan_pa', [2, 1, 0])->default(2);
+        $table->enum('status_persetujuan_koorprodi', [2, 1, 0])->default(2);
+        $table->enum('status_persetujuan_wd1', [2, 1, 0])-> default(2);
+        $table->enum('status_persetujuan_wr1', [2, 1, 0])-> default(2);
+        $table->enum('status_bakhum', [2, 1, 0])->default(2);
+        $table->date('tanggal_pengajuan_md_mhs')->nullable();
+        $table->date('tanggal_persetujuan_pa')->nullable();
+        $table->date('tanggal_persetujuan_koorprodi')->nullable();
+        $table->date('tanggal_persetujuan_wd1')->nullable();
+        $table->date('tanggal_persetujuan_wr1')->nullable();
+        $table->date('tanggal_persetujuan_bakhum')->nullable();
+        $table->binary('file_pengajuan_md')->nullable();
+        $table->timestamps();
+      });
     }
 
     /**

@@ -101,6 +101,7 @@ class DatabaseSeeder extends Seeder
           'kodeFakultas' => '17',
           'no_telp' => '081212121212',
           'tahun_angkatan' => '2017',
+          'semester' => '8',
           'keterangan' => 'Pengajuan Cuti',
         ]);
 
@@ -113,18 +114,18 @@ class DatabaseSeeder extends Seeder
           ]);
         };
 
-        $allDataPr = Http::get('http://103.8.12.212:36880/siakad_api/api/as400/programStudi/All');
-        $dataProdi = json_encode($allDataPr['isi']);
-        $valuesPr = json_decode($dataProdi);
+        // $allDataPr = Http::get('http://103.8.12.212:36880/siakad_api/api/as400/programStudi/All');
+        // $dataProdi = json_encode($allDataPr['isi']);
+        // $valuesPr = json_decode($dataProdi);
 
-        foreach($valuesPr as $value)
-        {
-          DetailCutiMhs::create([
-            'nim' => '170602001',
-            'kodeProdi' => $value->kodeProdi,
-            'semester_cuti_mhs' => '4',
-            // 'status_persetujuan_pa' => 'ditolak',
-          ]);
-        }
+        // foreach($valuesPr as $value)
+        // {
+          // DetailCutiMhs::create([
+          //   'nim' => '170602001',
+          //   'kodeProdi' => $value->kodeProdi,
+          //   'semester_cuti_mhs' => '4',
+          //   'status_persetujuan_pa' => 'ditolak',
+          // ]);
+        // }
     }
 }

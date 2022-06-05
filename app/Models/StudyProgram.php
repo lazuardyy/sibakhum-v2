@@ -14,7 +14,7 @@ class StudyProgram extends Model
     }
 
     public function detailCutiMhs () {
-      return $this->hasMany(DetailCutiMhs::class, 'kodeProdi', 'kodeProdi');
+      return $this->hasMany(DetailCutiMhs::class, 'nidn', 'nidn');
     }
 
     public function faculty ()

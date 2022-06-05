@@ -40,9 +40,14 @@ class DetailCutiMhsController extends Controller
   public function store(Request $request)
   {
     DetailCutiMhs::create([
-      'status_persetujuan_pa' => $request -> status_persetujuan_pa,
-      // 'status_persetujuan_koorprodi' => $request -> nim,
-      // 'status_persetujuan_koorprodi' => $request -> nim,
+      'nim' => $request->nim,
+      'nidn' => $request->nidn,
+      'keterangan_cuti_mhs' => $request->keterangan_cuti_mhs,
+      'semester_cuti_mhs' => $request->semester_cuti_mhs,
+      'status_persetujuan_pa' => ($request -> status_persetujuan_pa == null) ? 2 : $request -> status_persetujuan_pa,
+      'status_persetujuan_koorprodi' => ($request -> status_persetujuan_koorprodi == null) ? 2 : $request -> status_persetujuan_koorprodi,
+      'status_persetujuan_wd1' => ($request -> status_persetujuan_wd1 == null) ? 2 : $request -> status_persetujuan_wd1,
+      'status_persetujuan_wr1' => ($request -> status_persetujuan_wr1 == null) ? 2 : $request -> status_persetujuan_wr1,
     ]);
 
     if ($request !== null) {

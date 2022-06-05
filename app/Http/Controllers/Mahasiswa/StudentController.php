@@ -7,6 +7,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Models\DetailCutiMhs;
 use App\Models\Lecturer;
+use App\Models\Faculty;
 
 class StudentController extends Controller
 {
@@ -24,13 +25,10 @@ class StudentController extends Controller
   }
 
   public function status () {
-    return view('dashboard_mhs.status', [
+    return view('crud_cuti_mhs.status', [
       'title' => 'Status',
-      'header' => 'Status Pengajuan',
-      // 'cutiMhs' => Cuti::with(['dosen', 'detailCutiMhs'])->get(),
-      'detailCuti' => DetailCutiMhs::all(),
-      'dosens' => Lecturer::with(['detailCutiMhs'])->get(),
-      // 'persetujuan' => Cuti::with('dosen')->get(),
+      'header' => 'Status Pengajuan Cuti',
+      'students' => Student::with('detailCutiMhs')->get(),
     ]);
   }
 
@@ -43,8 +41,8 @@ class StudentController extends Controller
   {
     return view('crud_cuti_mhs.create', [
       'title' => 'Pengajuan Cuti',
-      'header' => 'Pengajuan Cuti',
-      // 'fakultas' => Cuti::all()
+      'header' => 'Form Pengajuan Cuti',
+      'faculties' => Faculty::all(),
     ]);
   }
 
@@ -71,9 +69,9 @@ class StudentController extends Controller
     Student::create([
       'nim' => $request->nim,
       'nama' => $request->nama,
-      'prodi_id' => $request->prodi_id,
+      'kodeProdi' => $request->kodeProdi,
       'jenis_kelamin' => $request->jenis_kelamin,
-      'faculty_id' => $request->faculty_id,
+      'kodeFakultas' => $request->kodeFakultas,
       'no_telp' => $request->no_telp,
       'email' => $request->email,
       'tahun_angkatan' => $request->tahun_angkatan,

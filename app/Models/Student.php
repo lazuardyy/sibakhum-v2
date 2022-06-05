@@ -19,6 +19,7 @@ class Student extends Model
   // ];
 
   protected $guarded = ['id'];
+  protected $dates= ['created_at'];
   // protected $with = ['dosen','detailCutiMhs'];
 
   public function studyProgram () {
@@ -28,5 +29,10 @@ class Student extends Model
   public function faculty ()
   {
     return $this -> belongsTo(Faculty::class, 'kodeFakultas', 'kodeFakultas');
+  }
+
+  public function detailCutiMhs ()
+  {
+    return $this -> hasOne(DetailCutiMhs::class, 'nim', 'nim');
   }
 }

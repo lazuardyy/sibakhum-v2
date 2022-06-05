@@ -13,11 +13,11 @@ class DetailCutiMhs extends Model
   // protected $with = ['students', 'lecturers'];
 
   public function students () {
-    return $this -> belongsTo(Student::class, 'kodeProdi', 'kodeProdi');
+    return $this -> belongsTo(Student::class, 'nim', 'nim');
     // return $this -> belongsTo(Cuti::class);
   }
 
   public function studyProgram () {
-    return $this -> belongsTo(StudyProgram::class, 'kodeProdi', 'kodeProdi');
+    return $this -> belongsTo(StudyProgram::class, 'nidn', 'nidn');
   }
 }

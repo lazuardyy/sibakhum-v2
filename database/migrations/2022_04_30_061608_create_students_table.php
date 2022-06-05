@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignId('kodeFakultas');
             $table->string('no_telp', 15);
             $table->year('tahun_angkatan');
+            $table->integer('semester');
             $table->text('keterangan');
             $table->timestamps();
         });

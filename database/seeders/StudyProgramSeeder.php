@@ -27,9 +27,8 @@ class StudyProgramSeeder extends Seeder
           'kodeProdi' => $value->kodeProdi,
           'namaProdi' => $value->namaProdi,
           'jenjang' => $value->jenjangProdi,
-          'jenjang' => $value->jenjangProdi,
           'nidn' => $value->KoordProdi,
-          'koordProdi' => 'koordinator prodi',
+          'jabatan' => 'koordinator prodi',
         ]);
       };
 

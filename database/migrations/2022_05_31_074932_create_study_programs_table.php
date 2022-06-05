@@ -20,7 +20,7 @@ return new class extends Migration
           $table->text('namaProdi');
           $table->text('jenjang');
           $table->string('nidn');
-          $table->text('koordProdi');
+          $table->text('jabatan');
           $table->timestamps();
         });
     }

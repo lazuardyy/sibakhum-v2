@@ -39,7 +39,7 @@ class LoginController extends Controller
 
       if(Auth::user()->role === 'superAdmin')
       {
-        return redirect()->intended('home');
+        return redirect()->intended('superadmin');
       }
       else if (Auth::user()->role === 'admin')
       {
@@ -47,14 +47,14 @@ class LoginController extends Controller
       }
       else if (Auth::user()->role === 'dosen')
       {
-        return redirect()->intended('dosen/' . Auth::user()->kodeProdi);
+        return redirect()->intended('home/' . Auth::user()->nidn);
       }
       else if (Auth::user()->role === 'faculty')
       {
         return redirect()->intended('faculty/' . Auth::user()->kodeFakultas);
       }
       else {
-        return redirect()->intended('home/mahasiswa');
+        return redirect()->intended('home');
       }
     }
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Dosen;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\StudyProgram;
+
+
 class LecturerController extends Controller
 {
   public function index ()
@@ -38,10 +40,11 @@ class LecturerController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($kodeProdi)
+  public function show($nidn)
   {
-    // $dosen = Faculty::where('nidn', $kodeProdi)->first();
-    $prodi = StudyProgram::where('kodeProdi', $kodeProdi)->first();
+
+    // dd($nidn);
+    $prodi = StudyProgram::where('nidn', $nidn)->first();
     return view('dashboard_dsn.index', [
       'title' => 'Dosen',
       'prodi' => $prodi,
