@@ -6,7 +6,7 @@
 @endcan
 
 @can('isDosen')
-  <a href="{{ url('home/dosen') }}" class="link__item {{ ($title === 'Lecturer') ? 'active' : '' }} block p-1 w-9 h-9 lg:w-full rounded shadow-md hover:bg-green-800">
+  <a href="{{ base64_encode($prodi->nidn) }}" class="link__item {{ ($title === 'Lecturer') ? 'active' : '' }} block p-1 w-9 h-9 lg:w-full rounded shadow-md hover:bg-green-800">
     <i class="fa-solid fa-house"></i>
     <span class="hidden lg:block">Home</span>
   </a>

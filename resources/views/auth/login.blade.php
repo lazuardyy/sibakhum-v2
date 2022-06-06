@@ -107,7 +107,7 @@
           <h5 class="card-title text-uppercase fs-4 fw-bold">{{ config('app.name') }}</h5>
           <p class="card-text">Silahkan masuk dengan akun Siakad-mu</p>
 
-          <form method="POST" action="/" class="d-flex flex-column gap-2">
+          <form method="POST" action="/attemptLogin" class="d-flex flex-column gap-2">
             @csrf
 
             <div class="column">

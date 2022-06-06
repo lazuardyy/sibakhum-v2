@@ -67,6 +67,8 @@ class UserController extends Controller
       $validateData['password'] = Hash::make($validateData['password']);
       $validateData['confirm_password'] = Hash::make($validateData['confirm_password']);
 
+      // [$username, $role, $password] = $validateData;
+
       User::create($validateData);
 
       if ($request !== null) {

@@ -47,7 +47,7 @@ class FacultyController extends Controller
      */
     public function show($kodeFakultas)
     {
-      $faculty = Faculty::where('kodeFakultas', $kodeFakultas)->first();
+      $faculty = Faculty::where('kodeFakultas', base64_decode($kodeFakultas))->first();
       return view('dashboard_fk.index', [
         'title' => 'fakultas',
         'faculty' => $faculty,

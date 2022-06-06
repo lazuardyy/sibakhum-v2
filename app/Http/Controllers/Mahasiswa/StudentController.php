@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\DetailCutiMhs;
 use App\Models\Lecturer;
 use App\Models\Faculty;
+use Illuminate\Support\Facades\Http;
 
 class StudentController extends Controller
 {
@@ -18,7 +19,7 @@ class StudentController extends Controller
    */
   public function index()
   {
-    return view('dashboard_mhs.index', [
+    return view('test', [
       'title' => 'Mahasiswa',
       'home' => 'home/mahasiswa',
     ]);

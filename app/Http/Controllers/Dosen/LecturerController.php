@@ -44,11 +44,11 @@ class LecturerController extends Controller
   {
 
     // dd($nidn);
-    $prodi = StudyProgram::where('nidn', $nidn)->first();
+    $prodi = StudyProgram::where('nidn', base64_decode($nidn))->first();
     return view('dashboard_dsn.index', [
       'title' => 'Dosen',
       'prodi' => $prodi,
-      'header' => 'Selamat Datang ' . $prodi->koordProdi . ' '. $prodi->namaProdi,
+      'header' => 'Selamat Datang ' . $prodi->jabatan . ' '. $prodi->namaProdi,
     ]);
   }
 

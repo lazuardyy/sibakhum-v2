@@ -21,35 +21,29 @@ use Illuminate\Support\Facades\Http;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', [LoginController::class, 'index'])->name('login')->middleware('guest');
+Route::post('/attemptLogin', [LoginController::class, 'attemptLogin'])->name('login.attemptLogin');
+Route::post('/logout', [LoginController::class, 'logout'])->name('login.logout');
+// Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::get('/welcome', function(){
-  $data = Http::get('http://103.8.12.212:36880/siakad_api/api/as400/fakultas/All');
-  $datas = json_encode($data['isi']);
-  $final = json_decode($datas);
-  return view('test', [
-    'datas' => $final,
-    'data' => $data,
-  ]);
-});
 
-Route::post('/', [LoginController::class, 'authenticate']);
+// Route::get('/', [StudentController::class, 'index']);
+Route::get('/home', [StudentController::class, 'index'])->name('home');
+
 // Route::post('/', [LoginController::class, 'redirectTo']);
-Route::post('/logout', [LoginController::class, 'logout']);
 
 // login redirect to home
 Auth::routes();
 // Route::get('home', [DashboardController::class, 'index'])->name('home');
 
 // mahasiswa routes
-Route::get('home', [StudentController::class, 'index'])->middleware('can:isStudent');
-Route::get('mahasiswa/status-pengajuan', [StudentController::class, 'status']) -> middleware('can:isStudent');
+// Route::get('test', [StudentController::class, 'index']);
+Route::get('mahasiswa/status-pengajuan', [StudentController::class, 'status']);
 
 // dosen routes
 Route::prefix('home')->group(function () {
   Route::get('/{user:nidn}', [LecturerController::class, 'show'])
-  ->middleware('can:isDosen')
+  // ->middleware('can:isDosen')
   ->name('dosen');
 });
 
@@ -71,3 +65,14 @@ Route::resource('dosen/persetujuan', DetailCutiMhsController::class);
 // Route::get('fakultas/{$id}', [FacultyController::class,'show']);
 Route::resource('faculty', FacultyController::class);
 // Route::get('faculty/{faculty:name}', [FacultyController::class,'show'])->middleware('can:isFakultas');
+
+
+// Route::get('/welcome', function(){
+//   $data = Http::get('http://103.8.12.212:36880/siakad_api/api/as400/fakultas/All');
+//   $datas = json_encode($data['isi']);
+//   $final = json_decode($datas);
+//   return view('test', [
+//     'datas' => $final,
+//     'data' => $data,
+//   ]);
+// });

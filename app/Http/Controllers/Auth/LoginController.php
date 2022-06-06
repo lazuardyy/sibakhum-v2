@@ -26,7 +26,7 @@ class LoginController extends Controller
     ]);
   }
 
-  public function authenticate(Request $request)
+  public function attemptLogin(Request $request)
   {
     $credentials = $request->validate([
       'username' => 'required',
@@ -47,20 +47,28 @@ class LoginController extends Controller
       }
       else if (Auth::user()->role === 'dosen')
       {
-        return redirect()->intended('home/' . Auth::user()->nidn);
+        return redirect()->intended('home/' . base64_encode(Auth::user()->nidn));
       }
       else if (Auth::user()->role === 'faculty')
       {
-        return redirect()->intended('faculty/' . Auth::user()->kodeFakultas);
+        return redirect()->intended('faculty/' . base64_encode(Auth::user()->kodeFakultas));
       }
       else {
         return redirect()->intended('home');
       }
     }
+    else {
+      $credentials['authorization'] = env('APP_AUTH');
+      $url = env('APP_ENDPOINT');
 
-    return back()->withErrors([
-      'username' => 'The provided credentials do not match our records.',
-    ])->onlyInput('username');
+      $response = Http::asForm()->post($url, $credentials);
+      $response = json_decode($response);
+
+      if($response->status == 200)
+      {
+        return redirect()->to('home');
+      }
+    }
   }
 
   public function logout(Request $request)

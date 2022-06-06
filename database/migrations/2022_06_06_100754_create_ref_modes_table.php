@@ -3,8 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Student;
-use App\Models\DetailCutiMhs;
 
 return new class extends Migration
 {
@@ -15,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('lecturers', function (Blueprint $table) {
-          $table->bigIncrements('nidn');
-          $table->foreignId('faculty_id')->nullable();
-          $table->string('jabatan');
-          $table->timestamps();
+        Schema::create('ref_modes', function (Blueprint $table) {
+          $table->integer('id');
+          $table->string('mode', 50);
+          $table->enum('active', [1, 0])->default(1);
         });
     }
 
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lecturers');
+        Schema::dropIfExists('ref_modes');
     }
 };
