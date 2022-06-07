@@ -20,7 +20,7 @@ class Student extends Model
 
   protected $guarded = ['id'];
   protected $dates= ['created_at'];
-  // protected $with = ['dosen','detailCutiMhs'];
+  protected $with = 'detailCutiMhs';
 
   public function studyProgram () {
     return $this -> belongsTo(StudyProgram::class, 'kodeProdi', 'kodeProdi');

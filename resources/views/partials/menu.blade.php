@@ -1,33 +1,9 @@
-@can('isSuperAdmin')
-  <a href="{{ url('home/superadmin') }}" class="link__item {{ ($title === 'Super Admin') ? 'active' : '' }} block p-1 w-9 h-9 lg:w-full rounded shadow-md hover:bg-green-800">
+@if(session('user_cmode') == '1')
+  <a href="{{ url('home/') }}" class="link__item block p-1 w-9 h-9 lg:w-full rounded shadow-md hover:bg-green-800">
     <i class="fa-solid fa-house"></i>
     <span class="hidden lg:block">Home</span>
   </a>
-@endcan
 
-@can('isDosen')
-  <a href="{{ base64_encode($prodi->nidn) }}" class="link__item {{ ($title === 'Lecturer') ? 'active' : '' }} block p-1 w-9 h-9 lg:w-full rounded shadow-md hover:bg-green-800">
-    <i class="fa-solid fa-house"></i>
-    <span class="hidden lg:block">Home</span>
-  </a>
-@endcan
-
-
-@can('isStudent')
-  <a href="{{ url('home/mahasiswa') }}" class="link__item {{ ($title === 'Mahasiswa') ? 'active' : '' }} block p-1 w-9 h-9 lg:w-full rounded shadow-md hover:bg-green-800">
-    <i class="fa-solid fa-house"></i>
-    <span class="hidden lg:block">Home</span>
-  </a>
-@endcan
-
-{{-- @can('isSuperAdmin')
-  <a href="{{url('/user')}}" class="link__item {{ ($title === "User Data") ? 'active' : '' }} block p-1 w-9 h-9 lg:w-full rounded shadow-md hover:bg-green-800">
-    <i class="fa-solid fa-user"></i>
-    <span class="hidden lg:block">Users</span>
-  </a>
-@endcan --}}
-
-@can('isSuperAdmin')
   <div>
     <div class="dropdown relative">
       <a
@@ -41,22 +17,6 @@
         <i class="fa-solid fa-chart-line chart"></i>
         <span class="hidden lg:inline-block">Data & Grafik</span>
         <i class="fa-solid fa-caret-down hidden lg:inline-block"></i>
-        {{-- <svg
-          aria-hidden="true"
-          focusable="false"
-          data-prefix="fas"
-          data-icon="caret-down"
-          class="w-2"
-          role="img"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 320 512"
-          class="hidden lg:inline-block"
-        > --}}
-          {{-- <path
-            class="hidden lg:inline-block"
-            fill="currentColor"
-            d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
-          ></path> --}}
         </svg>
       </a>
 
@@ -83,24 +43,13 @@
       </ul>
     </div>
   </div>
-@endcan
 
-{{-- @can('isDosen')
-  <a href="{{url('home/dosen')}}" class="link__item {{ ($title === "Dosen") ? 'active' : '' }} block p-1 w-9 h-9 lg:w-full rounded shadow-md hover:bg-green-800">
-    <i class="fa-solid fa-chalkboard-user"></i>
-    <span class="hidden lg:block">Dosen</span>
+@elseif(session('user_cmode') == '2' || session('user_cmode') == '3' || session('user_cmode') == '4' || session('user_cmode') == '9')
+  <a href="{{ url('home/') }}" class="link__item block p-1 w-9 h-9 lg:w-full rounded shadow-md hover:bg-green-800">
+    <i class="fa-solid fa-house"></i>
+    <span class="hidden lg:block">Home</span>
   </a>
-@endcan --}}
+@endif
 
-{{-- @can('isStudent')
-<a href="{{url('/mahasiswa')}}" class="link__item {{ ($title === "Mahasiswa") ? 'active' : '' }} block p-1 w-9 h-9 lg:w-full rounded shadow-md">
-    <i class="fa-solid fa-user-graduate"></i>
-    <span class="invisible lg:visible">Mahasiswa</span>
-</a>
-@endcan --}}
-{{--
-@can('isSuperAdminAdmin')
-
-@endcan --}}
 
 

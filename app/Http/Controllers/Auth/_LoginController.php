@@ -1,91 +1,84 @@
 <?php
 
+// namespace App\Http\Controllers;
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Exception;
-use Auth;
+// use App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
+use Auth;
 
 class LoginController extends Controller
 {
-  protected $redirectsTo = '/login';
+
+  use AuthenticatesUsers;
 
   public function index()
   {
-
-      if (session ('isLoggedIn') == true){
-          return redirect()->to('home');
-      }
-      return view('auth.login');
-
+    return view('auth.login', [
+      'title' => 'Login'
+    ]);
   }
 
-  public function attemptLogin (Request $request)
+  public function attemptLogin(Request $request)
   {
-      $credentials = $request->validate([
-          'username' => ['required','string'],
-          'password' => ['required']
-      ]);
+    $credentials = $request->validate([
+      'username' => 'required',
+      'password' => 'required',
+    ]);
 
-      $credentials['Authorization'] = env('APP_AUTH');
+    if(Auth::attempt($credentials))
+    {
+      $request->session()->regenerate();
+
+      if(Auth::user()->role === 'superAdmin')
+      {
+        return redirect()->intended('superadmin');
+      }
+      else if (Auth::user()->role === 'admin')
+      {
+        return redirect()->intended('home');
+      }
+      else if (Auth::user()->role === 'dosen')
+      {
+        return redirect()->intended('home/' . base64_encode(Auth::user()->nidn));
+      }
+      else if (Auth::user()->role === 'faculty')
+      {
+        return redirect()->intended('faculty/' . base64_encode(Auth::user()->kodeFakultas));
+      }
+      else {
+        return redirect()->intended('home');
+      }
+    }
+    else {
+      $credentials['authorization'] = env('APP_AUTH');
       $url = env('APP_ENDPOINT');
 
       $response = Http::asForm()->post($url, $credentials);
       $response = json_decode($response);
-      //return $response;
-      if ($response->status != 200) {
-          $this->logout($request);
-          // $request->flash();
-          return redirect()->to('login')->with('login_msg', 'Username atau Password salah');
-      }
 
-      $set_session = $this->setUserSession($response);
-      // return $set_session;
-      if ($set_session) {
-          return redirect()->to('home');
-      } else {
-          return redirect()->to('login')->with('login_msg', 'Gagal melakukan koneksi ke SIAKAD');
+      if($response->status == 200)
+      {
+        return redirect()->to('home');
       }
-
-  }
-  protected function setUserSession($user)
-  {
-      try {
-          $akun = DB::table('ref_modes')->where('id', $user->mode)->first();
-          $mode = $akun->mode;
-          session([
-              'user_name' => $user->nama,
-              'user_username' => $user->username,
-              'user_cmode' => $user->mode,
-              'user_mode' => $mode,
-              'user_sex' => $user->kelamin,
-              'user_unit' => $user->unit,
-              'user_token' => $user->Authorization,
-              'isLoggedIn' => true,
-          ]);
-
-          return true;
-      } catch (Exception $ex){
-          Log::info('User failed to login : ', ['username' => $user->username]);
-          Log::debug($ex);
-          return false;
-      }
+    }
   }
 
   public function logout(Request $request)
   {
-      Auth::logout();
+    Auth::logout();
 
-      $request->session()->invalidate();
-      $request->session()->regenerateToken();
+    $request->session()->invalidate();
 
-      return redirect($this->redirectsTo);
+    $request->session()->regenerateToken();
+
+    return redirect('/');
   }
-
 }

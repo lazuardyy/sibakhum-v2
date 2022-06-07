@@ -13,20 +13,18 @@
         <i class="fa-solid fa-angles-right"></i>
         <span class="text-xs lg:text-base">Ajukan Pengunduran Diri</span>
       </a>
-      <a href="{{ url('mahasiswa/status-pengajuan') }}" class="flex flex-col gap-2 px-12 lg:px-14 py-16 bg-yellow-500 text-white font-medium text-xs lg:text-lg leading-tight uppercase rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg focus:bg-yellow-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out">
+
+      {{-- url harus membawa nim mahasiswa --}}
+    <a href="mahasiswa/status-pengajuan/{{ base64_encode(session('user_username')) }}" class="flex flex-col gap-2 px-12 lg:px-14 py-16 bg-yellow-500 text-white font-medium text-xs lg:text-lg leading-tight uppercase rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg focus:bg-yellow-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out">
         <i class="fa-solid fa-handshake text-2xl"></i>
         <span class="text-xs lg:text-base">Status Pengajuan Cuti</span>
       </a>
+
+      {{-- url harus membawa nim mahasiswa --}}
       <a href="{{ url('mahasiswa/status-pengajuan') }}" class="flex flex-col gap-2 px-12 lg:px-14 py-16 bg-yellow-500 text-white font-medium text-xs lg:text-lg leading-tight uppercase rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg focus:bg-yellow-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out">
         <i class="fa-solid fa-handshake text-2xl"></i>
         <span class="text-xs lg:text-base">Status Pengunduran Diri</span>
       </a>
-    </div>
-
-
-    <div class="rows w-full">
-    </div>
-    <div class="rows w-full">
     </div>
   </div>
 

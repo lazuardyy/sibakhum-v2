@@ -8,7 +8,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="shortcut icon" href="{{ asset('assets/img/logo_unj2.png') }}">
 
-  <title>{{ config('app.name', 'SiBakhum - UNJ') }} | {{ $title }}</title>
+  <title>{{ config('app.name', 'SiBakhum - UNJ') }} | </title>
 
   <!-- Scripts -->
   <script src="{{ asset('js/app.js') }}" defer></script>
@@ -45,22 +45,17 @@
       </div>
     </nav>
 
-    {{-- @auth --}}
     <nav>
       <div class="pl-2 pr-2 pt-2 pb-2 flex bg-cyan-600 fixed top-0 left-0 right-0">
         <h2 class="invisible text-l flex-1">
-          {{-- Dasboard {{ Auth::user() -> role }} --}}
         </h2>
-        <h2 class="block text-sm lg:text-l tracking-wider text-violet-50 font-medium p-2 lg:p-2 rounded shadow-md bg-cyan-500">
-          {{-- Dashboard <span class="uppercase">{{ Auth::user() -> role }}</span> --}} Dashboard
-        </h2>
+        <h2 class="block text-sm lg:text-l tracking-wider text-violet-50 font-medium p-2 lg:p-2 rounded shadow-md bg-cyan-500">Dashboard</h2>
       </div>
     </nav>
-    {{-- @endauth --}}
 
     <main class="grid ml-12 lg:ml-48 mt-12">
         <div class="w-full pl-2 lg:pl-0 pr-2 pt-3">
-        @yield('content')
+          @yield('content')
         </div>
     </main>
   </div>

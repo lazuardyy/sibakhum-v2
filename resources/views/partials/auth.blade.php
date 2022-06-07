@@ -1,9 +1,9 @@
-@guest
+{{-- @guest
   @if (Route::has('login'))
     @include('auth.login')
   @endif
 
-  @else
+  @else --}}
   <div class="w-full">
     <form id="logout-form" action="/logout" method="POST">
       @csrf
@@ -15,5 +15,5 @@
       </button>
     </form>
   </div>
-@endguest
+{{-- @endguest --}}
 

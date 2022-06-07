@@ -39,21 +39,53 @@ class DetailCutiMhsController extends Controller
    */
   public function store(Request $request)
   {
-    DetailCutiMhs::create([
-      'nim' => $request->nim,
-      'nidn' => $request->nidn,
-      'keterangan_cuti_mhs' => $request->keterangan_cuti_mhs,
-      'semester_cuti_mhs' => $request->semester_cuti_mhs,
-      'status_persetujuan_pa' => ($request -> status_persetujuan_pa == null) ? 2 : $request -> status_persetujuan_pa,
-      'status_persetujuan_koorprodi' => ($request -> status_persetujuan_koorprodi == null) ? 2 : $request -> status_persetujuan_koorprodi,
-      'status_persetujuan_wd1' => ($request -> status_persetujuan_wd1 == null) ? 2 : $request -> status_persetujuan_wd1,
-      'status_persetujuan_wr1' => ($request -> status_persetujuan_wr1 == null) ? 2 : $request -> status_persetujuan_wr1,
-    ]);
+    if($request->status_persetujuan_pa)
+    {
+      DetailCutiMhs::firstOrCreate([
+        'nim' => $request->nim,
+        'nidn' => $request->nidn,
+        'keterangan_cuti_mhs' => $request->keterangan_cuti_mhs,
+        'semester_cuti_mhs' => $request->semester_cuti_mhs,
+        'status_persetujuan_pa' => $request->status_persetujuan_pa,
+      ]);
+    }
+
+    elseif($request->status_persetujuan_koorprodi)
+    {
+      DetailCutiMhs::firstOrCreate([
+        'nim' => $request->nim,
+        'nidn' => $request->nidn,
+        'keterangan_cuti_mhs' => $request->keterangan_cuti_mhs,
+        'semester_cuti_mhs' => $request->semester_cuti_mhs,
+        'status_persetujuan_koorprodi' => $request->status_persetujuan_koorprodi,
+      ]);
+    }
+
+    elseif($request->status_persetujuan_wd1)
+    {
+      DetailCutiMhs::firstOrCreate([
+        'nim' => $request->nim,
+        'nidn' => $request->nidn,
+        'keterangan_cuti_mhs' => $request->keterangan_cuti_mhs,
+        'semester_cuti_mhs' => $request->semester_cuti_mhs,
+        'status_persetujuan_wd1' => $request->status_persetujuan_wd1,
+      ]);
+    }
+
+    elseif($request->status_persetujuan_wr1) {
+      DetailCutiMhs::firstOrCreate([
+        'nim' => $request->nim,
+        'nidn' => $request->nidn,
+        'keterangan_cuti_mhs' => $request->keterangan_cuti_mhs,
+        'semester_cuti_mhs' => $request->semester_cuti_mhs,
+        'status_persetujuan_wr1' => $request->status_persetujuan_wr1,
+      ]);
+    }
 
     if ($request !== null) {
-      return back() -> with('success', 'Permohonan Cuti Disetujui.');
+      return back()->with('success', 'Permohonan Cuti Disetujui.');
     } else {
-      return back() -> with('error', 'Permohonan Cuti Gagal Disimpan.');
+      return back()->with('error', 'Permohonan Cuti Gagal Disimpan.');
     }
   }
 

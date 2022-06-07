@@ -3,7 +3,7 @@
 @section('content')
   <div class="container grid p-2 gap-4">
     @include('partials.header')
-    @include('partials.welcome')
+    {{-- @include('partials.welcome') --}}
     @include('flash-message')
 
     <div class="bg-slate-50 shadow-md p-3 rounded-md">
@@ -120,7 +120,7 @@
                 <td>
                   @if($prodi->jabatan === 'koordinator prodi')
                     <div class="pretty p-icon p-round p-plain p-smooth">
-                      <input type="radio" name="{{ ($prodi->jabatan === 'koordinator prodi') ? 'status_persetujuan_koorprodi' : '' }}" value="1">
+                      <input type="radio" name="{{ ($prodi->jabatan === 'koordinator prodi') ? 'status_persetujuan_koorprodi' : '' }}" value="1" {{ isset($checked) }}>
                       <div class="state p-primary-o">
                           <i class="icon fa-solid fa-check"></i>
                           <label>Disetujui</label>
@@ -148,13 +148,13 @@
 
                 <td>
                   <button type="button" class="inline-block px-3 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                  data-bs-toggle="modal" data-bs-target="#modal_{{ $student->nama }}"
+                  data-bs-toggle="modal" data-bs-target="#modal_{{ $student->kodeProdi }}"
                   >
                       <i class="fa-solid fa-arrow-up-right-from-square"></i>
                       <span class="hidden lg:inline-block">Submit</span>
                   </button>
 
-                    <div class="modal fade fixed top-0 left-0 right-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto z-10 backdrop-brightness-50 bg-white/30" id="modal_{{ $student->nama }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">
+                    <div class="modal fade fixed top-0 left-0 right-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto z-10 backdrop-brightness-50 bg-white/30" id="modal_{{ $student->kodeProdi }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">
 
                       <div class="modal-dialog modal-dialog-centered relative flex justify-center self-center w-auto pointer-events-none">
 

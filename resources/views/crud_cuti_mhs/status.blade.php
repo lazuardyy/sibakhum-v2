@@ -9,31 +9,61 @@
         <table class="table table-striped table-bordered" id="tabel-mhs">
           <thead>
             <tr>
-              <th>
-                Diajukan kepada
-              </th>
-              <th>
-                Status
-              </th>
+              <th>Diajukan kepada</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Pembimbing Akademik</td>
-              @foreach($students as $student)
-                @if(isset($student->detailCutiMhs->status_persetujuan_pa))
-                  <td>{{ $student->detailCutiMhs->status_persetujuan_pa }}</td>
-                @endif
-              @endforeach
-            </tr>
-            <tr>
-              <td>Koordinator Program Studi</td>
-              @foreach($students as $student)
-                @if(isset($student->detailCutiMhs->status_persetujuan_pa))
-                  <td>{{ $student->detailCutiMhs->status_persetujuan_pa }}</td>
-                @endif
-              @endforeach
-            </tr>
+            @foreach($students as $student)
+              <tr>
+                <td>{{ $pa }}</td>
+                  @if(isset($student->detailCutiMhs->status_persetujuan_pa))
+                    @if($student->detailCutiMhs->status_persetujuan_pa == 1)
+                      <td>Disetujui</td>
+                    @elseif($student->detailCutiMhs->status_persetujuan_pa == 0)
+                      <td>Ditolak</td>
+                    @else
+                      <td>Menunggu</td>
+                    @endif
+                  @endif
+              </tr>
+              <tr>
+                <td>{{ $koordProdi }}</td>
+                @if(isset($student->detailCutiMhs->status_persetujuan_koorprodi))
+                    @if($student->detailCutiMhs->status_persetujuan_koorprodi == 1)
+                      <td>Disetujui</td>
+                    @elseif($student->detailCutiMhs->status_persetujuan_koorprodi == 0)
+                      <td>Ditolak</td>
+                    @else
+                      <td>Menunggu</td>
+                    @endif
+                  @endif
+              </tr>
+              <tr>
+                <td>{{ $wd_1 }}</td>
+                @if(isset($student->detailCutiMhs->status_persetujuan_wd1))
+                    @if($student->detailCutiMhs->status_persetujuan_wd1 == 1)
+                      <td>Disetujui</td>
+                    @elseif($student->detailCutiMhs->status_persetujuan_wd1 == 0)
+                      <td>Ditolak</td>
+                    @else
+                      <td>Menunggu</td>
+                    @endif
+                  @endif
+              </tr>
+              <tr>
+                <td>WR 1</td>
+                @if(isset($student->detailCutiMhs->status_persetujuan_wr1))
+                    @if($student->detailCutiMhs->status_persetujuan_wr1 == 1)
+                      <td>Disetujui</td>
+                    @elseif($student->detailCutiMhs->status_persetujuan_wr1 == 0)
+                      <td>Ditolak</td>
+                    @else
+                      <td>Menunggu</td>
+                    @endif
+                  @endif
+              </tr>
+            @endforeach
           </tbody>
         </table>
       </div>

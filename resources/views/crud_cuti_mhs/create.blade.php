@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container grid gap-4 justify-items-center p-2 pb-4">
-  @include('partials.header')
+  {{-- @include('partials.header') --}}
 
   <div class="block p-6 rounded-lg shadow-lg bg-white w-full lg:w-7/12">
     @include('flash-message')
@@ -18,8 +18,9 @@
           aria-describedby="NIM"
           placeholder="NIM kamu"
           name="nim"
-          value="{{ old('nim') }}"
+          value="{{ $nim }}"
           autofocus
+          readonly
         >
 
         @error('nim')
@@ -38,7 +39,8 @@
             aria-describedby="nama"
             placeholder="Nama kamu"
             name="nama"
-            value="{{ old('nama') }}"
+            value="{{ $nama_lengkap }}"
+            readonly
           >
 
           @error('nama')
@@ -51,37 +53,25 @@
       <div class="form-group mb-6">
         <label for="jenis_kelamin" class="form-label inline-block mb-2 text-gray-700">Jenis Kelamin</label>
         <select id="jenis_kelamin" name="jenis_kelamin"
-          class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
-          <option value="1">Laki-Laki</option>
-          <option value="0">Perempuan</option>
+          class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-readonly="true">
+          <option value="{{ ($jenis_kelamin == 'L') ? 0 : 1  }}">{{ ($jenis_kelamin == 'L') ? 'Laki-Laki' : 'Perempuan'  }}</option>
         </select>
       </div>
 
       <div class="form-group mb-6">
         <label for="kodeFakultas" class="form-label inline-block mb-2 text-gray-700">Fakultas</label>
-        <select id="kodeFakultas" name="kodeFakultas" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+        <select id="kodeFakultas" name="kodeFakultas" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-readonly="true"
         >
-          @foreach ($faculties as $faculty)
-            @if($faculty->kodeFakultas !== '20' && $faculty->kodeFakultas !== '0')
-              <option value = {{ $faculty->kodeFakultas }}>
-                {{ $faculty->namaFakultas }}
-              </option>
-            @endif
-          @endforeach
+          <option value="{{ $kode_fakultas  }}">{{ $nama_fakultas  }}</option>
         </select>
       </div>
 
       <div class="form-group mb-6">
         <label for="kodeProdi" class="form-label inline-block mb-2 text-gray-700">Program Studi</label>
-        <input type="text"
-          class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          id="kodeProdi"
-          required
-          aria-describedby="kodeProdi"
-          placeholder="Prodi kamu"
-          name="kodeProdi"
-          value="{{ old('kodeProdi') }}"
+        <select id="kodeProdi" name="kodeProdi" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" daria-readonly="true"
         >
+          <option value="{{ $kode_prodi  }}">{{ $nama_prodi  }}</option>
+        </select>
 
         @error('prodi')
           <small id="prodi" class="block mt-1 text-xs text-red-600">
@@ -99,7 +89,7 @@
             aria-describedby="no_telp"
             placeholder="Masukkan nomor telepon aktif kamu"
             name="no_telp"
-            value="{{ old('no_telp') }}"
+            value="{{ $hp }}"
           >
           @error('no_telp')
           <small id="no_telp" class="block mt-1 text-xs text-red-600">
@@ -115,7 +105,8 @@
           id="tahun_angkatan"
           required
           aria-describedby="tahun_angkatan"
-          min="2015" max="2022" step="1" value="2016"
+          {{-- min="2015" max="2022" step="1" value="2016" --}}
+          value="{{ $angkatan }}"
           name="tahun_angkatan"
         >
       </div>
@@ -141,7 +132,7 @@
           name="keterangan"
           rows="5"
           style="resize: none;"
-          {{-- value="{{ old('keterangan') }}" --}}
+          value="{{ old('keterangan') }}"
           >
         </textarea>
         @error('keterangan')
