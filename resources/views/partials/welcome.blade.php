@@ -1,8 +1,13 @@
-<div class="alert bg-blue-100 rounded-lg p-2 text-base text-blue-700 flex items-center w-full alert-dismissible fade show shadow-md justify-end" role="alert">
-  <span>Selamat Datang</span> <strong class="mr-1">{{ $user }}</strong><span>di {{ config('app.name', '') }}!</span>
-  <button type="button" class="btn-close box-content w-4 h-4 p-1 ml-auto text-blue-800 border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-blue-900 hover:opacity-75 hover:no-underline" data-bs-dismiss="alert" aria-label="Close">
-    <i class="fa-solid fa-xmark"></i>
-  </button>
+<div class="alert alert-info alert-dismissible fade show d-flex align-items-center gap-2" role="alert">
+  <i class="fa-solid fa-circle-info text-lg"></i>
+
+  <div class="flex-grow-1">
+    Selamat Datang
+    <strong class="mr-1">{{ $user }}</strong>di {{ config('app.name', '') }}!
+  </div>
+
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    <i class="fa-solid fa-xmark text-lg"></i></button>
 </div>
 
 

@@ -20,7 +20,7 @@ class Faculty extends Model
 
     public function students()
     {
-      return $this->hasMany(Student::class, 'kodeFakultas', 'kodeFakultas');
+      return $this->hasMany(PengajuanCuti::class, 'kodeFakultas', 'kodeFakultas');
     }
 
     public function studyPrograms()

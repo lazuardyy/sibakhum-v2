@@ -13,7 +13,7 @@ class DetailCutiMhs extends Model
   // protected $with = ['students', 'lecturers'];
 
   public function students () {
-    return $this -> belongsTo(Student::class, 'nim', 'nim');
+    return $this -> belongsTo(PengajuanCuti::class, 'nim', 'nim');
     // return $this -> belongsTo(Cuti::class);
   }
 

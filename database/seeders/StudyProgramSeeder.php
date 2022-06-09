@@ -23,12 +23,12 @@ class StudyProgramSeeder extends Seeder
       foreach($values as $index => $value )
       {
         DB::table('study_programs')->insert([
-          'kodeFakultas' => $value->kodeFakProdi,
-          'kodeProdi' => $value->kodeProdi,
-          'namaProdi' => $value->namaProdi,
+          'kode_fakultas' => $value->kodeFakProdi,
+          'kode_prodi' => $value->kodeProdi,
+          'nama_prodi' => $value->namaProdi,
           'jenjang' => $value->jenjangProdi,
-          'nidn' => $value->KoordProdi,
-          'jabatan' => 'koordinator prodi',
+          // 'nidn' => $value->KoordProdi,
+          // 'jabatan' => 'koordinator prodi',
         ]);
       };
 

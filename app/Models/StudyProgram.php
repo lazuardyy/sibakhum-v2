@@ -9,8 +9,8 @@ class StudyProgram extends Model
 {
     use HasFactory;
 
-    public function students () {
-      return $this->hasMany(Student::class, 'kodeProdi', 'kodeProdi');
+    public function pengajuanCuti () {
+      return $this->hasMany(PengajuanCuti::class, 'kode_prodi', 'kode_prodi');
     }
 
     public function detailCutiMhs () {
@@ -19,6 +19,6 @@ class StudyProgram extends Model
 
     public function faculty ()
     {
-      return $this->belongsTo(Faculty::class, 'kodeFakultas', 'kodeFakultas');
+      return $this->belongsTo(Faculty::class, 'kode_fakultas', 'kode_fakultas');
     }
 }

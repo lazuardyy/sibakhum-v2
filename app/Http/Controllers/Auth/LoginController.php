@@ -28,53 +28,40 @@ class LoginController extends Controller
 
   public function attemptLogin (Request $request)
   {
-      $credentials = $request->validate([
-          'username' => ['required','string'],
-          'password' => ['required']
-      ]);
+    $credentials = $request->validate([
+        'username' => ['required','string'],
+        'password' => ['required']
+    ]);
 
-      if(Auth::attempt($credentials))
-      {
-        $request->session()->regenerate();
+    $credentials['Authorization'] = env('APP_AUTH');
+    $url = env('APP_ENDPOINT');
 
-        if(Auth::user()->role === 'superAdmin')
-        {
-          return redirect()->intended('superadmin');
-        }
-        else if (Auth::user()->role === 'dosen')
-        {
-          return redirect()->intended('home/' . base64_encode(Auth::user()->nidn));
-        }
-      }
+    $response = Http::asForm()->post($url, $credentials);
+    $response = json_decode($response);
 
-      else {
-        $credentials['Authorization'] = env('APP_AUTH');
-        $url = env('APP_ENDPOINT');
+    // dd($response);
 
-        $response = Http::asForm()->post($url, $credentials);
-        $response = json_decode($response);
-        //return $response;
-        if ($response->status != 200) {
-            $this->logout($request);
+    //return $response;
+    if ($response->status != 200) {
+        $this->logout($request);
 
-            // $request->flash();
-            // return redirect()->to('login')->with('login_msg', 'Username atau Password salah');
-            return back()->withErrors([
-              'username' => 'The provided credentials do not match our records.',
-            ])->onlyInput('username');
-        }
+        // $request->flash();
+        // return redirect()->to('login')->with('login_msg', 'Username atau Password salah');
+        return back()->withErrors([
+          'username' => 'The provided credentials do not match our records.',
+        ])->onlyInput('username');
+    }
 
-        $set_session = $this->setUserSession($response);
+    $set_session = $this->setUserSession($response);
 
-        if ($set_session) {
-            return redirect()->to('home');
-        }
-        else {
-          return back()->withErrors([
-            'username' => 'Gagal melakukan koneksi ke SIAKAD',
-          ])->onlyInput('username');
-        }
-      }
+    if ($set_session) {
+        return redirect()->to('home');
+    }
+    else {
+      return back()->withErrors([
+        'username' => 'Gagal melakukan koneksi ke SIAKAD',
+      ])->onlyInput('username');
+    }
   }
 
   protected function setUserSession($user)

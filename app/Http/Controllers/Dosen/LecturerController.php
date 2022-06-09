@@ -23,28 +23,15 @@ class LecturerController extends Controller
       //
   }
 
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
   public function store(Request $request)
   {
       //
   }
 
-  /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function show($nidn)
+  public function show($kode_prodi)
   {
 
-    // dd($nidn);
-    $prodi = StudyProgram::where('nidn', base64_decode($nidn))->first();
+    $prodi = StudyProgram::where('kode_prodi', base64_decode($kode_prodi))->first();
     return view('dashboard_dsn.index', [
       'title' => 'Dosen',
       'prodi' => $prodi,
@@ -52,35 +39,16 @@ class LecturerController extends Controller
     ]);
   }
 
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
   public function edit($id)
   {
       //
   }
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
   public function update(Request $request, $id)
   {
       //
   }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
   public function destroy($id)
   {
       //

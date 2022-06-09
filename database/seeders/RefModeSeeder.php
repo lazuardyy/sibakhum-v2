@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RefMode extends Seeder
+class RefModeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -45,6 +45,11 @@ class RefMode extends Seeder
       DB::table('ref_modes')->insert([
         'id' => 4,
         'mode' => 'bakhum',
+        'active' => 1,
+      ]);
+      DB::table('ref_modes')->insert([
+        'id' => 8,
+        'mode' => 'dosen',
         'active' => 1,
       ]);
       DB::table('ref_modes')->insert([

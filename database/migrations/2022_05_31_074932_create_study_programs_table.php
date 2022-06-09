@@ -15,12 +15,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('study_programs', function (Blueprint $table) {
-          $table->foreignId('kodeFakultas');
-          $table->bigIncrements('kodeProdi');
-          $table->text('namaProdi');
+          $table->foreignId('kode_fakultas');
+          $table->bigIncrements('kode_prodi');
+          $table->text('nama_prodi');
           $table->text('jenjang');
-          $table->string('nidn');
-          $table->text('jabatan');
+          // $table->string('nidn');
+          // $table->text('jabatan');
           $table->timestamps();
         });
     }

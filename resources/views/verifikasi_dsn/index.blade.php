@@ -1,13 +1,12 @@
 @extends('layouts.main')
 
 @section('content')
-  <div class="container grid p-2 gap-4">
+  <div class="container grid">
     @include('partials.header')
-    {{-- @include('partials.welcome') --}}
     @include('flash-message')
 
     <div class="bg-slate-50 shadow-md p-3 rounded-md">
-      <table class="w-full mb-3 pt-3" id="tabel-dosen">
+      <table class="table" id="tabel-dosen">
         <thead>
           <tr>
             <th rowspan="2">No.</th>
@@ -22,7 +21,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($prodi->students as $index => $student)
+          {{-- @foreach($prodi->students as $index => $student)
             <form action="{{ route('persetujuan.store') }}" method="POST">
               <tr>
                 <td>{{ $index + 1 }}</td>
@@ -118,9 +117,8 @@
                 </td>
 
                 <td>
-                  @if($prodi->jabatan === 'koordinator prodi')
                     <div class="pretty p-icon p-round p-plain p-smooth">
-                      <input type="radio" name="{{ ($prodi->jabatan === 'koordinator prodi') ? 'status_persetujuan_koorprodi' : '' }}" value="1" {{ isset($checked) }}>
+                      <input type="radio" name="status_pengajuan" value="1">
                       <div class="state p-primary-o">
                           <i class="icon fa-solid fa-check"></i>
                           <label>Disetujui</label>
@@ -128,13 +126,12 @@
                     </div>
 
                     <div class="pretty p-icon p-round p-plain p-smooth">
-                        <input type="radio" name="{{ ($prodi->jabatan === 'koordinator prodi') ? 'status_persetujuan_koorprodi' : '' }}" value="0">
+                        <input type="radio" name="status_pengajuan" value="0">
                         <div class="state p-danger-o">
                             <i class="icon fa-solid fa-ban"></i>
                             <label>Ditolak</label>
                         </div>
                     </div>
-                  @endif
                 </td>
 
                 <td>{{ $student->created_at->format("M/d/Y") }}</td>
@@ -199,7 +196,7 @@
                 </td>
               </tr>
             </form>
-          @endforeach
+          @endforeach --}}
         </tbody>
       </table>
     </div>
