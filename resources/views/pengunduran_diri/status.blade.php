@@ -4,11 +4,11 @@
   <div class="container grid p-2 gap-4">
     @include('partials.header')
 
-    <div class="bg-slate-50 shadow-md p-3 rounded-md">
+    <div class="bg-slate-50 shadow-md p-3 rounded-md overflow-x-scroll">
       @include('flash-message')
 
       <div>
-        <table class="table" id="tabel-mhs">
+        <table class="table" id="tabel-md">
           <thead>
             <tr>
               <th scope="col">No</th>
@@ -84,4 +84,8 @@
       </a>
     </div>
   </div>
+@endsection
+
+@section('script')
+  <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
 @endsection

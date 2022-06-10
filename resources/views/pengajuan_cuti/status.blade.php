@@ -8,7 +8,7 @@
       @include('flash-message')
 
       <div>
-        <table class="table" id="tabel-mhs">
+        <table class="table" id="tabel-cuti">
           <thead>
             <tr>
               <th scope="col">No</th>
@@ -83,4 +83,8 @@
       </a>
     </div>
   </div>
+@endsection
+
+@section('script')
+  <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
 @endsection

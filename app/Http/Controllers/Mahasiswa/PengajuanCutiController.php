@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Mahasiswa;
 
+use Exception;
 use App\Http\Controllers\Controller;
-use App\Models\PengajuanCuti;
 use Illuminate\Http\Request;
-use App\Models\DetailCutiMhs;
-use App\Models\Lecturer;
-use App\Models\Faculty;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
-use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\DB;
+use App\Models\PengajuanCuti;
+use App\Models\HistoryPengajuan;
+use PhpParser\Node\Stmt\TryCatch;
 
 class PengajuanCutiController extends Controller
 {
@@ -45,7 +45,7 @@ class PengajuanCutiController extends Controller
 
     if(isset($status) !== false && isset($status) !== 4){
       if($status !== 4) {
-        return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
+        return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!', 'bottom-end');
       }
       else if($status_pengajuan->count() >= 2){
         return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengajukan permohonan cuti sebanyak 2x!');
@@ -98,16 +98,16 @@ class PengajuanCutiController extends Controller
     }
 
     $arrData = [
-      'title' => 'Form Pengajuan Cuti',
-      'subtitle' => 'Form Pengajuan Cuti',
-      'active' => 'Home',
-      'user' => $user,
-      'mode' => $mode,
-      'cmode' => $cmode,
-      'cuti_active' => 'active',
+      'title'         => 'Form Pengajuan Cuti',
+      'subtitle'      => 'Form Pengajuan Cuti',
+      'active'        => 'Home',
+      'user'          => $user,
+      'mode'          => $mode,
+      'cmode'         => $cmode,
+      'cuti_active'   => 'active',
 
-      'nim' => $nim,
-      'nama_lengkap' => $nama_lengkap,
+      'nim'             => $nim,
+      'nama_lengkap'    => $nama_lengkap,
       'jenis_kelamin' => $jenis_kelamin,
       'nama_prodi' => $nama_prodi,
       'kode_prodi' => $kode_prodi,
@@ -122,35 +122,72 @@ class PengajuanCutiController extends Controller
 
   public function store(Request $request)
   {
-    // $validateData = $request->validate([
-    //   'nim' => ['required', 'unique:cutis'],
-    //   'nama' => ['required', 'string', 'max:255'],
-    //   'prodi' => ['required', 'string', 'max:255'],
-    //   'jenis_kelamin' => ['required'],
-    //   'fakultas' => ['required'],
-    //   'no_telp' => ['required'],
-    //   'email' => ['required', 'email:dns'],
-    //   'tahun_angkatan' => ['required'],
-    //   'keterangan' => ['required', 'string'],
-    // ]);
-
-    PengajuanCuti::create([
-      'nim' => $request->nim,
-      'nama' => $request->nama,
-      'kode_prodi' => $request->kode_prodi,
-      'jenis_kelamin' => $request->jenis_kelamin,
-      'kode_fakultas' => $request->kode_fakultas,
-      'no_telp' => $request->no_telp,
-      'email' => $request->email,
-      'tahun_angkatan' => $request->tahun_angkatan,
-      'semester' => $request->semester,
-      'keterangan' => $request->keterangan,
+    $validator = $request->validate([
+      'nim'               => ['required'],
+      'nama'              => ['required'],
+      'kode_prodi'        => ['required'],
+      'jenis_kelamin'     => ['required'],
+      'kode_fakultas'     => ['required'],
+      'no_telp'           => ['required'],
+      'tahun_angkatan'    => ['required'],
+      'semester'          => ['required'],
+      'keterangan'        => ['required'],
     ]);
 
-    if ($request !== null) {
+    // dd($validator);
+
+    if (!isset($validator)) {
+      return back()->with('toast_error', 'Data yang anda masukkan tidak valid!');
+    }
+
+    $nim = $request->nim;
+    $nama = $request->nama;
+    $jenis_kelamin = $request->jenis_kelamin;
+    $kode_prodi = $request->kode_prodi;
+    $kode_fakultas = $request->kode_fakultas;
+    $no_telp = $request->no_telp;
+    $tahun_angkatan = $request->tahun_angkatan;
+    $semester = $request->semester;
+    $keterangan = $request->keterangan;
+
+
+    try {
+      DB::beginTransaction();
+
+      $pengajuan_cuti = PengajuanCuti::updateOrcreate([
+        'nim' => $nim,
+        'nama' => $nama,
+        'jenis_kelamin' => $jenis_kelamin,
+        'kode_prodi' => $kode_prodi,
+        'kode_fakultas' => $kode_fakultas,
+        'no_telp' => $no_telp,
+        'tahun_angkatan' => $tahun_angkatan,
+        'semester' => $semester,
+        'keterangan' => $keterangan,
+      ]);
+
+      $pengajuan_cuti = PengajuanCuti::where('nim', session('user_username'))->get();
+      // dd($pengajuan_cuti);
+
+      foreach ($pengajuan_cuti as $pengajuan) {
+        $id = $pengajuan->id;
+        $jenis_pengajuan = $pengajuan->jenis_pengajuan;
+      }
+
+      $history                  = new HistoryPengajuan;
+      $history->id_pengajuan    = $id;
+      $history->jenis_pengajuan = $jenis_pengajuan;
+      $history->v_mode          = trim(session('user_cmode'));
+      // $history->alasan          = 'setuju';
+      $history->save();
+
+      DB::commit();
       return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('success', 'Permohonan Cuti Diajukan.');
-    } else {
-      return back()->with('error', 'Permohonan Cuti Gagal Diajukan.');
+
+    }
+    catch (Exception $ex) {
+      DB::rollBack();
+      return back()->with('toast_error', 'Permohonan Cuti Gagal Diajukan.');
     }
   }
 
@@ -226,7 +263,7 @@ class PengajuanCutiController extends Controller
       'pengajuan_cuti' => $pengajuan_cuti,
     ];
 
-    // dd($students);
+    // dd($arrData);
 
     return view('pengajuan_cuti.status', $arrData);
   }

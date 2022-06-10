@@ -45,8 +45,8 @@
     </footer>
   </div>
 
-  <script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
-  <script src="https://unpkg.com/@chartisan/echarts/dist/chartisan_echarts.js"></script>
+  {{-- <script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
+  <script src="https://unpkg.com/@chartisan/echarts/dist/chartisan_echarts.js"></script> --}}
   {{-- <script>
     const chart = new Chartisan({
       el: '#chart',
@@ -63,8 +63,8 @@
     });
   </script> --}}
   <script src="{{ asset('js/jquery.min.js') }}"></script>
-  <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
   <script src="{{ asset('js/adminlte.min.js') }}"></script>
   <script src="{{ asset('js/script.js') }}"></script>
+  @yield('script')
 </body>
 </html>

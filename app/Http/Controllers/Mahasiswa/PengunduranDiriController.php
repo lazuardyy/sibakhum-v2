@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Mahasiswa;
 
+use Exception;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Faculty;
 use App\Models\PengunduranDiri;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
+use App\Models\HistoryPengajuan;
+use PhpParser\Node\Stmt\TryCatch;
 
 class PengunduranDiriController extends Controller
 {
@@ -114,22 +117,70 @@ class PengunduranDiriController extends Controller
 
   public function store(Request $request)
   {
-    PengunduranDiri::create([
-      'nim' => $request->nim,
-      'nama' => $request->nama,
-      'kode_prodi' => $request->kode_prodi,
-      'jenis_kelamin' => $request->jenis_kelamin,
-      'kode_fakultas' => $request->kode_fakultas,
-      'no_telp' => $request->no_telp,
-      'email' => $request->email,
-      'tahun_angkatan' => $request->tahun_angkatan,
-      'semester' => $request->semester,
-      'keterangan' => $request->keterangan,
+    $validator = $request->validate([
+      'nim'               => ['required'],
+      'nama'              => ['required'],
+      'kode_prodi'        => ['required'],
+      'jenis_kelamin'     => ['required'],
+      'kode_fakultas'     => ['required'],
+      'no_telp'           => ['required'],
+      'tahun_angkatan'    => ['required'],
+      'semester'          => ['required'],
+      'keterangan'        => ['required'],
     ]);
 
-    if ($request !== null) {
+    // dd($validator);
+
+    if (!isset($validator)) {
+      return back()->with('toast_error', 'Data yang anda masukkan tidak valid!');
+    }
+
+    $nim = $request->nim;
+    $nama = $request->nama;
+    $jenis_kelamin = $request->jenis_kelamin;
+    $kode_prodi = $request->kode_prodi;
+    $kode_fakultas = $request->kode_fakultas;
+    $no_telp = $request->no_telp;
+    $tahun_angkatan = $request->tahun_angkatan;
+    $semester = $request->semester;
+    $keterangan = $request->keterangan;
+
+    try {
+      DB::beginTransaction();
+
+      $pengunduran_diri = PengunduranDiri::create([
+        'nim' => $request->nim,
+        'nama' => $request->nama,
+        'kode_prodi' => $request->kode_prodi,
+        'jenis_kelamin' => $request->jenis_kelamin,
+        'kode_fakultas' => $request->kode_fakultas,
+        'no_telp' => $request->no_telp,
+        'tahun_angkatan' => $request->tahun_angkatan,
+        'semester' => $request->semester,
+        'keterangan' => $request->keterangan,
+      ]);
+
+      $pengunduran_diri = PengunduranDiri::where('nim', session('user_username'))->get();
+      // dd($pengunduran_diri);
+
+      foreach ($pengunduran_diri as $pengajuan) {
+        $id = $pengajuan->id;
+        $jenis_pengajuan = $pengajuan->jenis_pengajuan;
+      }
+
+      $history                  = new HistoryPengajuan;
+      $history->id_pengajuan    = $id;
+      $history->jenis_pengajuan = $jenis_pengajuan;
+      $history->v_mode          = trim(session('user_cmode'));
+      // $history->alasan          = 'setuju';
+      $history->save();
+
+      DB::commit();
+
       return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('success', 'Permohonan Pengunduran Diri Diajukan.');
-    } else {
+    }
+    catch (Exception $ex) {
+      DB::rollBack();
       return back() -> with('error', 'Permohonan Pengunduran Diri Gagal Diajukan.');
     }
   }

@@ -33,13 +33,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{{ route('data-pengajuan.index') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_cuti_active) ? $data_cuti_active : '' }}" style="margin-bottom: 0.25rem">
+                  <a href="{{ route('data-cuti.index') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_cuti_active) ? $data_cuti_active : '' }}" style="margin-bottom: 0.25rem">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Cuti Kuliah</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('pengunduran-diri.create') }}" class="nav-link text-white hover:bg-green-800 {{ isset($md_active) ? $md_active : '' }}">
+                  <a href="{{ route('data-md.index') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_md_active) ? $data_md_active : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Pengunduran Diri</p>
                   </a>

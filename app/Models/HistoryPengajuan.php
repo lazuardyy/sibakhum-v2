@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RefMode extends Model
+class HistoryPengajuan extends Model
 {
     use HasFactory;
 
-    protected $table = 'ref_modes';
+    protected $table = 'history_pengajuan';
     protected $primaryKey = 'id';
-    public $timestamps = false;
 }

@@ -20,7 +20,20 @@ $(function() {
   //   ]
   // });
 
-  $('#tabel-data').DataTable();
-  $('#tabel-dosen').DataTable();
-  $('#tabel-mhs').DataTable();
+  $('#tabel-dosen').DataTable({
+    "responsive": true,
+  });
+  $('#tabel-md').DataTable({
+    "responsive": true,
+    'searching': false,
+    'paging': false,
+    // 'scrollX': true,
+
+  });
+  $('#tabel-cuti').DataTable({
+    "responsive": true,
+    'searching': false,
+    'paging': false,
+    // 'scrollX' : true,
+  });
 });

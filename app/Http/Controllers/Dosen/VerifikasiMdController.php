@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
-class VerifikasiController extends Controller
+class VerifikasiMdController extends Controller
 {
   public function index ()
   {
@@ -26,13 +26,13 @@ class VerifikasiController extends Controller
       return redirect()->to('/home');
     }
 
-    $pengajuan = DB::table('pengajuan_cuti')
+    $pengajuan = DB::table('pengunduran_diri')
     ->where('kode_prodi','like',trim(session('user_unit')).'%')
     // ->where('semester',trim($semester))
     // ->where('status_pengajuan','2')
     // ->orWhere('status_pengajuan','22')
     ->get();
-    dd($pengajuan[0]);
+    // dd($pengajuan);
 
     // $status_pengajuan = PengajuanCuti::where('nim', session('user_username'))->get();
     // foreach ($status_pengajuan as $status) {
@@ -96,13 +96,13 @@ class VerifikasiController extends Controller
     // }
 
     $arrData = [
-      'title' => 'Data Pengajuan Cuti',
-      'subtitle' => 'Data Pengajuan Cuti',
+      'title' => 'Data Pengunduran Diri',
+      'subtitle' => 'Data Pengunduran Diri',
       'active' => 'Home',
       'user' => $user,
       'mode' => $mode,
       'cmode' => $cmode,
-      'data_cuti_active' => 'active',
+      'data_md_active' => 'active',
 
       // 'nim' => $nim,
       // 'nama_lengkap' => $nama_lengkap,
