@@ -5,12 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\DetailCutiMhsController;
 use App\Http\Controllers\Mahasiswa\PengajuanCutiController;
 use App\Http\Controllers\Mahasiswa\PengunduranDiriController;
 use App\Http\Controllers\Dosen\VerifikasiCutiController;
+use App\Http\Controllers\Koorprodi\VerifikasiKoorprodiController;
 use App\Http\Controllers\Dosen\VerifikasiMdController;
-use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\HistoryController;
 use Illuminate\Support\Facades\Http;
 
 /*
@@ -41,24 +41,22 @@ Route::group(['prefix' => 'pengajuan-cuti', 'as' => 'pengajuan-cuti.'], function
 
 Route::group(['prefix' => 'data', 'as' => 'data-cuti.'], function () {
   Route::get('/pengajuan-cuti', [VerifikasiCutiController::class, 'index'])->name('index');
-  Route::get('/create', [VerifikasiCutiController::class, 'create'])->name('create');
-  Route::post('/store', [VerifikasiCutiController::class, 'store'])->name('store');
-  Route::get('/{id}/edit', [VerifikasiCutiController::class, 'edit'])->name('edit');
-  Route::get('/status/{nim}', [VerifikasiCutiController::class, 'show'])->name('show');
+  Route::post('/cuti-store', [VerifikasiCutiController::class, 'store'])->name('store');
+  Route::get('/details-cuti/{detail}', [VerifikasiCutiController::class, 'show'])->name('show');
   Route::delete('/{id}', [VerifikasiCutiController::class, 'destroy'])->name('destroy');
 });
 
 Route::group(['prefix' => 'data', 'as' => 'data-md.'], function () {
   Route::get('/pengunduran-diri', [VerifikasiMdController::class, 'index'])->name('index');
-  Route::get('/create', [VerifikasiMdController::class, 'create'])->name('create');
-  Route::post('/store', [VerifikasiMdController::class, 'store'])->name('store');
-  Route::get('/{id}/edit', [VerifikasiMdController::class, 'edit'])->name('edit');
-  Route::get('/status/{nim}', [VerifikasiMdController::class, 'show'])->name('show');
+  Route::post('/md-store', [VerifikasiMdController::class, 'store'])->name('store');
+  Route::get('/details-md/{detail}', [VerifikasiMdController::class, 'show'])->name('show');
   Route::delete('/{id}', [VerifikasiMdController::class, 'destroy'])->name('destroy');
 });
 
-
+Route::resource('/data-koorprodi', VerifikasiKoorprodiController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
 Route::resource('pengunduran-diri', PengunduranDiriController::class);
+
+Route::get('riwayat-persetujuan', [HistoryController::class, 'index'])->name('history');
 
 // Route::prefix('home')->group(function () {
 //   Route::get('/{user:nidn}', [LecturerController::class, 'show'])

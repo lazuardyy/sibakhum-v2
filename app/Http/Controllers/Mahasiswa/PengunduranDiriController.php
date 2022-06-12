@@ -6,6 +6,7 @@ use Exception;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PengunduranDiri;
+use App\Models\PengajuanCuti;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
@@ -32,17 +33,33 @@ class PengunduranDiriController extends Controller
       return redirect()->to('/home');
     }
 
-    $status_pengajuan = PengunduranDiri::where('nim', session('user_username'))->get();
-    foreach ($status_pengajuan as $status) {
-      $status = $status->status_pengajuan;
+    $pengajuan_md = PengunduranDiri::where('nim', session('user_username'))->get();
+    foreach ($pengajuan_md as $md) {
+      $status_md = $md->status_pengajuan;
     }
-    // dd($status);
-    if(isset($status) !== false && isset($status) !== 4){
-      if($status !== 4) {
-        return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan pengunduran diri!');
+
+    $pengajuan_cuti = PengajuanCuti::where('nim', session('user_username'))->get();
+    foreach ($pengajuan_cuti as $cuti) {
+      $status_cuti = $cuti->status_pengajuan;
+    }
+
+    if(isset($status_md) === false || isset($status_md) !== 4){
+      if (isset($status_cuti)) {
+        if($status_cuti !== 4 && $status_cuti !== 21) {
+          return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
+        }
+        // else {
+        //   return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengundurkan diri dari UNJ!');
+        // }
+        // return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
       }
-      else if($status_pengajuan->count() >= 2){
-        return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengajukan pengunduran diri!');
+      else if(isset($status_md)) {
+        if($status_md !== 4) {
+          return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan pengunduran diri!');
+        }
+        else {
+          return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengundurkan diri dari UNJ!');
+        }
       }
     }
 

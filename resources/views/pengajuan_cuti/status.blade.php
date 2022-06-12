@@ -28,7 +28,7 @@
                   <td>{{ $cuti->nama }}</td>
                   <td>{{ $cuti->studyProgram->nama_prodi }}</td>
                   <td>
-                    <span class="bg-warning px-2 py-1 rounded-lg">{{ $cuti->refStatusPengajuan->keterangan_cuti }}</span>
+                    <span class="bg-warning px-2 py-1 rounded-lg">{{ isset($cuti->refStatusPengajuan->keterangan_cuti) ? $cuti->refStatusPengajuan->keterangan_cuti : '' }}</span>
                   </td>
 
                   <form action="{{ route('pengajuan-cuti.destroy', $cuti->id) }}" method="POST">

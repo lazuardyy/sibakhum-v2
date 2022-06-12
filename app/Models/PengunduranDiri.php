@@ -18,18 +18,13 @@ class PengunduranDiri extends Model
       return $this -> belongsTo(StudyProgram::class, 'kode_prodi', 'kode_prodi');
     }
 
-    public function faculty ()
-    {
-      return $this -> belongsTo(Faculty::class, 'kode_fakultas', 'kode_fakultas');
-    }
-
-    public function detailCutiMhs ()
-    {
-      return $this -> hasOne(DetailCutiMhs::class, 'nim', 'nim');
-    }
-
     public function refStatusPengajuan ()
     {
       return $this -> belongsTo(RefStatusPengajuan::class, 'status_pengajuan', 'id');
+    }
+
+    public function histories ()
+    {
+      return $this -> HasMany(HistoryPengajuan::class, 'id', 'id_pengajuan');
     }
 }

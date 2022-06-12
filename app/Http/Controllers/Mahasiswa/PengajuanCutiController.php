@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use App\Models\PengajuanCuti;
+use App\Models\PengunduranDiri;
 use App\Models\HistoryPengajuan;
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -36,21 +37,45 @@ class PengajuanCutiController extends Controller
     }
     // dd($cmode);
 
-    $status_pengajuan = PengajuanCuti::where('nim', session('user_username'))->get();
-    foreach ($status_pengajuan as $status) {
-      $status = $status->status_pengajuan;
+    $pengajuan_cuti = PengajuanCuti::where('nim', session('user_username'))->get();
+    foreach ($pengajuan_cuti as $cuti) {
+      $status_cuti = $cuti->status_pengajuan;
     }
-    // dd($status_pengajuan->count());
-    // dd(isset($status));
 
-    if(isset($status) !== false && isset($status) !== 4){
-      if($status !== 4) {
-        return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!', 'bottom-end');
+    $pengajuan_md = PengunduranDiri::where('nim', session('user_username'))->get();
+    foreach ($pengajuan_md as $md) {
+      $status_md = $md->status_pengajuan;
+    }
+
+    // dd(isset($status_md) === true);
+
+    if(isset($status_cuti) === false || isset($status_cuti) !== 4){
+      if (isset($status_md)) {
+        if($status_md !== 4) {
+          return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan pengunduran diri!');
+        }
+        else {
+          return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengundurkan diri dari UNJ!');
+        }
       }
-      else if($status_pengajuan->count() >= 2){
-        return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengajukan permohonan cuti sebanyak 2x!');
+      else if(isset($status_cuti) === true) {
+        if($status_cuti !== 4 && $status_cuti !== 21) {
+          return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
+        }
+        else if($pengajuan_cuti->count() >= 2){
+          return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengajukan permohonan cuti sebanyak 2x!');
+        }
       }
     }
+
+    // if(isset($status) !== false && isset($status) !== 4){
+    //   if($status !== 4) {
+    //     return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!', 'bottom-end');
+    //   }
+    //   else if($status_pengajuan->count() >= 2){
+    //     return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengajukan permohonan cuti sebanyak 2x!');
+    //   }
+    // }
 
     $url = env('APP_ENDPOINT_MHS') . session('user_username') . '/' . session('user_token');
     $response = Http::get($url);

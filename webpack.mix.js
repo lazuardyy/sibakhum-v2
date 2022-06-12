@@ -19,3 +19,7 @@ mix.js("resources/js/app.js", "public/js")
     .postCss("resources/css/app.css", "public/assets/css/app.css", [
     require("tailwindcss"),
 ]);
+
+$url = "http://localhost:8000/";
+
+mix.browserSync($url);

@@ -11,6 +11,7 @@ class RefStatusPengajuan extends Model
 
     protected $table = 'ref_status_pengajuan';
     protected $primaryKey = 'id';
+    protected $guarded = ['id'];
 
     // public function refJenisPengajuan () {
     //   return $this->hasMany(RefJenisPengajuan::class, 'jenis_pengajuan', 'jenis_pengajuan');
@@ -22,5 +23,9 @@ class RefStatusPengajuan extends Model
 
     public function pengunduranDiri () {
       return $this->hasMany(PengunduranDiri::class, 'status_pengajuan', 'id');
+    }
+
+    public function histories () {
+      return $this->hasMany(HistoryPengajuan::class, 'status_pengajuan', 'id');
     }
 }

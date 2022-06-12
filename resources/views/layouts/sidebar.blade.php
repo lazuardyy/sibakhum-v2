@@ -20,9 +20,8 @@
 
         @if(session('user_cmode') == 1)
 
-          @elseif(session('user_cmode') == 3)
 
-          @elseif(session('user_cmode') == 8)
+          @elseif(session('user_cmode') == 8 || session('user_cmode') == 2 || session('user_cmode') == 3)
             <li class="nav-item menu-open gap-1">
               <a href="#" class="nav-link text-white hover:bg-green-800">
                 <i class="nav-icon fa-solid fa-square-plus"></i>
@@ -47,8 +46,14 @@
               </ul>
             </li>
 
-          @elseif(session('user_cmode') == 14)
+            <li class="nav-item">
+              <a href="{{ route('history') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($riwayat_active) ? $riwayat_active : '' }}">
+                <i class="nav-icon fa-solid fa-clock-rotate-left"></i>
+                <p>Riwayat Persetujuan</p>
+              </a>
+            </li>
 
+          @elseif(session('user_cmode') == 14)
 
 
           @else
