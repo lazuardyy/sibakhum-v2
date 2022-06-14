@@ -20,7 +20,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($pengunduran_diri as $index => $md)
+            @foreach($pengajuan['pengunduran_diri'] as $index => $md)
               @if(isset($md->nim))
                 <tr>
                   <td>{{ $loop->iteration }}</td>

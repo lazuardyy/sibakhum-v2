@@ -13,7 +13,6 @@ use App\Models\PengajuanCuti;
 use App\Models\PengunduranDiri;
 use App\Models\HistoryPengajuan;
 
-
 class VerifikasiCutiController extends Controller
 {
   public function index ()
@@ -29,106 +28,15 @@ class VerifikasiCutiController extends Controller
       return redirect()->to('/home');
     }
 
-    if($cmode === '8') {
-      $url = env('APP_ENDPOINT_DSN') . session('user_username') . '/' . session('user_token');
-      $response = Http::get($url);
-      $data = json_decode($response);
-
-      if ($data->status == true) {
-        foreach ($data->isi as $dsn)
-        {
-          $kode_prodi = $dsn->prodi;
-        }
-      }
-
-      $prodi = env('APP_ENDPOINT_PRODI') . $kode_prodi;
-      $responsePr = Http::get($prodi);
-      $dataProdi = json_decode($responsePr);
-
-      if ($dataProdi->status == true) {
-        foreach ($dataProdi->isi as $prodi)
-        {
-          $nama_prodi = $prodi->namaProdi;
-        }
-      }
-    }
-    else {
-      $url = env('APP_ENDPOINT_PRODI') . session('user_unit');
-      $response = Http::get($url);
-      $data = json_decode($response);
-
-      if ($data->status == true) {
-        foreach ($data->isi as $prodi)
-        {
-          $nama_prodi = $prodi->namaProdi;
-          $kode_prodi = $prodi->kodeProdi;
-        }
-      }
-    }
-
-    $kodeFakultas = substr($kode_prodi, 0, 2);
-    $url = env('APP_ENDPOINT_FK') . $kodeFakultas;
-    $responseFk = Http::get($url);
-    $results = json_decode($responseFk);
-
-    if ($results->status == true) {
-      foreach ($results->isi as $fk)
-      {
-        $nama_fakultas = $fk->namaFakultas;
-      }
-    }
-
-    if($cmode === '8') {
-      $pengajuan_cuti = PengajuanCuti::where('kode_prodi', 'like', $kode_prodi)
-      ->where('status_pengajuan','0')
-      ->orWhere('status_pengajuan','1')
-      ->orWhere('status_pengajuan','21')
-      ->get();
-
-      $pengunduran_diri = PengunduranDiri::where('kode_prodi', $kode_prodi)
-      ->where('status_pengajuan', '0')
-      ->orWhere('status_pengajuan', '1')
-      ->orWhere('status_pengajuan','21')
-      ->get();
-
-      $count_cuti = $pengajuan_cuti->count('id');
-      $count_md   = $pengunduran_diri->count('id');
-    }
-    else {
-      $pengajuan_cuti = PengajuanCuti::where('kode_prodi', 'like', $kode_prodi)
-      ->where('status_pengajuan', '1')
-      ->orWhere('status_pengajuan', '2')
-      ->orWhere('status_pengajuan','22')
-      ->get();
-
-      $pengunduran_diri = PengunduranDiri::where('kode_prodi', $kode_prodi)
-      ->where('status_pengajuan', '1')
-      ->orWhere('status_pengajuan', '2')
-      ->orWhere('status_pengajuan','22')
-      ->get();
-
-      $count_cuti = $pengajuan_cuti->count('id');
-      $count_md   = $pengunduran_diri->count('id');
-    }
-
     $arrData = [
-      'title' => 'Data Pengajuan Cuti',
-      'subtitle' => 'Data Pengajuan Cuti',
-      'modal_title' => 'Detail Pengajuan Cuti',
-      'active' => 'Home',
-      'user' => $user,
-      'mode' => $mode,
-      'cmode' => $cmode,
-      'data_cuti_active' => 'active',
-
-      'pengajuan_cuti' => $pengajuan_cuti,
-      'nama_fakultas' => $nama_fakultas,
-      'nama_prodi' => $nama_prodi,
-      'count_cuti'        => $count_cuti,
-      'count_md'          => $count_md,
+      'title'               => 'Data Pengajuan Cuti',
+      'subtitle'            => 'Data Pengajuan Cuti',
+      'modal_title'         => 'Detail Pengajuan Cuti',
+      'active'              => 'Home',
+      'data_cuti_active'    => 'active',
     ];
 
-    return view('verifikasi_dsn.verifikasi_cuti', $arrData);
+    return view('verifikasi.verifikasi_dsn.verifikasi_cuti', $arrData);
   }
 
     public function store(Request $request)

@@ -3,7 +3,7 @@
   @include('partials.header')
 
   <section class="content">
-    @if ($cmode == '3' || $cmode == '14' || $cmode == '20')
+    @if ($home['cmode'] == '3' || $home['cmode'] == '14' || $home['cmode'] == '20')
       @include('layouts.infobox')
     @endif
 
@@ -19,7 +19,7 @@
       </div>
       <div class="card-body">
           Selamat Datang
-          <strong class="mr-1">{{ $user }}</strong>di {{ config('app.name', '') }}!
+          <strong class="mr-1">{{ $home['user'] }}</strong>di {{ config('app.name', '') }}!
       </div>
     </div>
   </section>

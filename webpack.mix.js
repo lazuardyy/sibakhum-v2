@@ -22,4 +22,7 @@ mix.js("resources/js/app.js", "public/js")
 
 $url = "http://localhost:8000/";
 
-mix.browserSync($url);
+mix.browserSync({
+  proxy: $url,
+  notify :false
+});

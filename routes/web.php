@@ -8,7 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Mahasiswa\PengajuanCutiController;
 use App\Http\Controllers\Mahasiswa\PengunduranDiriController;
 use App\Http\Controllers\Dosen\VerifikasiCutiController;
-use App\Http\Controllers\Koorprodi\VerifikasiKoorprodiController;
+use App\Http\Controllers\Fakultas\DataPengajuanController;
 use App\Http\Controllers\Dosen\VerifikasiMdController;
 use App\Http\Controllers\HistoryController;
 use Illuminate\Support\Facades\Http;
@@ -53,7 +53,7 @@ Route::group(['prefix' => 'data', 'as' => 'data-md.'], function () {
   Route::delete('/{id}', [VerifikasiMdController::class, 'destroy'])->name('destroy');
 });
 
-Route::resource('/data-koorprodi', VerifikasiKoorprodiController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
+Route::get('/data-pengajuan', [DataPengajuanController::class, 'index'])->name('data-pengajuan');
 Route::resource('pengunduran-diri', PengunduranDiriController::class);
 
 Route::get('riwayat-persetujuan', [HistoryController::class, 'index'])->name('history');

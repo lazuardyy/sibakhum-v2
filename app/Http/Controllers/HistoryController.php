@@ -17,6 +17,8 @@ class HistoryController extends Controller
     $mode = session('user_mode');
     $cmode = session('user_cmode');
 
+    // dd($cmode);
+
     if (!Session::has('isLoggedIn')) {
       return redirect()->to('login');
     }
@@ -44,18 +46,6 @@ class HistoryController extends Controller
         }
       }
 
-      $pengajuan_cuti = PengajuanCuti::where('kode_prodi', 'like', $kode_prodi)
-      ->where('status_pengajuan','0')
-      ->orWhere('status_pengajuan','21')
-      ->get();
-
-      $pengunduran_diri = PengunduranDiri::where('kode_prodi', $kode_prodi)
-      ->where('status_pengajuan', '0')
-      ->get();
-
-      $count_cuti = $pengajuan_cuti->count('id');
-      $count_md   = $pengunduran_diri->count('id');
-
     }
     elseif($cmode === '2') {
       $url = env('APP_ENDPOINT_PRODI') . session('user_unit');
@@ -69,23 +59,15 @@ class HistoryController extends Controller
           $kode_prodi = $prodi->kodeProdi;
         }
       }
-
-      $pengajuan_cuti = PengajuanCuti::where('kode_prodi', 'like', $kode_prodi)
-      ->where('status_pengajuan', '1')
-      ->orWhere('status_pengajuan','22')
-      ->get();
-
-      $pengunduran_diri = PengunduranDiri::where('kode_prodi', $kode_prodi)
-      ->where('status_pengajuan', '0')
-      ->get();
-
-      $count_cuti = $pengajuan_cuti->count('id');
-      $count_md   = $pengunduran_diri->count('id');
+    }
+    else {
+      $kode_prodi = '';
     }
 
     $history_cuti = PengajuanCuti::where('kode_prodi', $kode_prodi)
-    ->where('status_pengajuan', '>=', '1')
-    ->orWhere('status_pengajuan', '21')
+    ->orWhere('kode_fakultas', 'like', trim(session('user_unit')))
+    ->orWhere('status_pengajuan', '>=', '1')
+    ->orWhere('status_pengajuan', '>=','21')
     ->get();
 
     // dd($history_cuti);
@@ -94,14 +76,8 @@ class HistoryController extends Controller
       'title'           => 'Riwayat Persetujuan',
       'subtitle'        => 'Riwayat Persetujuan',
       'active'          => 'Home',
-      'user'            => $user,
-      'mode'            => $mode,
-      'cmode'           => $cmode,
       'riwayat_active'  => 'active',
-      'histories'       => HistoryPengajuan::where('v_mode', $cmode)->get(),
       'history_cuti'    => $history_cuti,
-      'count_cuti'      => $count_cuti,
-      'count_md'        => $count_md,
     ];
     return view('histories', $arrData);
   }

@@ -22,6 +22,15 @@
 
 
           @elseif(session('user_cmode') == 8 || session('user_cmode') == 2 || session('user_cmode') == 3)
+            @if(session('user_cmode') == 3)
+            <li class="nav-item">
+              <a href="/data-pengajuan" class="nav-link side-nav hover:bg-green-800 {{ isset($all_data_active) ? $all_data_active : '' }}">
+                <i class="nav-icon fa-solid fa-database"></i>
+                <p>Semua data pengajuan</p>
+              </a>
+            </li>
+            @endif
+
             <li class="nav-item menu-open gap-1">
               <a href="#" class="nav-link text-white hover:bg-green-800">
                 <i class="nav-icon fa-solid fa-square-plus"></i>
@@ -56,7 +65,7 @@
           @elseif(session('user_cmode') == 14)
 
 
-          @else
+          @elseif(session('user_cmode') == 9)
             <li class="nav-item menu-open gap-1">
               <a href="#" class="nav-link text-white hover:bg-green-800">
                 <i class="nav-icon fa-solid fa-square-plus"></i>
@@ -103,6 +112,9 @@
                 </li>
               </ul>
             </li>
+          @else
+
+
         @endif
 
         <li class="nav-item">
