@@ -24,7 +24,7 @@ class VerifikasiCutiController extends Controller
     if (!Session::has('isLoggedIn')) {
       return redirect()->to('login');
     }
-    elseif($cmode !== '8' && $cmode !== '2') {
+    elseif($cmode === config('constants.users.mahasiswa')) {
       return redirect()->to('/home');
     }
 
@@ -47,26 +47,39 @@ class VerifikasiCutiController extends Controller
       $alasan               = $request->alasan;
 
       // dd(!$alasan);
+      // dd(config('constants.status.pa_tidak_setuju'));
 
       try {
         DB::beginTransaction();
 
-        if(session('user_cmode') == '8') {
+        if(session('user_cmode') == config('constants.users.dosen')) {
           if ($status_persetujuan == '1'){
-            $status_pengajuan = '1';
+            $status_pengajuan = config('constants.status.pa_setuju');
           }
           elseif ($status_persetujuan == '2'){
-            $status_pengajuan = '21';
+            $status_pengajuan = config('constants.status.pa_tidak_setuju');
           }
           else{
             return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
           }
-        } else {
+        }
+        elseif(session('user_cmode') == config('constants.users.prodi')) {
           if ($status_persetujuan == '1'){
-            $status_pengajuan = '2';
+            $status_pengajuan = config('constants.status.koor_setuju');
           }
           elseif ($status_persetujuan == '2'){
-            $status_pengajuan = '22';
+            $status_pengajuan = config('constants.status.koor_tidak_setuju');
+          }
+          else{
+            return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
+          }
+        }
+        elseif(session('user_cmode') == config('constants.users.dekanat')) {
+          if ($status_persetujuan == '1'){
+            $status_pengajuan = config('constants.status.wd_setuju');
+          }
+          elseif ($status_persetujuan == '2'){
+            $status_pengajuan = config('constants.status.wd_tidak_setuju');
           }
           else{
             return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
@@ -102,7 +115,7 @@ class VerifikasiCutiController extends Controller
 
         DB::commit();
 
-        return redirect()->back()->with('success', 'Data Persetujuan Berhasil Diupload');
+        return redirect()->back()->with('toast_success', 'Data Persetujuan Berhasil Diupload');
       }
       catch (Exception $e) {
         DB::rollBack();

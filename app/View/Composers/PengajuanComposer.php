@@ -23,26 +23,26 @@ class PengajuanComposer
     if ($dataMhs->status == true) {
       foreach ($dataMhs->isi as $mhs)
       {
-        $nim = $mhs->nim;
-        $nama_lengkap = $mhs->nama;
-        $jenis_kelamin = $mhs->kelamin;
-        $nama_prodi = $mhs->namaProdi;
-        $kode_prodi = $mhs->kodeProdi;
-        $nama_fakultas = $mhs->namaFakultas;
-        $angkatan = $mhs->angkatan;
-        $hp = $mhs->hpm;
+        $nim            = $mhs->nim;
+        $nama_lengkap   = $mhs->nama;
+        $jenis_kelamin  = $mhs->kelamin;
+        $nama_prodi     = $mhs->namaProdi;
+        $kode_prodi     = $mhs->kodeProdi;
+        $nama_fakultas  = $mhs->namaFakultas;
+        $angkatan       = $mhs->angkatan;
+        $hp             = $mhs->hpm;
       }
     }
     else
     {
-      $nim = 'kosong';
-      $nama_lengkap = 'kosong';
-      $jenis_kelamin = 'kosong';
-      $nama_prodi = 'kosong';
-      $kode_prodi = 'kosong';
-      $nama_fakultas = 'kosong';
-      $angkatan = 'kosong';
-      $hp = 'kosong';
+      $nim              = 'kosong';
+      $nama_lengkap     = 'kosong';
+      $jenis_kelamin    = 'kosong';
+      $nama_prodi       = 'kosong';
+      $kode_prodi       = 'kosong';
+      $nama_fakultas    = 'kosong';
+      $angkatan         = 'kosong';
+      $hp               = 'kosong';
     }
 
     $kodeFakultas = substr($kode_prodi, 0, 2);

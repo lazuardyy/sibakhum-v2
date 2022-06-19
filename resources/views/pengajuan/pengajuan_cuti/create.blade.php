@@ -7,7 +7,6 @@
   <div class="alert alert-info text-center">
     <ul class="list-unstyled text-left">Catatan :
         <li>Data Mahasiswa diperoleh dari SIAKAD, sehingga bila terdapat perbedaan data, silahkan perbaiki biodata anda di SIAKAD.</li>
-        <li>{{ $pengajuan['nim'] }}</li>
     </ul>
   </div>
 

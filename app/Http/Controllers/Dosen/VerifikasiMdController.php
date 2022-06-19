@@ -26,16 +26,16 @@ class VerifikasiMdController extends Controller
     if (!Session::has('isLoggedIn')) {
       return redirect()->to('login');
     }
-    elseif($cmode !== '8' && $cmode !== '2') {
+    elseif($cmode === config('constants.users.mahasiswa')) {
       return redirect()->to('/home');
     }
 
     $arrData = [
-      'title' => 'Data Pengunduran Diri',
-      'subtitle' => 'Data Pengunduran Diri',
-      'modal_title' => 'Detail Pengunduran Diri',
-      'active' => 'Home',
-      'data_md_active' => 'active',
+      'title'           => 'Data Pengunduran Diri',
+      'subtitle'        => 'Data Pengunduran Diri',
+      'modal_title'     => 'Detail Pengunduran Diri',
+      'active'          => 'Home',
+      'data_md_active'  => 'active',
     ];
 
     return view('verifikasi.verifikasi_dsn.verifikasi_md', $arrData);
@@ -53,22 +53,34 @@ class VerifikasiMdController extends Controller
     try {
       DB::beginTransaction();
 
-      if(session('user_cmode') == '8') {
+      if(session('user_cmode') == config('constants.users.dosen')) {
         if ($status_persetujuan == '1'){
-          $status_pengajuan = '1';
+          $status_pengajuan = config('constants.status.pa_setuju');
         }
         elseif ($status_persetujuan == '2'){
-          $status_pengajuan = '21';
+          $status_pengajuan = config('constants.status.pa_tidak_setuju');
         }
         else{
           return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
         }
-      } else {
+      }
+      elseif(session('user_cmode') == config('constants.users.prodi')) {
         if ($status_persetujuan == '1'){
-          $status_pengajuan = '2';
+          $status_pengajuan = config('constants.status.koor_setuju');
         }
         elseif ($status_persetujuan == '2'){
-          $status_pengajuan = '22';
+          $status_pengajuan = config('constants.status.koor_tidak_setuju');
+        }
+        else{
+          return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
+        }
+      }
+      elseif(session('user_cmode') == config('constants.users.dekanat')) {
+        if ($status_persetujuan == '1'){
+          $status_pengajuan = config('constants.status.wd_setuju');
+        }
+        elseif ($status_persetujuan == '2'){
+          $status_pengajuan = config('constants.status.wd_tidak_setuju');
         }
         else{
           return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
@@ -103,7 +115,7 @@ class VerifikasiMdController extends Controller
 
       DB::commit();
 
-      return redirect()->back()->with('success', 'Data Persetujuan Berhasil Diupload');
+      return redirect()->back()->with('toast_success', 'Data Persetujuan Berhasil Diupload');
     }
     catch (Exception $e) {
       DB::rollBack();

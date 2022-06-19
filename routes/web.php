@@ -53,31 +53,14 @@ Route::group(['prefix' => 'data', 'as' => 'data-md.'], function () {
   Route::delete('/{id}', [VerifikasiMdController::class, 'destroy'])->name('destroy');
 });
 
-Route::get('/data-pengajuan', [DataPengajuanController::class, 'index'])->name('data-pengajuan');
+
+Route::group(['prefix' => 'data-pengajuan', 'as' => 'data-pengajuan.'], function () {
+  Route::get('/', [DataPengajuanController::class, 'index'])->name('index');
+  Route::get('/{detail}', [DataPengajuanController::class, 'show'])->name('show');
+  Route::post('/store', [DataPengajuanController::class, 'store'])->name('store');
+});
+
+// Route::get('/data-pengajuan', [DataPengajuanController::class, 'index'])->name('data-pengajuan');
 Route::resource('pengunduran-diri', PengunduranDiriController::class);
 
 Route::get('riwayat-persetujuan', [HistoryController::class, 'index'])->name('history');
-
-// Route::prefix('home')->group(function () {
-//   Route::get('/{user:nidn}', [LecturerController::class, 'show'])
-//   ->name('dosen');
-// });
-
-// dashboard routes
-// Route::get('data-grafik/fakultas', [DashboardController::class, 'fakultas']) -> middleware('can:isSuperAdminAdmin');
-// Route::get('data-grafik/universitas', [DashboardController::class, 'universitas']) -> middleware('can:isSuperAdminAdmin');
-
-// superadmin routes
-// Route::get('/data-user', [UserController::class, 'user'])->name('data');
-// Route::get('superadmin', [UserController::class, 'index'])->middleware('can:isSuperAdmin');
-// Route::resource('superadmin', UserController::class);
-
-// mahasiswa routes
-// Route::resource('mahasiswa/cuti', PengajuanCutiController::class);
-// Route::resource('mahasiswa/md', PengunduranDiriController::class);
-// Route::resource('dosen/persetujuan', DetailCutiMhsController::class);
-
-// test
-// Route::get('fakultas/{$id}', [FacultyController::class,'show']);
-// Route::resource('faculty', FacultyController::class);
-// Route::get('faculty/{faculty:name}', [FacultyController::class,'show']);

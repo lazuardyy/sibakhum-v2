@@ -1,19 +1,19 @@
 @extends('layouts.main')
 
 @section('content')
-  <div class="container grid">
+  <div class="container">
     @include('partials.header')
     @include('flash-message')
 
     <div class="bg-slate-50 shadow-md p-3 rounded-md overflow-x-scroll">
-      <table class="table" id="tabel-dosen">
+      <table class="table hover compact" id="tabel-dosen">
         <thead>
           <tr class="text-center">
             <th rowspan="2">No.</th>
             <th rowspan="2">NIM</th>
             <th rowspan="2">Nama</th>
             <th rowspan="2">Program Studi</th>
-            <th colspan="2">Waktu</th>
+            <th colspan="2" class="dt-head-center">Waktu</th>
             <th rowspan="2">Details</th>
           </tr>
           <tr>
@@ -31,7 +31,12 @@
                 <td>{{ $pengajuan->studyProgram->nama_prodi }}</td>
 
                 <td>{{ $pengajuan->created_at->format("M/d/Y") }}</td>
-                <td>{{ ($pengajuan->status_pengajuan === 0) ? 'Menunggu Persetujuan' : $pengajuan->refStatusPengajuan->status_pengunduran_diri }}</td>
+                <td>
+                  <span class="
+                  {{ ($pengajuan->status_pengajuan <= 4 &&$pengajuan->status_pengajuan <= 24) ? 'bg-success' : 'bg-danger' }} px-2 py-1 rounded-lg">
+                    {{ ($pengajuan->status_pengajuan === 0) ? 'Menunggu Persetujuan' : $pengajuan->refStatusPengajuan->status_pengunduran_diri }}
+                  </span>
+                </td>
                 <td>
                   <button type="button" class="btn btn-primary  btn-sm" data-bs-toggle="modal" data-bs-target="#modal_{{ $pengajuan->id }}" id="details">
                     <i class="fa-solid fa-eye-slash" id="awal"></i>
@@ -81,10 +86,23 @@
           }
       });
 
-      // $('#details').on('click',function(){
-      //   $('#awal').hide()
-      //   $("#muncul").show()
-      // });
+      var status = $('.status').attr('id');
+
+      $(`#${status}`).on('change',function(){
+        if($(this).val() == 2){
+          // var alasan = $('.alasan').attr('id');
+          // $(`#${alasan}`).show();
+          $('textarea').show();
+
+
+        }
+        else{
+          // var alasan = $('.alasan').attr('id');
+          // $(`#${alasan}`).hide();
+          $('textarea').hide();
+        }
+      });
+
     });
   </script>
 @endsection

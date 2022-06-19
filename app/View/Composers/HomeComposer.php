@@ -19,8 +19,9 @@ class HomeComposer
     $user = session('user_name');
     $mode = session('user_mode');
     $cmode = session('user_cmode');
+    // dd($cmode);
 
-    if($cmode === '8') {
+    if($cmode === config('constants.users.dosen')) {
       $url = env('APP_ENDPOINT_DSN') . session('user_username') . '/' . session('user_token');
       $response = Http::get($url);
       $data = json_decode($response);
@@ -42,12 +43,13 @@ class HomeComposer
 
       $cuti = $pengajuan_cuti->count('id');
       $md   = $pengunduran_diri->count('id');
+      // dd($md);
 
       $pengajuan = compact('cuti', 'md');
 
       // dd($pengajuan->count());
     }
-    elseif($cmode === '2') {
+    elseif($cmode === config('constants.users.prodi')) {
       $pengajuan_cuti = PengajuanCuti::where('kode_prodi', session('user_unit'))
       ->where('status_pengajuan', '1')
       ->get();
@@ -58,10 +60,25 @@ class HomeComposer
 
       $cuti = $pengajuan_cuti->count('id');
       $md   = $pengunduran_diri->count('id');
+      // dd($md);
 
       $pengajuan = compact('cuti', 'md');
 
       // dd($pengajuan);
+    }
+    elseif($cmode === config('constants.users.dekanat') || $cmode === config('constants.users.fakultas')) {
+      $pengajuan_cuti = PengajuanCuti::where('kode_fakultas', session('user_unit'))
+      ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '2' : '3')
+      ->get();
+
+      $pengunduran_diri = PengunduranDiri::where('kode_fakultas', session('user_unit'))
+      ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '2' : '3')
+      ->get();
+
+      $cuti = $pengajuan_cuti->count('id');
+      $md   = $pengunduran_diri->count('id');
+
+      $pengajuan = compact('cuti', 'md');
     }
     else {
       $cuti = '';

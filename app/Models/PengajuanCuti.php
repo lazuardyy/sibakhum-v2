@@ -20,7 +20,7 @@ class PengajuanCuti extends Model
   // ];
 
   protected $guarded = ['id'];
-  protected $dates= ['created_at'];
+  // protected $dates= ['created_at', 'updated_at'];
   protected $with = ['studyProgram', 'refStatusPengajuan', 'histories'];
 
   public function studyProgram () {

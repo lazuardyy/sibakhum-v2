@@ -12,7 +12,8 @@ class PengunduranDiri extends Model
     protected $table = 'pengunduran_diri';
     protected $guarded = ['id'];
     protected $primaryKey = 'id';
-    protected $with = ['studyProgram', 'refStatusPengajuan'];
+    protected $with = ['studyProgram', 'refStatusPengajuan', 'histories'];
+    // protected $dates= ['created_at', 'updated_at'];
 
     public function studyProgram () {
       return $this -> belongsTo(StudyProgram::class, 'kode_prodi', 'kode_prodi');

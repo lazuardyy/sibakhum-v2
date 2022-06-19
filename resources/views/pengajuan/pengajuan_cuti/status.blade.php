@@ -20,27 +20,27 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($pengajuan['pengajuan_cuti'] as $index => $cuti)
-              @if(isset($cuti->nim))
+            @foreach($pengajuan['pengajuan_cuti'] as $index => $pengajuan)
+              @if(isset($pengajuan->nim))
                 <tr>
                   <td>{{ $loop->iteration }}</td>
-                  <td>{{ $cuti->nim }}</td>
-                  <td>{{ $cuti->nama }}</td>
-                  <td>{{ $cuti->studyProgram->nama_prodi }}</td>
+                  <td>{{ $pengajuan->nim }}</td>
+                  <td>{{ $pengajuan->nama }}</td>
+                  <td>{{ $pengajuan->studyProgram->nama_prodi }}</td>
                   <td>
-                    <span class="bg-warning px-2 py-1 rounded-lg">{{ isset($cuti->refStatusPengajuan->keterangan_cuti) ? $cuti->refStatusPengajuan->keterangan_cuti : '' }}</span>
+                    <span class="bg-warning px-2 py-1 rounded-lg">{{ isset($pengajuan->refStatusPengajuan->keterangan_cuti) ? $pengajuan->refStatusPengajuan->keterangan_cuti : '' }}</span>
                   </td>
 
-                  <form action="{{ route('pengajuan-cuti.destroy', $cuti->id) }}" method="POST">
-                    <td>
-                      <button type="button" class="btn btn-danger hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out rounded-md" data-bs-toggle="modal" data-bs-target="#modal_{{ $cuti->id }}" {{ ($cuti->status_pengajuan !== 0) ? 'disabled' : '' }}>
+                  <td>
+                    <form action="{{ route('pengajuan-cuti.destroy', $pengajuan->id) }}" method="POST">
+                      <button type="button" class="btn btn-danger btn-sm hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out rounded-md" data-bs-toggle="modal" data-bs-target="#modal_{{ $pengajuan->id }}" {{ ($pengajuan->status_pengajuan !== 0) ? 'disabled' : '' }}>
                         <i class="fa-solid fa-trash-can"></i>
                       </button>
 
 
-                    <!-- Modal -->
-                      <div class="modal fade" id="modal_{{ $cuti->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered"">
+                      <!-- Modal -->
+                      <div class="modal fade" id="modal_{{ $pengajuan->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
                           <div class="modal-content">
                             <div class="modal-header">
                               <h5 class="modal-title" id="exampleModalLabel">Batal Ajukan Cuti</h5>
@@ -57,7 +57,7 @@
 
                               @csrf
                               @method('DELETE')
-                              {{ $cuti->id }}
+                              {{ $pengajuan->id }}
                               <button type="submit" class="btn btn-danger">
                                 <i class="fa-solid fa-trash-can"></i>
                                 <span class="hidden lg:inline-block">Hapus</span>
@@ -66,8 +66,15 @@
                           </div>
                         </div>
                       </div>
-                    </td>
-                  </form>
+                    </form>
+
+                    {{-- <form action="{{ route('pengajuan-cuti.update', $pengajuan->id) }}" method="POST">
+                      @csrf
+                      @method('PUT')
+
+
+                    </form> --}}
+                  </td>
                 </tr>
               @endif
             @endforeach

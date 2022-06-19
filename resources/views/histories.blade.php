@@ -12,28 +12,28 @@
       </div>
     </div>
 
-    @foreach($history_cuti as $history)
-      @if(isset($history->id))
+    @if($id_cuti_history && $id_md_history)
+      @foreach($history_cuti as $history)
         <div class="card-body">
           <div class="timeline">
-            <!-- Timeline time label -->
             <div class="time-label">
-              <span class="bg-green">{{ $history->created_at->format('d M Y') }}</span>
+              <span class="bg-green">
+                {{ date('d M Y', strtotime($history->created_at)) }}
+              </span>
             </div>
             <div>
               <div class="timeline-item">
-                <span class="time"><i class="fas fa-clock"></i> {{ $history->updated_at->diffForHumans() }}</span>
+                <span class="time"><i class="fas fa-clock"></i>
+                  {{ \Carbon\Carbon::parse($history->updated_at)->diffForHumans() }}
+                </span>
 
                 <h3 class="timeline-header">Riwayat Persetujuan Cuti</h3>
                 <div class="timeline-body">
                   <ul>
                     <li>Pengajuan
-                      {{ ($history->jenis_pengajuan == '1') ? 'cuti' : '' }}
-                      atas nama <strong>{{ $history->nama }}</strong>
-                      telah {{ $history->refStatusPengajuan->status_pengajuan_cuti }} pada tanggal {{ $history->updated_at->format('d M Y') }} pukul {{ $history->updated_at->format('h:i') }} WIB.
+                      atas nama <strong>{{ $history->pengajuanCuti->nama }}</strong>
+                      telah {{ $history->refStatusPengajuan->status_pengajuan_cuti }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
                     </li>
-
-                    {{-- <li>{{ $history->histories }}</li> --}}
                   </ul>
                 </div>
               </div>
@@ -43,15 +43,110 @@
               <i class="fas fa-envelope bg-blue"></i>
             </div>
           </div>
-
-
         </div>
-      @else
+      @endforeach
+
+      @foreach($history_md as $history)
         <div class="card-body">
-          <span>Belum ada riwayat persetujuan.</span>
+          <div class="timeline">
+            <div class="time-label">
+              <span class="bg-green">
+                {{ date('d M Y', strtotime($history->created_at)) }}
+              </span>
+            </div>
+            <div>
+              <div class="timeline-item">
+                <span class="time"><i class="fas fa-clock"></i>
+                  {{ \Carbon\Carbon::parse($history->updated_at)->diffForHumans() }}
+                </span>
+
+                <h3 class="timeline-header">Riwayat Persetujuan Pengunduran Diri</h3>
+                <div class="timeline-body">
+                  <ul>
+                    <li>Pengajuan atas nama <strong>{{ $history->pengunduranDiri->nama }}</strong> telah {{ $history->refStatusPengajuan->status_pengunduran_diri }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <i class="fas fa-envelope bg-blue"></i>
+            </div>
+          </div>
         </div>
-      @endif
-    @endforeach
+      @endforeach
+
+    @elseif($id_cuti_history)
+      @foreach($history_cuti as $history)
+        <div class="card-body">
+          <div class="timeline">
+            <div class="time-label">
+              <span class="bg-green">
+                {{ date('d M Y', strtotime($history->created_at)) }}
+              </span>
+            </div>
+            <div>
+              <div class="timeline-item">
+                <span class="time"><i class="fas fa-clock"></i>
+                  {{ \Carbon\Carbon::parse($history->updated_at)->diffForHumans() }}
+                </span>
+
+                <h3 class="timeline-header">Riwayat Persetujuan Cuti</h3>
+                <div class="timeline-body">
+                  <ul>
+                    <li>Pengajuan atas nama <strong>{{ $history->pengajuanCuti->nama }}</strong>
+                      telah {{ $history->refStatusPengajuan->status_pengajuan_cuti }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <i class="fas fa-envelope bg-blue"></i>
+            </div>
+          </div>
+        </div>
+      @endforeach
+
+    @elseif($id_md_history)
+      @foreach($history_md as $history)
+        <div class="card-body">
+          <div class="timeline">
+            <div class="time-label">
+              <span class="bg-green">
+                {{ date('d M Y', strtotime($history->created_at)) }}
+              </span>
+            </div>
+            <div>
+              <div class="timeline-item">
+                <span class="time"><i class="fas fa-clock"></i>
+                  {{ \Carbon\Carbon::parse($history->updated_at)->diffForHumans() }}
+                </span>
+
+                <h3 class="timeline-header">Riwayat Persetujuan Pengunduran Diri</h3>
+                <div class="timeline-body">
+                  <ul>
+                    <li>Pengajuan atas nama <strong>{{ $history->pengunduranDiri->nama }}</strong>
+                      telah {{ $history->refStatusPengajuan->status_pengunduran_diri }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <i class="fas fa-envelope bg-blue"></i>
+            </div>
+          </div>
+        </div>
+      @endforeach
+    @else
+      <div class="card-body">
+        <span>Belum ada riwayat persetujuan.</span>
+      </div>
+    @endif
   </div>
 </div>
 @endsection

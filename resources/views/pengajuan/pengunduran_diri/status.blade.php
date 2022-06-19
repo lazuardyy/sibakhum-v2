@@ -35,7 +35,7 @@
                     {{-- @csrf
                     @method('DELETE') --}}
                     <td>
-                      <button type="button" class="btn btn-danger hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out rounded-md" data-bs-toggle="modal" data-bs-target="#modal_{{ $md->id }}" {{ ($md->status_pengajuan !== 0) ? 'disabled' : '' }} onclick="()=>alert('yakin ingin hapus?')" >
+                      <button type="button" class="btn btn-danger btn-sm hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out rounded-md" data-bs-toggle="modal" data-bs-target="#modal_{{ $md->id }}" {{ ($md->status_pengajuan !== 0) ? 'disabled' : '' }}>
                         <i class="fa-solid fa-trash-can"></i>
                       </button>
 

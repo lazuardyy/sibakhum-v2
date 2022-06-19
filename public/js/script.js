@@ -21,15 +21,20 @@ $(function() {
   // });
 
   $('#tabel-dosen').DataTable({
+    columnDefs: [{
+      targets: [0, 1, 2, 3, 4, 5],
+      className: ['dt-head-center'],
+    }],
     "responsive": true,
   });
+
   $('#tabel-md').DataTable({
     "responsive": true,
     'searching': false,
     'paging': false,
     // 'scrollX': true,
-
   });
+
   $('#tabel-cuti').DataTable({
     "responsive": true,
     'searching': false,

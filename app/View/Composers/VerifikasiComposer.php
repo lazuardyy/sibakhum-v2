@@ -16,13 +16,13 @@ class VerifikasiComposer
       return redirect()->to('login');
     }
 
-    $user = session('user_name');
-    $mode = session('user_mode');
-    $cmode = session('user_cmode');
+    $user   = session('user_name');
+    $mode   = session('user_mode');
+    $cmode  = session('user_cmode');
     $unit   = session('user_unit');
     // dd($cmode);
 
-    if($cmode === '8') {
+    if($cmode == config('constants.users.dosen')) {
       $url = env('APP_ENDPOINT_DSN') . session('user_username') . '/' . session('user_token');
       $response = Http::get($url);
       $data = json_decode($response);
@@ -47,21 +47,20 @@ class VerifikasiComposer
 
       $pengajuan_cuti = PengajuanCuti::where('kode_prodi', 'like', $kode_prodi)
       ->where('status_pengajuan','0')
-      ->orWhere('status_pengajuan','1')
-      ->orWhere('status_pengajuan','2')
-      ->orWhere('status_pengajuan','21')
+      ->where('status_pengajuan', '>=','1')
       ->get();
 
       // dd($pengajuan_cuti);
 
       $pengunduran_diri = PengunduranDiri::where('kode_prodi', $kode_prodi)
       ->where('status_pengajuan', '0')
-      ->orWhere('status_pengajuan', '1')
-      ->orWhere('status_pengajuan', '2')
-      ->orWhere('status_pengajuan','21')
+      ->where('status_pengajuan', '>=', '1')
       ->get();
+      // dd($pengunduran_diri);
+
+      $all_pengajuan = '';
     }
-    elseif($cmode === '2') {
+    elseif($cmode == config('constants.users.prodi')) {
       $url = env('APP_ENDPOINT_PRODI') . session('user_unit');
       $response = Http::get($url);
       $data = json_decode($response);
@@ -75,50 +74,54 @@ class VerifikasiComposer
       }
 
       $pengajuan_cuti = PengajuanCuti::where('kode_prodi', 'like', $kode_prodi)
-      ->where('status_pengajuan', '1')
-      ->orWhere('status_pengajuan', '2')
-      ->orWhere('status_pengajuan','22')
+      ->where('status_pengajuan', '>=', '1')
+      ->where('status_pengajuan', '!=', '21')
       ->get();
+      // dd($pengajuan_cuti);
 
       $pengunduran_diri = PengunduranDiri::where('kode_prodi', $kode_prodi)
-      ->where('status_pengajuan', '1')
-      ->orWhere('status_pengajuan', '2')
-      ->orWhere('status_pengajuan','22')
+      ->where('status_pengajuan', '>=', '1')
+      ->where('status_pengajuan', '!=', '21')
       ->get();
-    }
-    else {
-      $all_pengajuan = array();
 
+      $all_pengajuan = '';
+    }
+    elseif($cmode == config('constants.users.dekanat')) {
+      // dd($cmode);
       $pengajuan_cuti   = PengajuanCuti::where('kode_fakultas', 'like', trim($unit))
+      ->where('status_pengajuan', '>=', '2')
+      ->where('status_pengajuan', '!=', '22')
       ->get();
+      // dd($pengajuan_cuti);
 
       $pengunduran_diri = PengunduranDiri::where('kode_fakultas', 'like', trim($unit))
+      ->where('status_pengajuan', '>=', '2')
+      ->where('status_pengajuan', '!=', '22')
       ->get();
 
-      // $all_pengajuan = array_merge($pengajuan_cuti->toArray(), $pengunduran_diri->toArray());
-      // dd(compact('all_pengajuan'));
+      $kode_prodi = '';
+      $nama_prodi = '';
+    }
+    else {
+      $pengajuan_cuti   = PengajuanCuti::where('kode_fakultas', 'like', trim($unit))
+      ->where('status_pengajuan', '>=', '3')
+      ->where('status_pengajuan', '!=', '23')
+      ->get();
+      // dd($pengajuan_cuti);
 
-      // foreach($all_pengajuan as $pengajuan) {
-      //   $pengajuan = $pengajuan;
-      // }
-
-      // $all_pengajuan[] = $pengajuan_cuti;
-      // $all_pengajuan[] = $pengunduran_diri;
-
-      // $pengajuan= compact('all_pengajuan');
-
-      // foreach($pengajuan as $ajuan) {
-      //   $pengajuan = $ajuan;
-      // }
-
-      // dd($pengajuan);
+      $pengunduran_diri = PengunduranDiri::where('kode_fakultas', 'like', trim($unit))
+      ->where('status_pengajuan', '>=', '3')
+      ->where('status_pengajuan', '!=', '23')
+      ->get();
 
       $kode_prodi = '';
       $nama_prodi = '';
     }
 
+    $all_pengajuan = $pengajuan_cuti->merge($pengunduran_diri);
+
     $kodeFakultas = substr($kode_prodi, 0, 2);
-    $url = env('APP_ENDPOINT_FK') . $kodeFakultas;
+    $url = env('APP_ENDPOINT_FK') . (($kodeFakultas === '') ? trim($unit) : $kodeFakultas );
     $responseFk = Http::get($url);
     $results = json_decode($responseFk);
 
@@ -137,9 +140,8 @@ class VerifikasiComposer
       'pengunduran_diri'  => $pengunduran_diri,
       'nama_fakultas'     => $nama_fakultas,
       'nama_prodi'        => $nama_prodi,
-      // 'all_pengajuan'     => isset($all_pengajuan),
+      'all_pengajuan'     => $all_pengajuan,
     ];
-
 
     $view->with('verifikasi', $arrData);
   }
