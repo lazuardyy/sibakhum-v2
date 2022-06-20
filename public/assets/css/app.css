@@ -990,6 +990,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(22 101 52 / var(--tw-bg-opacity)) !important;
 }
 
+.hover\:bg-blue-600:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity)) !important;
+}
+
 .hover\:text-blue-700:hover {
   --tw-text-opacity: 1 !important;
   color: rgb(29 78 216 / var(--tw-text-opacity)) !important;
@@ -1045,6 +1050,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(185 28 28 / var(--tw-bg-opacity)) !important;
 }
 
+.focus\:bg-blue-600:focus {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity)) !important;
+}
+
 .focus\:text-gray-700:focus {
   --tw-text-opacity: 1 !important;
   color: rgb(55 65 81 / var(--tw-text-opacity)) !important;
@@ -1095,6 +1105,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .active\:bg-red-800:active {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(153 27 27 / var(--tw-bg-opacity)) !important;
+}
+
+.active\:bg-blue-700:active {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity)) !important;
 }
 
 .active\:shadow-lg:active {

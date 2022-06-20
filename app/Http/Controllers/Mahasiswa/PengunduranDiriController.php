@@ -166,7 +166,24 @@ class PengunduranDiriController extends Controller
 
   public function update(Request $request, $id)
   {
-      //
+    $no_telp        = $request->no_telp;
+    $tahun_angkatan = $request->tahun_angkatan;
+    $semester       = $request->semester;
+    $keterangan     = $request->keterangan;
+
+    $update = PengunduranDiri::where('id', $id)->update([
+      'no_telp'         => $no_telp,
+      'tahun_angkatan'  => $tahun_angkatan,
+      'semester'        => $semester,
+      'keterangan'      => $keterangan,
+    ]);
+
+    if ($update) {
+      return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('success', 'Data berhasil diubah.');
+    }
+    else {
+      return back()->with('toast_error', 'Data gagal diubah.');
+    }
   }
 
   public function destroy($id)

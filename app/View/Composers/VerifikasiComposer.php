@@ -34,9 +34,22 @@ class VerifikasiComposer
         }
       }
 
+      $pengajuan_cuti = PengajuanCuti::where('kode_prodi', $kode_prodi)
+      // ->where('status_pengajuan','0')
+      ->where('status_pengajuan', '>=','0')
+      ->get();
+
+      // dd($pengajuan_cuti);
+      $pengunduran_diri = PengunduranDiri::where('kode_prodi', $kode_prodi)
+      // ->where('status_pengajuan', '0')
+      ->where('status_pengajuan', '>=', '0')
+      ->get();
+      // dd($pengunduran_diri);
+
       $prodi = env('APP_ENDPOINT_PRODI') . $kode_prodi;
       $responsePr = Http::get($prodi);
       $dataProdi = json_decode($responsePr);
+      // dd($dataProdi);
 
       if ($dataProdi->status == true) {
         foreach ($dataProdi->isi as $prodi)
@@ -44,19 +57,6 @@ class VerifikasiComposer
           $nama_prodi = $prodi->namaProdi;
         }
       }
-
-      $pengajuan_cuti = PengajuanCuti::where('kode_prodi', 'like', $kode_prodi)
-      ->where('status_pengajuan','0')
-      ->where('status_pengajuan', '>=','1')
-      ->get();
-
-      // dd($pengajuan_cuti);
-
-      $pengunduran_diri = PengunduranDiri::where('kode_prodi', $kode_prodi)
-      ->where('status_pengajuan', '0')
-      ->where('status_pengajuan', '>=', '1')
-      ->get();
-      // dd($pengunduran_diri);
 
       $all_pengajuan = '';
     }
@@ -99,6 +99,8 @@ class VerifikasiComposer
       ->where('status_pengajuan', '!=', '22')
       ->get();
 
+      // dd($pengunduran_diri);
+
       $kode_prodi = '';
       $nama_prodi = '';
     }
@@ -119,6 +121,7 @@ class VerifikasiComposer
     }
 
     $all_pengajuan = $pengajuan_cuti->merge($pengunduran_diri);
+    // dd($all_pengajuan);
 
     $kodeFakultas = substr($kode_prodi, 0, 2);
     $url = env('APP_ENDPOINT_FK') . (($kodeFakultas === '') ? trim($unit) : $kodeFakultas );

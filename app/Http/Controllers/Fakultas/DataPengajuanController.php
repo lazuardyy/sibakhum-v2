@@ -107,6 +107,7 @@ class DataPengajuanController extends Controller
     $id_md                     = $request->id_md;
     $nim_md                    = $request->nim_md;
     $jenis_pengajuan_md        = $request->jenis_pengajuan_md;
+    // dd($jenis_pengajuan_md);
 
     $status_persetujuan        = $request->status_persetujuan;
     $alasan                    = $request->alasan;
@@ -117,32 +118,21 @@ class DataPengajuanController extends Controller
       if(session('user_cmode') == config('constants.users.dekanat')){
         if($status_persetujuan == '1') {
           $status_pengajuan = config('constants.status.wd_setuju');
-
-          $store_cuti = PengajuanCuti::where([
-            'id'                => $id_cuti,
-            'nim'               => $nim_cuti,
-            'jenis_pengajuan'   => $jenis_pengajuan_cuti,
-          ])->update([
-            'status_pengajuan'  => ($status_pengajuan ?? 3),
-          ]);
-
-          $store_md = PengunduranDiri::where([
-            'id'                => $id_md,
-            'nim'               => $nim_md,
-            'jenis_pengajuan'   => $jenis_pengajuan_md,
-          ])->update([
-            'status_pengajuan'  => ($status_pengajuan ?? 3),
-          ]);
         }
         elseif($status_persetujuan == '2') {
           $status_pengajuan = config('constants.status.wd_tidak_setuju');
+        }
+        else{
+          return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
+        }
 
+        if($jenis_pengajuan_cuti !== null && $jenis_pengajuan_md !== null){
           $store_cuti = PengajuanCuti::where([
             'id'                => $id_cuti,
             'nim'               => $nim_cuti,
             'jenis_pengajuan'   => $jenis_pengajuan_cuti,
           ])->update([
-            'status_pengajuan'  => ($status_pengajuan ?? 23),
+            'status_pengajuan'  => ($status_pengajuan ?? 3),
           ]);
 
           $store_md = PengunduranDiri::where([
@@ -150,38 +140,76 @@ class DataPengajuanController extends Controller
             'nim'               => $nim_md,
             'jenis_pengajuan'   => $jenis_pengajuan_md,
           ])->update([
-            'status_pengajuan'  => ($status_pengajuan ?? 23),
+            'status_pengajuan'  => ($status_pengajuan ?? 3),
           ]);
-        }
 
-        else{
-          return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
+          $history_cuti = HistoryPengajuan::updateOrCreate (
+            [
+              'id_pengajuan'      => $id_cuti,
+              'v_mode'            => trim(session('user_cmode'))
+            ],
+            [
+              'jenis_pengajuan'   => $jenis_pengajuan_cuti,
+              'status_pengajuan'  => $status_pengajuan,
+              'alasan'            => $alasan,
+            ]
+          );
+
+          $history_md = HistoryPengajuan::updateOrCreate (
+            [
+              'id_pengajuan'      => $id_md,
+              'v_mode'            => trim(session('user_cmode'))
+            ],
+            [
+              'jenis_pengajuan'   => $jenis_pengajuan_md,
+              'status_pengajuan'  => $status_pengajuan,
+              'alasan'            => $alasan,
+            ]
+          );
+        }
+        elseif($jenis_pengajuan_cuti == '1' && $jenis_pengajuan_md === null){
+          $store_cuti = PengajuanCuti::where([
+            'id'                => $id_cuti,
+            'nim'               => $nim_cuti,
+            'jenis_pengajuan'   => $jenis_pengajuan_cuti,
+          ])->update([
+            'status_pengajuan'  => ($status_pengajuan ?? 3),
+          ]);
+
+          $history_cuti = HistoryPengajuan::updateOrCreate (
+            [
+              'id_pengajuan'      => $id_cuti,
+              'v_mode'            => trim(session('user_cmode'))
+            ],
+            [
+              'jenis_pengajuan'   => $jenis_pengajuan_cuti,
+              'status_pengajuan'  => $status_pengajuan,
+              'alasan'            => $alasan,
+            ]
+          );
+        }
+        else {
+          $store_md = PengunduranDiri::where([
+            'id'                => $id_md,
+            'nim'               => $nim_md,
+            'jenis_pengajuan'   => $jenis_pengajuan_md,
+          ])->update([
+            'status_pengajuan'  => ($status_pengajuan ?? 3),
+          ]);
+
+          $history_md = HistoryPengajuan::updateOrCreate (
+            [
+              'id_pengajuan'      => $id_md,
+              'v_mode'            => trim(session('user_cmode'))
+            ],
+            [
+              'jenis_pengajuan'   => $jenis_pengajuan_md,
+              'status_pengajuan'  => $status_pengajuan,
+              'alasan'            => $alasan,
+            ]
+          );
         }
       }
-
-      $history_cuti = HistoryPengajuan::updateOrCreate (
-        [
-          'id_pengajuan'      => $id_cuti,
-          'v_mode'            => trim(session('user_cmode'))
-        ],
-        [
-          'jenis_pengajuan'   => $jenis_pengajuan_cuti,
-          'status_pengajuan'  => $status_pengajuan,
-          'alasan'            => $alasan,
-        ]
-      );
-
-      $history_md = HistoryPengajuan::updateOrCreate (
-        [
-          'id_pengajuan'      => $id_md,
-          'v_mode'            => trim(session('user_cmode'))
-        ],
-        [
-          'jenis_pengajuan'   => $jenis_pengajuan_md,
-          'status_pengajuan'  => $status_pengajuan,
-          'alasan'            => $alasan,
-        ]
-      );
 
       DB::commit();
 

@@ -62,7 +62,33 @@ class PengajuanComposer
     }
 
     $pengajuan_cuti = PengajuanCuti::where('nim', session('user_username'))->get();
+
+    foreach($pengajuan_cuti as $pengajuan){
+      $cuti = $pengajuan;
+    }
+
+    if(isset($cuti)){
+      $cuti;
+    }
+    else {
+      $cuti = null;
+    }
+
+    // dd($cuti);
+
     $pengunduran_diri = PengunduranDiri::where('nim', session('user_username'))->get();
+
+    foreach($pengunduran_diri as $pengajuan){
+      $md = $pengajuan;
+    }
+
+    if(isset($md)){
+      $md;
+    }
+    else {
+      $md = null;
+    }
+    // dd($nama_fakultas);
 
     $arrData = [
       'nim'               => $nim,
@@ -77,6 +103,9 @@ class PengajuanComposer
 
       'pengajuan_cuti'    => $pengajuan_cuti,
       'pengunduran_diri'  => $pengunduran_diri,
+      'cuti'              => $cuti,
+      'md'                => $md,
+      // 'pengajuan'         => $pengajuan,
     ];
 
     // dd($arrData);
