@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('ref_status_pengajuan', function (Blueprint $table) {
             $table->integer('id');
             // $table->string('jenis_pengajuan', 45);
-            $table->string('status_pengajuan_cuti', 45);
-            $table->string('status_pengunduran_diri', 45);
+            $table->string('status_pengajuan_cuti', 255);
+            $table->string('status_pengunduran_diri', 255);
             $table->string('keterangan_cuti', 255);
             $table->string('keterangan_md', 255);
             $table->timestamps();

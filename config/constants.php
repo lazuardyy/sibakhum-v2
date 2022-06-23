@@ -13,6 +13,7 @@ return [
     'koor_setuju'       => 2,
     'wd_setuju'         => 3,
     'wr_setuju'         => 4,
+    'fk_selesai'        => 5,
 
     'pa_tidak_setuju'   => 21,
     'koor_tidak_setuju' => 22,

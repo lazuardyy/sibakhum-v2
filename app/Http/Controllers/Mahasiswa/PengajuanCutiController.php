@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Mahasiswa;
 
-use Exception;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use App\Models\PengajuanCuti;
 use App\Models\PengunduranDiri;
 use App\Models\HistoryPengajuan;
+use App\Models\BukaPeriode;
+use App\Mail\Pengajuan;
 use PhpParser\Node\Stmt\TryCatch;
+use Exception;
 
 class PengajuanCutiController extends Controller
 {
@@ -33,6 +36,22 @@ class PengajuanCutiController extends Controller
       return redirect()->to('/home');
     }
     // dd($cmode);
+
+    $periode = BukaPeriode::checkOpenPeriode();
+    // dd($periode);
+
+    if ($periode === null || $periode->aktif === '0') {
+      return redirect()->to('/home')->with('toast_error', 'Periode pengajuan cuti belum dibuka!');
+      // $tombol = "";
+      // $semester = $periode->semester;
+    }
+    // else{
+    //   // $tombol = "disabled";
+    //   // $semester = "";
+    // }
+
+    // dd($semester);
+
 
     $pengajuan_cuti = PengajuanCuti::where('nim', session('user_username'))->get();
     foreach ($pengajuan_cuti as $cuti) {
@@ -84,9 +103,12 @@ class PengajuanCutiController extends Controller
   {
     $validator = $request->validate([
       'nim'               => ['required'],
+      'pa'                => ['required'],
       'nama'              => ['required'],
-      'kode_prodi'        => ['required'],
       'jenis_kelamin'     => ['required'],
+      'nama_prodi'        => ['required'],
+      'kode_prodi'        => ['required'],
+      'nama_fakultas'     => ['required'],
       'kode_fakultas'     => ['required'],
       'no_telp'           => ['required'],
       'tahun_angkatan'    => ['required'],
@@ -102,9 +124,13 @@ class PengajuanCutiController extends Controller
 
     $nim            = $request->nim;
     $nama           = $request->nama;
+    $pa             = $request->pa;
     $jenis_kelamin  = $request->jenis_kelamin;
+    $nama_prodi     = $request->nama_prodi;
     $kode_prodi     = $request->kode_prodi;
+    $nama_fakultas  = $request->nama_fakultas;
     $kode_fakultas  = $request->kode_fakultas;
+    $email          = $request->email;
     $no_telp        = $request->no_telp;
     $tahun_angkatan = $request->tahun_angkatan;
     $semester       = $request->semester;
@@ -116,9 +142,13 @@ class PengajuanCutiController extends Controller
       $pengajuan_cuti = PengajuanCuti::updateOrcreate([
         'nim'             => $nim,
         'nama'            => $nama,
+        'pa'              => $pa,
         'jenis_kelamin'   => $jenis_kelamin,
+        'nama_prodi'      => $nama_prodi,
         'kode_prodi'      => $kode_prodi,
+        'nama_fakultas'   => $nama_fakultas,
         'kode_fakultas'   => $kode_fakultas,
+        'email'           => $email,
         'no_telp'         => $no_telp,
         'tahun_angkatan'  => $tahun_angkatan,
         'semester'        => $semester,
@@ -140,7 +170,12 @@ class PengajuanCutiController extends Controller
       // $history->alasan          = 'setuju';
       $history->save();
 
+      $pengajuanCuti = PengajuanCuti::where('nim', $nim)->get();
+      $pengajuanCuti = json_decode($pengajuanCuti);
+      Mail::to($email)->send(new Pengajuan($pengajuanCuti));
+
       DB::commit();
+
       return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('success', 'Permohonan Cuti Diajukan.');
 
     }
@@ -155,6 +190,10 @@ class PengajuanCutiController extends Controller
     if (!Session::has('isLoggedIn')) {
       return redirect()->to('login');
     }
+
+    // $pengajuanCuti = PengajuanCuti::where('nim', base64_decode($nim))->get();
+    // $pengajuanCuti = json_decode($pengajuanCuti);
+    // Mail::to('muklasnurardiansyah@gmail.com')->send(new Pengajuan($pengajuanCuti));
 
     $arrData = [
       'title'               => 'Status Pengajuan Cuti',

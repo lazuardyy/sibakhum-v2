@@ -26,7 +26,7 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $pengajuan->nim }}</td>
                   <td>{{ $pengajuan->nama }}</td>
-                  <td>{{ $pengajuan->studyProgram->nama_prodi }}</td>
+                  <td>{{ $pengajuan->nama_prodi }}</td>
                   <td>
                     <span class="bg-warning px-2 py-1 rounded-lg">{{ $pengajuan->refStatusPengajuan->keterangan_md }}</span>
                   </td>

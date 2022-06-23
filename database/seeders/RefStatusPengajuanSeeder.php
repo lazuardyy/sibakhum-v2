@@ -20,17 +20,17 @@ class RefStatusPengajuanSeeder extends Seeder
         // 'jenis_pengajuan' => 1,
         'status_pengajuan_cuti' => 'Mengajukan Cuti Kuliah',
         'status_pengunduran_diri' => 'Mengajukan Pengunduran Diri',
-        'keterangan_cuti' => 'Mengajukan Cuti Kuliah',
-        'keterangan_md' =>'Mengajukan Pengunduran Diri'
+        'keterangan_cuti' => 'Silahkan konfirmasi ke Pembimbing Akademik',
+        'keterangan_md' =>'Silahkan konfirmasi ke Pembimbing Akademik'
       ]);
 
       DB::table('ref_status_pengajuan')->insert([
         'id' => 1,
         // 'jenis_pengajuan' => 2,
-        'status_pengajuan_cuti' => 'Disetujui oleh pembimbing akademik prodi',
-        'status_pengunduran_diri' => 'Disetujui oleh pembimbing akademik prodi',
-        'keterangan_cuti' => 'Dalam Proses Administrasi Akademik Prodi',
-        'keterangan_md' => 'Dalam Proses Administrasi Akademik Prodi'
+        'status_pengajuan_cuti' => 'Disetujui oleh pembimbing akademik',
+        'status_pengunduran_diri' => 'Disetujui oleh pembimbing akademik',
+        'keterangan_cuti' => 'Dalam proses persetujuan Koordinator Prodi',
+        'keterangan_md' => 'Dalam proses persetujuan Koordinator Prodi'
       ]);
 
       DB::table('ref_status_pengajuan')->insert([
@@ -38,8 +38,8 @@ class RefStatusPengajuanSeeder extends Seeder
         // 'jenis_pengajuan' => 1,
         'status_pengajuan_cuti' => 'Disetujui oleh koordinator prodi',
         'status_pengunduran_diri' => 'Disetujui oleh koordinator prodi',
-        'keterangan_cuti' => 'Dalam Proses Administrasi Akademik Prodi',
-        'keterangan_md' =>'Dalam Proses Administrasi Akademik Prodi'
+        'keterangan_cuti' => 'Dalam proses persetujuan Wakil Dekan 1',
+        'keterangan_md' =>'Dalam proses persetujuan Wakil Dekan 1'
       ]);
 
       DB::table('ref_status_pengajuan')->insert([
@@ -47,17 +47,24 @@ class RefStatusPengajuanSeeder extends Seeder
         // 'jenis_pengajuan' => 1,
         'status_pengajuan_cuti' => 'Disetujui oleh wakil dekan 1',
         'status_pengunduran_diri' => 'Disetujui oleh wakil dekan 1',
+        'keterangan_cuti' => 'Dalam proses persetujuan Wakil Rektor 1',
+        'keterangan_md' =>'Dalam proses persetujuan Wakil Rektor 1'
+      ]);
+
+      DB::table('ref_status_pengajuan')->insert([
+        'id' => 4,
+        'status_pengajuan_cuti' => 'Disetujui oleh wakil rektor 1',
+        'status_pengunduran_diri' => 'Disetujui oleh wakil rektor 1',
         'keterangan_cuti' => 'Dalam Proses Administrasi Akademik Fakultas',
         'keterangan_md' =>'Dalam Proses Administrasi Akademik Fakultas'
       ]);
 
       DB::table('ref_status_pengajuan')->insert([
-        'id' => 4,
-        // 'jenis_pengajuan' => 1,
-        'status_pengajuan_cuti' => 'Disetujui oleh wakil rektor 1',
-        'status_pengunduran_diri' => 'Disetujui oleh wakil rektor 1',
-        'keterangan_cuti' => 'Dalam Proses Administrasi Akademik Universitas',
-        'keterangan_md' =>'Dalam Proses Administrasi Akademik Universitas'
+        'id' => 5,
+        'status_pengajuan_cuti' => 'Data pengajuan selesai diproses Akademik Fakultas',
+        'status_pengunduran_diri' => 'Data pengajuan selesai diproses Akademik Fakultas',
+        'keterangan_cuti' => 'Data pengajuan diteruskan ke Bakhum',
+        'keterangan_md' =>'Data pengajuan diteruskan ke Bakhum'
       ]);
 
       DB::table('ref_status_pengajuan')->insert([

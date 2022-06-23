@@ -28,6 +28,7 @@
         "datatables.net": "^1.12.1",
         "datatables.net-dt": "^1.12.1",
         "jquery": "^3.6.0",
+        "moment": "^2.29.3",
         "pretty-checkbox": "^3.0.3"
     }
 }

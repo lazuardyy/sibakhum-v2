@@ -28,7 +28,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $pengajuan->nim }}</td>
                 <td>{{ $pengajuan->nama}}</td>
-                <td>{{ $pengajuan->studyProgram->nama_prodi }}</td>
+                <td>{{ $pengajuan->nama_prodi }}</td>
 
                 <td>{{ $pengajuan->created_at->format("M/d/Y") }}</td>
                 <td>

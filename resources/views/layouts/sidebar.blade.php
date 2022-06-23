@@ -25,11 +25,28 @@
                 <p>Semua data pengajuan</p>
               </a>
             </li>
+
+            @if($home['cmode'] == config('constants.users.fakultas'))
+              <li class="nav-item">
+                <a href="{{ route('periode.index') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($buka_periode_active) ? $buka_periode_active : '' }}">
+                  <i class="nav-icon fa-solid fa-unlock"></i>
+                  <p>Buka Periode</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{ route('pengunduran-diri.create') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($md_active) ? $md_active : '' }}">
+                  <i class="nav-icon fa-solid fa-circle-plus"></i>
+                  {{-- <i class="fa-solid fa-square-plus"></i> --}}
+                  <p>Pengunduran Diri</p>
+                </a>
+              </li>
+            @endif
           @endif
 
           <li class="nav-item menu-open gap-1">
             <a href="#" class="nav-link text-white hover:bg-green-800">
-              <i class="nav-icon fa-solid fa-square-plus"></i>
+              <i class="nav-icon fa-solid fa-info"></i>
               <p>
                 Data Pengajuan
                 <i class="right fas fa-angle-left"></i>
@@ -43,7 +60,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('data-md.index') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_md_active) ? $data_md_active : '' }}">
+                <a href="{{ route('data-md.index') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_md_active) ? $data_md_active : '' }}" style="margin-bottom: 0.25rem">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pengunduran Diri</p>
                 </a>
@@ -61,53 +78,21 @@
         @elseif(session('user_cmode') == 14)
 
 
-        @elseif(session('user_cmode') == 9)
-          <li class="nav-item menu-open gap-1">
-            <a href="#" class="nav-link text-white hover:bg-green-800">
+        @elseif(session('user_cmode') == config('constants.users.mahasiswa'))
+          <li class="nav-item">
+            <a href="{{ route('pengajuan-cuti.create') }}" class="nav-link text-white hover:bg-green-800 {{ isset($cuti_active) ? $cuti_active : '' }}" style="margin-bottom: 0.25rem">
               <i class="nav-icon fa-solid fa-square-plus"></i>
-              <p>
-                Pengajuan
-                <i class="right fas fa-angle-left"></i>
-              </p>
+              <p>Pengajuan Cuti Kuliah</p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('pengajuan-cuti.create') }}" class="nav-link text-white hover:bg-green-800 {{ isset($cuti_active) ? $cuti_active : '' }}" style="margin-bottom: 0.25rem">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Cuti Kuliah</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('pengunduran-diri.create') }}" class="nav-link text-white hover:bg-green-800 {{ isset($md_active) ? $md_active : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Pengunduran Diri</p>
-                </a>
-              </li>
-            </ul>
           </li>
-          <li class="nav-item menu-open gap-1">
-            <a href="#" class="nav-link text-white hover:bg-green-800">
-              <i class="nav-icon fa-solid fa-square-plus"></i>
-              <p>
-                Status
-                <i class="right fas fa-angle-left"></i>
-              </p>
+
+          <li class="nav-item">
+            <a href="{{ route('pengajuan-cuti.show', base64_encode(session('user_username'))) }}" class="nav-link text-white hover:bg-green-800 {{ isset($status_cuti_active) ? $status_cuti_active : '' }}" style="margin-bottom: 0.25rem">
+              <i class="nav-icon fa-solid fa-list-check"></i>
+              <p>Status Cuti Kuliah</p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('pengajuan-cuti.show', base64_encode(session('user_username'))) }}" class="nav-link text-white hover:bg-green-800 {{ isset($status_cuti_active) ? $status_cuti_active : '' }}" style="margin-bottom: 0.25rem">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Status Cuti Kuliah</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('pengunduran-diri.show', base64_encode(session('user_username'))) }}" class="nav-link text-white hover:bg-green-800 {{ isset($status_md_active) ? $status_md_active : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Status Pengunduran Diri</p>
-                </a>
-              </li>
-            </ul>
           </li>
+
         @else
         @endif
 

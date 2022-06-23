@@ -24,6 +24,7 @@ class PengajuanComposer
       foreach ($dataMhs->isi as $mhs)
       {
         $nim            = $mhs->nim;
+        $pa             = $mhs->pa;
         $nama_lengkap   = $mhs->nama;
         $jenis_kelamin  = $mhs->kelamin;
         $nama_prodi     = $mhs->namaProdi;
@@ -36,6 +37,7 @@ class PengajuanComposer
     else
     {
       $nim              = 'kosong';
+      $pa               = 'kosong';
       $nama_lengkap     = 'kosong';
       $jenis_kelamin    = 'kosong';
       $nama_prodi       = 'kosong';
@@ -92,6 +94,7 @@ class PengajuanComposer
 
     $arrData = [
       'nim'               => $nim,
+      'pa'                => $pa,
       'nama_lengkap'      => $nama_lengkap,
       'jenis_kelamin'     => $jenis_kelamin,
       'nama_prodi'        => $nama_prodi,

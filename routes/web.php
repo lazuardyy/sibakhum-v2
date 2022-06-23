@@ -1,16 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\HomeController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\Mahasiswa\PengajuanCutiController;
-use App\Http\Controllers\Mahasiswa\PengunduranDiriController;
+use App\Http\Controllers\Fakultas\PengunduranDiriController;
 use App\Http\Controllers\Dosen\VerifikasiCutiController;
-use App\Http\Controllers\Fakultas\DataPengajuanController;
 use App\Http\Controllers\Dosen\VerifikasiMdController;
+use App\Http\Controllers\Fakultas\DataPengajuanController;
+use App\Http\Controllers\Bakhum\BukaPeriodeController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\EmailController;
 use Illuminate\Support\Facades\Http;
 
 /*
@@ -64,3 +65,13 @@ Route::group(['prefix' => 'data-pengajuan', 'as' => 'data-pengajuan.'], function
 Route::resource('pengunduran-diri', PengunduranDiriController::class);
 
 Route::get('riwayat-persetujuan', [HistoryController::class, 'index'])->name('history');
+
+Route::group(['prefix' => 'buka-periode', 'as' => 'periode.'], function () {
+  Route::get('/', [BukaPeriodeController::class, 'index'])->name('index');
+  Route::post('/store', [BukaPeriodeController::class, 'store'])->name('store');
+  Route::post('/activate', [BukaPeriodeController::class, 'activate'])->name('activate');
+  Route::get('/edit/{id}', [BukaPeriodeController::class, 'edit'])->name('edit');
+  Route::delete('/{id}', [BukaPeriodeController::class, 'destroy'])->name('destroy');
+});
+
+Route::get('/email', [EmailController::class, 'sendEmail']);

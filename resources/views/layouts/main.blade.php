@@ -32,6 +32,7 @@
   <div class="wrapper">
     @include('layouts.topbar')
     @include('layouts.sidebar')
+    @include('flash-message')
 
     <div class="content-wrapper">
       @yield('content')

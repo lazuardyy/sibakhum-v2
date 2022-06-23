@@ -26,9 +26,10 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $pengajuan->nim }}</td>
                   <td>{{ $pengajuan->nama }}</td>
-                  <td>{{ $pengajuan->studyProgram->nama_prodi }}</td>
-                  <td>
-                    <span class="bg-warning px-2 py-1 rounded-lg">{{ isset($pengajuan->refStatusPengajuan->keterangan_cuti) ? $pengajuan->refStatusPengajuan->keterangan_cuti : '' }}</span>
+                  <td>{{ $pengajuan->nama_prodi }}</td>
+                  <td class="flex gap-1 flex-col">
+                    <span class="{{ ($pengajuan->status_pengajuan !== 0 && $pengajuan->status_pengajuan < 21) ? 'bg-success' : 'bg-red-400' }} px-2 py-1 rounded-lg">{{ $pengajuan->refStatusPengajuan->status_pengajuan_cuti }}</span>
+                    <span class="bg-warning px-2 py-1 rounded-lg">{{ $pengajuan->refStatusPengajuan->keterangan_cuti }}</span>
                   </td>
 
                   <td>

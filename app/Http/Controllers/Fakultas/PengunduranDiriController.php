@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Mahasiswa;
+namespace App\Http\Controllers\Fakultas;
 
 use Exception;
 use App\Http\Controllers\Controller;
@@ -29,7 +29,7 @@ class PengunduranDiriController extends Controller
     if (!Session::has('isLoggedIn')) {
       return redirect()->to('login');
     }
-    elseif($cmode !== '9') {
+    elseif($cmode !== config('constants.users.fakultas')) {
       return redirect()->to('/home');
     }
 
@@ -77,9 +77,12 @@ class PengunduranDiriController extends Controller
   {
     $validator = $request->validate([
       'nim'               => ['required'],
+      'pa'                => ['required'],
       'nama'              => ['required'],
-      'kode_prodi'        => ['required'],
       'jenis_kelamin'     => ['required'],
+      'nama_prodi'        => ['required'],
+      'kode_prodi'        => ['required'],
+      'nama_fakultas'     => ['required'],
       'kode_fakultas'     => ['required'],
       'no_telp'           => ['required'],
       'tahun_angkatan'    => ['required'],
@@ -95,8 +98,11 @@ class PengunduranDiriController extends Controller
 
     $nim            = $request->nim;
     $nama           = $request->nama;
+    $pa             = $request->pa;
     $jenis_kelamin  = $request->jenis_kelamin;
+    $nama_prodi     = $request->nama_prodi;
     $kode_prodi     = $request->kode_prodi;
+    $nama_fakultas  = $request->nama_fakultas;
     $kode_fakultas  = $request->kode_fakultas;
     $no_telp        = $request->no_telp;
     $tahun_angkatan = $request->tahun_angkatan;
@@ -107,15 +113,18 @@ class PengunduranDiriController extends Controller
       DB::beginTransaction();
 
       $pengunduran_diri = PengunduranDiri::create([
-        'nim'             => $request->nim,
-        'nama'            => $request->nama,
-        'kode_prodi'      => $request->kode_prodi,
-        'jenis_kelamin'   => $request->jenis_kelamin,
-        'kode_fakultas'   => $request->kode_fakultas,
-        'no_telp'         => $request->no_telp,
-        'tahun_angkatan'  => $request->tahun_angkatan,
-        'semester'        => $request->semester,
-        'keterangan'      => $request->keterangan,
+        'nim'             => $nim,
+        'nama'            => $nama,
+        'pa'              => $pa,
+        'jenis_kelamin'   => $jenis_kelamin,
+        'nama_prodi'      => $nama_prodi,
+        'kode_prodi'      => $kode_prodi,
+        'nama_fakultas'   => $nama_fakultas,
+        'kode_fakultas'   => $kode_fakultas,
+        'no_telp'         => $no_telp,
+        'tahun_angkatan'  => $tahun_angkatan,
+        'semester'        => $semester,
+        'keterangan'      => $keterangan,
       ]);
 
       $pengunduran_diri = PengunduranDiri::where('nim', session('user_username'))->get();

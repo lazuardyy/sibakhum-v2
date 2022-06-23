@@ -29,12 +29,11 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $pengajuan->nim }}</td>
                 <td>{{ $pengajuan->nama}}</td>
-                <td>{{ ($verifikasi['nama_prodi'] === '') ? $pengajuan->studyProgram->nama_prodi : $verifikasi['nama_prodi'] }}</td>
+                <td>{{ $pengajuan->nama_prodi }}</td>
 
                 <td>{{ $pengajuan->created_at->format("M/d/Y") }}</td>
-                <td>
-                  <span class="
-                  {{ ($pengajuan->status_pengajuan <= 4 &&$pengajuan->status_pengajuan <= 24) ? 'bg-success' : 'bg-danger' }} px-2 py-1 rounded-lg">
+                <td class="flex">
+                  <span class="w-full {{ ($pengajuan->status_pengajuan <= 4 &&$pengajuan->status_pengajuan <= 24) ? 'bg-success' : 'bg-danger' }} px-2 py-1 rounded-lg">
                     {{ ($pengajuan->status_pengajuan === 0) ? 'Menunggu Persetujuan' : $pengajuan->refStatusPengajuan->status_pengajuan_cuti }}
                   </span>
                 </td>
@@ -89,19 +88,19 @@
       // console.log(alasan);
       // console.log(status);
 
-      $(`#${status}`).on('change',function(){
-        var selection = $(this).val();
-        switch(selection){
-          case '2':
-            var alasan = $('textarea.alasan').attr('id');
-            $(`textarea#${alasan}`).show();
-            break;
-          default:
-            var alasan = $('textarea.alasan').attr('id');
-            $(`textarea#${alasan}`).hide();
-            break;
-        }
-      });
+      // $(`#${status}`).on('change',function(){
+      //   var selection = $(this).val();
+      //   switch(selection){
+      //     case '2':
+      //       var alasan = $('textarea.alasan').attr('id');
+      //       $(`textarea#${alasan}`).show();
+      //       break;
+      //     default:
+      //       var alasan = $('textarea.alasan').attr('id');
+      //       $(`textarea#${alasan}`).hide();
+      //       break;
+      //   }
+      // });
     });
   </script>
 @endsection

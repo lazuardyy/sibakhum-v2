@@ -21,10 +21,28 @@ $(function() {
   // });
 
   $('#tabel-dosen').DataTable({
-    columnDefs: [{
-      targets: [0, 1, 2, 3, 4, 5],
-      className: ['dt-head-center'],
-    }],
+    columnDefs: [
+      {
+        targets: [0, 1, 2, 3, 4, 5],
+        className: ['dt-head-center'],
+      },
+
+  ],
+    "responsive": true,
+  });
+
+
+  $('#table-all-data').DataTable({
+    columnDefs: [
+      {
+        targets: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        className: ['dt-head-center'],
+      },
+      {
+        targets: [0, 1, 8],
+        orderable: false,
+      },
+    ],
     "responsive": true,
   });
 
@@ -39,6 +57,10 @@ $(function() {
     "responsive": true,
     'searching': false,
     'paging': false,
+    columnDefs: [{
+      targets: [0, 1, 2, 3, 4, 5],
+      className: ['dt-head-center'],
+    }]
     // 'scrollX' : true,
   });
 });

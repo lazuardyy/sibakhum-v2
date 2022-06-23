@@ -27,12 +27,7 @@
     <p>Fakultas</p>
   </div>
   <div class="col-8">
-    {{-- @if($verifikasi['nama_fakultas'] !== '') --}}
-      <p>: {{ $verifikasi['nama_fakultas'] ?? $pengajuan->nama_fakultas ?? $pengajuan['nama_fakultas'] }}</p>
-    {{-- @elseif($pengajuan->nama_fakultas !== null) --}}
-    {{-- @else --}}
-
-    {{-- @endif --}}
+    <p>: {{ $pengajuan->nama_fakultas }}</p>
   </div>
 </div>
 <div class="row border-bottom">
@@ -40,8 +35,7 @@
     <p>Prodi</p>
   </div>
   <div class="col-8">
-    {{-- {{ dd($pengajuan->studyProgram->nama_prodi) }} --}}
-    <p>: {{ ($verifikasi['nama_prodi'] === '') ? $pengajuan->studyProgram->nama_prodi : $verifikasi['nama_prodi'] }}</p>
+    <p>: {{ $pengajuan->nama_prodi }}</p>
   </div>
 </div>
 

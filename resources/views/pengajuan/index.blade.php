@@ -1,6 +1,11 @@
 <div class="form-group mb-6">
   <label for="NIM" class="form-label inline-block mb-2 text-gray-700">NIM</label>
   <input type="hidden" name="nim" value="{{ $pengajuan['nim'] }}">
+  <input type="hidden" name="pa" value="{{ $pengajuan['pa'] }}">
+  <input type="hidden" name="nama_prodi" value="{{ $pengajuan['nama_prodi'] }}">
+  <input type="hidden" name="nama_fakultas" value="{{ $pengajuan['nama_fakultas'] }}">
+
+
   <input type="text"
     class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
     id="NIM"
@@ -80,3 +85,5 @@
     </small>
   @enderror
 </div>
+
+

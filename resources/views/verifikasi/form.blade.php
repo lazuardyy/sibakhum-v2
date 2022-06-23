@@ -5,11 +5,11 @@
         <i class="fa-solid fa-triangle-exclamation"></i>
         <span>Perhatian:</span>
         @if($home['cmode'] == '8')
-          <li class="text-justify">Anda dapat melakukan perubahan persetujuan selama persetujuan yang anda pilih sebelumnya belum disetujui/ditolak oleh koordinator prodi!</li>
+          <li class="text-justify">Anda dapat melakukan perubahan persetujuan selama persetujuan yang anda pilih sebelumnya belum disetujui/ditolak oleh koordinator prodi.</li>
           @elseif($home['cmode'] == '2')
-            <li class="text-justify">Anda dapat melakukan perubahan persetujuan selama persetujuan yang anda pilih sebelumnya belum disetujui/ditolak oleh wakil dekan 1!</li>
+            <li class="text-justify">Anda dapat melakukan perubahan persetujuan selama persetujuan yang anda pilih sebelumnya belum disetujui/ditolak oleh wakil dekan 1.</li>
           @else
-            <li class="text-justify">Anda dapat melakukan perubahan persetujuan selama persetujuan yang anda pilih sebelumnya belum disetujui/ditolak oleh wakil rektor 1!</li>
+            <li class="text-justify">Anda dapat melakukan perubahan persetujuan selama persetujuan yang anda pilih sebelumnya belum disetujui/ditolak oleh wakil rektor 1.</li>
         @endif
     </ul>
   </div>
@@ -74,7 +74,9 @@
     <input type="hidden" name="nim"  value="{{ $pengajuan->nim }}">
     <input type="hidden" name="jenis_pengajuan"  value="{{ $pengajuan->jenis_pengajuan }}">
 
-    <textarea class="form-control alasan" id='alasan_{{ $pengajuan->id }}' rows="3" cols="50" name="alasan" placeholder="Beri alasan bila pengajuan ditolak" style="resize: none; display:none;" rows="5"></textarea>
+    @if(($home['cmode'] == '8' && ($pengajuan->status_pengajuan < 2 || $pengajuan->status_pengajuan === 21)) || ($home['cmode'] == '2' && ($pengajuan->status_pengajuan < 3 || $pengajuan->status_pengajuan === 22)) || ($home['cmode'] == '14' && ($pengajuan->status_pengajuan < 4 || $pengajuan->status_pengajuan === 23)))
+      <textarea class="form-control alasan" id='alasan_{{ $pengajuan->id }}' rows="3" cols="50" name="alasan" placeholder="Beri alasan bila pengajuan ditolak" style="resize: none;" rows="5"></textarea>
+    @endif
   </div>
   {{-- form alasan penolakan --}}
 

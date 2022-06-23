@@ -68,11 +68,11 @@ class HomeComposer
     }
     elseif($cmode === config('constants.users.dekanat') || $cmode === config('constants.users.fakultas')) {
       $pengajuan_cuti = PengajuanCuti::where('kode_fakultas', session('user_unit'))
-      ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '2' : '3')
+      ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '2' : '4')
       ->get();
 
       $pengunduran_diri = PengunduranDiri::where('kode_fakultas', session('user_unit'))
-      ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '2' : '3')
+      ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '2' : '4')
       ->get();
 
       $cuti = $pengajuan_cuti->count('id');
