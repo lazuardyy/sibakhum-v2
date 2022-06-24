@@ -16,7 +16,7 @@ class HistoryPengajuan extends Model
 
     public function pengajuanCuti ()
     {
-      return $this -> belongsTo(PengajuanCuti::class, 'id_pengajuan', 'id');
+      return $this -> belongsTo(PengajuanMhs::class, 'id_pengajuan', 'id');
     }
 
     public function pengunduranDiri ()

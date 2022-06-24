@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
-use App\Models\PengajuanCuti;
+use App\Models\PengajuanMhs;
 use App\Models\PengunduranDiri;
 use App\Models\HistoryPengajuan;
 use App\Models\BukaPeriode;

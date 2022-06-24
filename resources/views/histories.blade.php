@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    @if($id_cuti_history && $id_md_history)
+    @if($id_cuti_history)
       @foreach($history_cuti as $history)
         <div class="card-body">
           <div class="timeline">
@@ -32,7 +32,7 @@
                   <ul>
                     <li>Pengajuan
                       atas nama <strong>{{ $history->pengajuanCuti->nama }}</strong>
-                      telah {{ $history->refStatusPengajuan->status_pengajuan_cuti }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
+                      {{ $history->refStatusPengajuan->status_pengajuan_cuti }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
                     </li>
                   </ul>
                 </div>
@@ -46,7 +46,7 @@
         </div>
       @endforeach
 
-      @foreach($history_md as $history)
+      {{-- @foreach($history_md as $history)
         <div class="card-body">
           <div class="timeline">
             <div class="time-label">
@@ -75,7 +75,7 @@
             </div>
           </div>
         </div>
-      @endforeach
+      @endforeach --}}
 
     @elseif($id_cuti_history)
       @foreach($history_cuti as $history)
@@ -96,7 +96,7 @@
                 <div class="timeline-body">
                   <ul>
                     <li>Pengajuan atas nama <strong>{{ $history->pengajuanCuti->nama }}</strong>
-                      telah {{ $history->refStatusPengajuan->status_pengajuan_cuti }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
+                      {{ $history->refStatusPengajuan->status_pengajuan_cuti }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
                     </li>
                   </ul>
                 </div>
@@ -110,7 +110,7 @@
         </div>
       @endforeach
 
-    @elseif($id_md_history)
+    {{-- @elseif($id_md_history)
       @foreach($history_md as $history)
         <div class="card-body">
           <div class="timeline">
@@ -141,7 +141,7 @@
             </div>
           </div>
         </div>
-      @endforeach
+      @endforeach --}}
     @else
       <div class="card-body">
         <span>Belum ada riwayat persetujuan.</span>

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
 use App\Models\HistoryPengajuan;
-use App\Models\PengajuanCuti;
+use App\Models\PengajuanMhs;
 use App\Models\PengunduranDiri;
 
 class HistoryController extends Controller
@@ -23,7 +23,7 @@ class HistoryController extends Controller
       return redirect()->to('login');
     }
 
-    if($cmode === config('constants.users.dosen')) {
+    if($cmode === config('constants.users.dosen') || $cmode == config('constants.users.prodi')) {
       $url = env('APP_ENDPOINT_DSN') . session('user_username') . '/' . session('user_token');
       $response = Http::get($url);
       $data = json_decode($response);
@@ -35,78 +35,30 @@ class HistoryController extends Controller
         }
       }
 
-      $prodi = env('APP_ENDPOINT_PRODI') . $kode_prodi;
-      $responsePr = Http::get($prodi);
-      $dataProdi = json_decode($responsePr);
-
-      if ($dataProdi->status == true) {
-        foreach ($dataProdi->isi as $prodi)
-        {
-          $nama_prodi = $prodi->namaProdi;
-        }
-      }
-
-    }
-    elseif($cmode === config('constants.users.prodi')) {
-      $url = env('APP_ENDPOINT_PRODI') . session('user_unit');
-      $response = Http::get($url);
-      $data = json_decode($response);
-
-      if ($data->status == true) {
-        foreach ($data->isi as $prodi)
-        {
-          $nama_prodi = $prodi->namaProdi;
-          $kode_prodi = $prodi->kodeProdi;
-        }
-      }
-    }
-    // elseif($cmode === '14') {
-
-    // }
-    else {
-      $kode_prodi = '';
-    }
-
-    if($cmode === config('constants.users.dosen') || $cmode === config('constants.users.prodi')) {
-      $history_cuti = PengajuanCuti::where('kode_prodi', $kode_prodi)
+      $history_cuti = PengajuanMhs::where('kode_prodi', ($cmode == config('constants.users.dosen') ? $kode_prodi : trim(session('user_unit'))))
+      ->where('jenis_pengajuan', '<=', 2)
       ->value('id');
 
       $history_cuti = HistoryPengajuan::where('id_pengajuan', $history_cuti)
       ->where('status_pengajuan', '>', 0)
       ->get();
-
-      $history_md = PengunduranDiri::where('kode_prodi', $kode_prodi)
-      ->value('id');
-
-      $history_md = HistoryPengajuan::where('id_pengajuan', $history_md)
-      ->where('status_pengajuan', '>', 0)
-      ->get();
     }
-    else {
-      $history_cuti = PengajuanCuti::where('kode_fakultas', trim(session('user_unit')))
+    else{
+      $history_cuti = PengajuanMhs::where('kode_fakultas', trim(session('user_unit')))
       ->value('id');
 
       $history_cuti = HistoryPengajuan::where('id_pengajuan', $history_cuti)
       ->where('status_pengajuan', '>', 0)
       ->get();
-
-      $history_md = PengunduranDiri::where('kode_fakultas', trim(session('user_unit')))
-      ->value('id');
-
-      $history_md = HistoryPengajuan::where('id_pengajuan', $history_md)
-      ->where('status_pengajuan', '>', 0)
-      ->get();
-      // dd($history_cuti);
-
     }
 
     foreach($history_cuti as $history){
       $id_cuti_history = $history->id_pengajuan;
     }
 
-    foreach($history_md as $history){
-      $id_md_history = $history->id_pengajuan;
-    }
+    // foreach($history_md as $history){
+    //   $id_md_history = $history->id_pengajuan;
+    // }
 
     $arrData = [
       'title'           => 'Riwayat Persetujuan',
@@ -115,9 +67,9 @@ class HistoryController extends Controller
       'riwayat_active'  => 'active',
 
       'history_cuti'    => $history_cuti,
-      'history_md'      => $history_md,
+      // 'history_md'      => $history_md,
       'id_cuti_history' => isset($id_cuti_history),
-      'id_md_history'   => isset($id_md_history),
+      // 'id_md_history'   => isset($id_md_history),
 
     ];
     return view('histories', $arrData);

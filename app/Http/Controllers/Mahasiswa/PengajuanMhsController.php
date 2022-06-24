@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use App\Models\PengajuanCuti;
+use App\Models\PengajuanMhs;
 use App\Models\PengunduranDiri;
 use App\Models\HistoryPengajuan;
 use App\Models\BukaPeriode;
@@ -16,7 +16,7 @@ use App\Mail\Pengajuan;
 use PhpParser\Node\Stmt\TryCatch;
 use Exception;
 
-class PengajuanCutiController extends Controller
+class PengajuanMhsController extends Controller
 {
   public function index()
   {
@@ -40,11 +40,11 @@ class PengajuanCutiController extends Controller
     $periode = BukaPeriode::checkOpenPeriode();
     // dd($periode);
 
-    if ($periode === null || $periode->aktif === '0') {
-      return redirect()->to('/home')->with('toast_error', 'Periode pengajuan cuti belum dibuka!');
-      // $tombol = "";
-      // $semester = $periode->semester;
-    }
+    // if ($periode === null || $periode->aktif === '0') {
+    //   return redirect()->to('/home')->with('toast_error', 'Periode pengajuan cuti belum dibuka!');
+    //   // $tombol = "";
+    //   // $semester = $periode->semester;
+    // }
     // else{
     //   // $tombol = "disabled";
     //   // $semester = "";
@@ -53,8 +53,8 @@ class PengajuanCutiController extends Controller
     // dd($semester);
 
 
-    $pengajuan_cuti = PengajuanCuti::where('nim', session('user_username'))->get();
-    foreach ($pengajuan_cuti as $cuti) {
+    $pengajuan_mhs = PengajuanMhs::where('nim', session('user_username'))->get();
+    foreach ($pengajuan_mhs as $cuti) {
       $status_cuti = $cuti->status_pengajuan;
     }
 
@@ -80,11 +80,11 @@ class PengajuanCutiController extends Controller
       {
         if($status_cuti !== 4 && $status_cuti !== 21)
         {
-          return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
+          return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
         }
-        else if($pengajuan_cuti->count() >= 2)
+        else if($pengajuan_mhs->count() >= 2)
         {
-          return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengajukan permohonan cuti sebanyak 2x!');
+          return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengajukan permohonan cuti sebanyak 2x!');
         }
       }
     }
@@ -139,7 +139,7 @@ class PengajuanCutiController extends Controller
     try {
       DB::beginTransaction();
 
-      $pengajuan_cuti = PengajuanCuti::updateOrcreate([
+      $pengajuan_mhs = PengajuanMhs::updateOrcreate([
         'nim'             => $nim,
         'nama'            => $nama,
         'pa'              => $pa,
@@ -155,10 +155,9 @@ class PengajuanCutiController extends Controller
         'keterangan'      => $keterangan,
       ]);
 
-      $pengajuan_cuti = PengajuanCuti::where('nim', session('user_username'))->get();
-      // dd($pengajuan_cuti);
+      $pengajuanMhs = PengajuanMhs::where('nim', session('user_username'))->get();
 
-      foreach ($pengajuan_cuti as $pengajuan) {
+      foreach ($pengajuanMhs as $pengajuan) {
         $id = $pengajuan->id;
         $jenis_pengajuan = $pengajuan->jenis_pengajuan;
       }
@@ -170,18 +169,17 @@ class PengajuanCutiController extends Controller
       // $history->alasan          = 'setuju';
       $history->save();
 
-      $pengajuanCuti = PengajuanCuti::where('nim', $nim)->get();
-      $pengajuanCuti = json_decode($pengajuanCuti);
-      Mail::to($email)->send(new Pengajuan($pengajuanCuti));
+      $pengajuanMhs = json_decode($pengajuanMhs);
+      Mail::to($email)->send(new Pengajuan($pengajuanMhs));
 
       DB::commit();
 
-      return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('success', 'Permohonan Cuti Diajukan.');
+      return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Permohonan Cuti Diajukan.');
 
     }
     catch (Exception $ex) {
       DB::rollBack();
-      return back()->with('toast_error', 'Permohonan Cuti Gagal Diajukan.');
+      return back()->with('toast_error', 'Permohonan cuti gagal diajukan, terjadi kesalahan!');
     }
   }
 
@@ -191,7 +189,7 @@ class PengajuanCutiController extends Controller
       return redirect()->to('login');
     }
 
-    // $pengajuanCuti = PengajuanCuti::where('nim', base64_decode($nim))->get();
+    // $pengajuanCuti = PengajuanMhs::where('nim', base64_decode($nim))->get();
     // $pengajuanCuti = json_decode($pengajuanCuti);
     // Mail::to('muklasnurardiansyah@gmail.com')->send(new Pengajuan($pengajuanCuti));
 
@@ -218,7 +216,7 @@ class PengajuanCutiController extends Controller
     $semester       = $request->semester;
     $keterangan     = $request->keterangan;
 
-    $update = PengajuanCuti::where('id', $id)->update([
+    $update = PengajuanMhs::where('id', $id)->update([
       'no_telp'         => $no_telp,
       'tahun_angkatan'  => $tahun_angkatan,
       'semester'        => $semester,
@@ -236,7 +234,7 @@ class PengajuanCutiController extends Controller
 
   public function destroy($id)
   {
-    $cuti = PengajuanCuti::findOrFail($id);
+    $cuti = PengajuanMhs::findOrFail($id);
     // dd($cuti);
     $cuti->delete();
     return back()->with('success', 'Pengajuan Cuti Batal Diajukan.');

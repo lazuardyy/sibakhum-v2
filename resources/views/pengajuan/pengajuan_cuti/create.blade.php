@@ -13,7 +13,7 @@
   <div class="block p-6 rounded-lg shadow-md bg-white">
     @include('flash-message')
 
-    <form action="{{route('pengajuan-cuti.store')}}" method="POST" class="md:grid md:grid-cols-2 gap-x-7">
+    <form action="{{route('pengajuan-mhs.store')}}" method="POST" class="md:grid md:grid-cols-2 gap-x-7">
       @csrf
       <div>
         @include('pengajuan.index')

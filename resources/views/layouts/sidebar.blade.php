@@ -20,7 +20,7 @@
 
           @if(session('user_cmode') == 3 || session('user_cmode') == 14)
             <li class="nav-item">
-              <a href="{{ route('data-pengajuan.index') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($all_data_active) ? $all_data_active : '' }}">
+              <a href="{{ route('data-mhs.index') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($all_data_active) ? $all_data_active : '' }}">
                 <i class="nav-icon fa-solid fa-database"></i>
                 <p>Semua data pengajuan</p>
               </a>
@@ -54,13 +54,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('data-cuti.index') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_cuti_active) ? $data_cuti_active : '' }}" style="margin-bottom: 0.25rem">
+                <a href="{{ route('data-mhs.show', 'cuti') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_cuti_active) ? $data_cuti_active : '' }}" style="margin-bottom: 0.25rem">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Cuti Kuliah</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('data-md.index') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_md_active) ? $data_md_active : '' }}" style="margin-bottom: 0.25rem">
+                <a href="{{ route('data-mhs.show', 'md') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_md_active) ? $data_md_active : '' }}" style="margin-bottom: 0.25rem">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pengunduran Diri</p>
                 </a>
@@ -80,14 +80,14 @@
 
         @elseif(session('user_cmode') == config('constants.users.mahasiswa'))
           <li class="nav-item">
-            <a href="{{ route('pengajuan-cuti.create') }}" class="nav-link text-white hover:bg-green-800 {{ isset($cuti_active) ? $cuti_active : '' }}" style="margin-bottom: 0.25rem">
+            <a href="{{ route('pengajuan-mhs.create') }}" class="nav-link text-white hover:bg-green-800 {{ isset($cuti_active) ? $cuti_active : '' }}" style="margin-bottom: 0.25rem">
               <i class="nav-icon fa-solid fa-square-plus"></i>
               <p>Pengajuan Cuti Kuliah</p>
             </a>
           </li>
 
           <li class="nav-item">
-            <a href="{{ route('pengajuan-cuti.show', base64_encode(session('user_username'))) }}" class="nav-link text-white hover:bg-green-800 {{ isset($status_cuti_active) ? $status_cuti_active : '' }}" style="margin-bottom: 0.25rem">
+            <a href="{{ route('pengajuan-mhs.show', base64_encode(session('user_username'))) }}" class="nav-link text-white hover:bg-green-800 {{ isset($status_cuti_active) ? $status_cuti_active : '' }}" style="margin-bottom: 0.25rem">
               <i class="nav-icon fa-solid fa-list-check"></i>
               <p>Status Cuti Kuliah</p>
             </a>

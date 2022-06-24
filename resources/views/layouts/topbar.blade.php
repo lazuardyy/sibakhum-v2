@@ -32,7 +32,7 @@
                 {{-- @for($i = 0; $i < $home['pengajuan']['cuti']; $i++) --}}
                   <div class="row border-bottom mb-3 p-2">
                     <span class="mb-2 text-sm">Halo {{ $home['user'] }}, kamu memiliki <strong>{{ $home['pengajuan']['cuti'] }}</strong> data pengajuan <strong>CUTI</strong> baru.</span>
-                    <a href="{{ route('data-cuti.index') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
+                    <a href="{{ route('data-mhs.show', 'cuti') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
                   </div>
                 {{-- @endfor --}}
 
@@ -51,7 +51,7 @@
               <div class="toast-header d-flex flex-column">
                 <div class="row border-bottom mb-3 p-2">
                   <span class="mb-2 text-sm">Halo {{ $home['user'] }}, kamu memiliki <strong>{{ $home['pengajuan']['cuti'] }}</strong> data pengajuan <strong>CUTI</strong> baru.</span>
-                  <a href="{{ route('data-cuti.index') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
+                  <a href="{{ route('data-mhs.show', 'cuti') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
                 </div>
               </div>
             @elseif($home['pengajuan']['cuti'] === 0 && $home['pengajuan']['md'] !== 0)

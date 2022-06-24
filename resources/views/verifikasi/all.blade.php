@@ -89,7 +89,7 @@
               </tr>
             </thead>
             <tbody>
-              @foreach($verifikasi['all_pengajuan'] as $index => $pengajuan)
+              @foreach($pengajuan_mhs as $index => $pengajuan)
                 @if(isset($pengajuan->nim))
                   <tr>
                     <td>
@@ -97,7 +97,7 @@
                     </td>
 
                     <td>
-                      <a href="{{ route('data-pengajuan.show', base64_encode(base64_encode($pengajuan->nim))) }}" class="btn btn-primary btn-sm">
+                      <a href="{{ route('data-mhs.detailMhs', base64_encode(base64_encode($pengajuan->nim))) }}" class="btn btn-primary btn-sm">
                         <i class="fa-solid fa-eye-slash" id="button_{{ $pengajuan->nim }}"></i>
                       </a>
                     </td>

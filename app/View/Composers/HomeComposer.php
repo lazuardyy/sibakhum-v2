@@ -5,7 +5,7 @@ namespace App\View\Composers;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
-use App\Models\PengajuanCuti;
+use App\Models\PengajuanMhs;
 use App\Models\PengunduranDiri;
 
 class HomeComposer
@@ -33,7 +33,7 @@ class HomeComposer
         }
       }
 
-      $pengajuan_cuti = PengajuanCuti::where('kode_prodi', $kode_prodi)
+      $pengajuan_cuti = PengajuanMhs::where('kode_prodi', $kode_prodi)
       ->where('status_pengajuan', '0')
       ->get();
 
@@ -50,7 +50,7 @@ class HomeComposer
       // dd($pengajuan->count());
     }
     elseif($cmode === config('constants.users.prodi')) {
-      $pengajuan_cuti = PengajuanCuti::where('kode_prodi', session('user_unit'))
+      $pengajuan_cuti = PengajuanMhs::where('kode_prodi', session('user_unit'))
       ->where('status_pengajuan', '1')
       ->get();
 
@@ -67,7 +67,7 @@ class HomeComposer
       // dd($pengajuan);
     }
     elseif($cmode === config('constants.users.dekanat') || $cmode === config('constants.users.fakultas')) {
-      $pengajuan_cuti = PengajuanCuti::where('kode_fakultas', session('user_unit'))
+      $pengajuan_cuti = PengajuanMhs::where('kode_fakultas', session('user_unit'))
       ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '2' : '4')
       ->get();
 

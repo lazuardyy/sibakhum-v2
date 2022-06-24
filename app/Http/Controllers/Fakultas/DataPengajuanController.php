@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
-use App\Models\PengajuanCuti;
+use App\Models\PengajuanMhs;
 use App\Models\PengunduranDiri;
 use App\Models\HistoryPengajuan;
 
@@ -29,7 +29,7 @@ class DataPengajuanController extends Controller
       return redirect()->to('/home');
     }
 
-    $pengajuan_cuti = PengajuanCuti::where('kode_fakultas', trim($unit))->get();
+    $pengajuan_cuti = PengajuanMhs::where('kode_fakultas', trim($unit))->get();
     $pengajuan_md   = PengunduranDiri::where('kode_fakultas', trim($unit))->get();
     // dd($pengajuan_md);
 
@@ -49,7 +49,7 @@ class DataPengajuanController extends Controller
     return view('verifikasi.all', $arrData);
   }
 
-  public function show($nim)
+  public function detailMhs ($nim)
   {
     $user   = session('user_name');
     $mode   = session('user_mode');
@@ -62,12 +62,12 @@ class DataPengajuanController extends Controller
     }
     // dd($nim);
 
-    $pengajuan_cuti   = PengajuanCuti::where('nim', base64_decode(base64_decode($nim)))->first();
+    $pengajuan_cuti   = PengajuanMhs::where('nim', base64_decode(base64_decode($nim)))->first();
     // dd($pengajuan_cuti);
     $pengunduran_diri = PengunduranDiri::where('nim', base64_decode(base64_decode($nim)))->first();
 
     if(isset($pengajuan_cuti)){
-      $pengajuan  = PengajuanCuti::where('nim', base64_decode(base64_decode($nim)))->first();
+      $pengajuan  = PengajuanMhs::where('nim', base64_decode(base64_decode($nim)))->first();
     }
     elseif(isset($pengunduran_diri)){
       $pengajuan  = PengunduranDiri::where('nim', base64_decode(base64_decode($nim)))->first();
@@ -109,7 +109,7 @@ class DataPengajuanController extends Controller
 
     // dd(compact('no_surat', 'nim'));
 
-    dd(array_merge($nim, $id));
+    // dd(array_merge($nim, $id));
 
     try {
       DB::beginTransaction();
@@ -139,7 +139,7 @@ class DataPengajuanController extends Controller
       }
 
       if($jenis_pengajuan_cuti !== null && $jenis_pengajuan_md !== null){
-        $store_cuti = PengajuanCuti::where([
+        $store_cuti = PengajuanMhs::where([
           'id'                => $id_cuti,
           'nim'               => $nim_cuti,
           'jenis_pengajuan'   => $jenis_pengajuan_cuti,
@@ -182,7 +182,7 @@ class DataPengajuanController extends Controller
         );
       }
       elseif($jenis_pengajuan_cuti == '1' && $jenis_pengajuan_md === null){
-        $store_cuti = PengajuanCuti::where([
+        $store_cuti = PengajuanMhs::where([
           'id'                => $id_cuti,
           'nim'               => $nim_cuti,
           'jenis_pengajuan'   => $jenis_pengajuan_cuti,

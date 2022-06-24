@@ -33,7 +33,7 @@
                   </td>
 
                   <td>
-                    <form action="{{ route('pengajuan-cuti.update', $pengajuan->id) }}" method="POST" style="display: inherit">
+                    <form action="{{ route('pengajuan-mhs.update', $pengajuan->id) }}" method="POST" style="display: inherit">
                       @csrf
                       @method('PUT')
 
@@ -47,7 +47,7 @@
 
                     </form>
 
-                    <form action="{{ route('pengajuan-cuti.destroy', $pengajuan->id) }}" method="POST" style="display: inherit">
+                    <form action="{{ route('pengajuan-mhs.destroy', $pengajuan->id) }}" method="POST" style="display: inherit">
                       <button type="button" class="btn btn-danger btn-sm hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out rounded-md" data-bs-toggle="modal" data-bs-target="#modal_{{ $pengajuan->id }}" {{ ($pengajuan->status_pengajuan !== 0) ? 'disabled' : '' }}>
                         <i class="fa-solid fa-trash-can"></i>
                       </button>

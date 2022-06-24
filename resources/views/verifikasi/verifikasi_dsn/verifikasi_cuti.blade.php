@@ -23,7 +23,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($verifikasi['pengajuan_cuti'] as $index => $pengajuan)
+          @foreach($pengajuan_mhs as $index => $pengajuan)
             @if(isset($pengajuan->nim))
               <tr>
                 <td>{{ $loop->iteration }}</td>
@@ -56,7 +56,7 @@
                     <div class="modal-body">
                       @include('verifikasi.row-form')
 
-                      <form action="{{ route('data-cuti.store') }}" method="POST">
+                      <form action="{{ route('data-mhs.store') }}" method="POST">
                         @csrf
                           @include('verifikasi.form')
                       </form>

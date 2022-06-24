@@ -141,7 +141,7 @@
       </div>
     </div>
     <div class="card-footer">
-      <a href="{{ route('data-pengajuan.index') }}" class="btn btn-warning btn-sm">
+      <a href="{{ route('data-mhs.index') }}" class="btn btn-warning btn-sm">
         <i class="nav-icon fa-solid fa-circle-arrow-left"></i>
         Kembali
       </a>

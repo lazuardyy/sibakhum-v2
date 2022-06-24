@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\PengajuanCuti;
+use App\Models\PengajuanMhs;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -18,11 +18,11 @@ class Pengajuan extends Mailable
      * @return void
      */
 
-    public $pengajuanCuti;
+    public $pengajuanMhs;
 
-    public function __construct(array $pengajuanCuti)
+    public function __construct(array $pengajuanMhs)
     {
-      $this->pengajuanCuti = $pengajuanCuti;
+      $this->pengajuanMhs = $pengajuanMhs;
     }
 
     /**
@@ -32,6 +32,6 @@ class Pengajuan extends Mailable
      */
     public function build()
     {
-      return $this->subject('Pengajuan cuti berhasil diajukan, silahkan konfirmasi ke pembimbing akademik!')->markdown('emails.email', ['pengajuan' => $this->pengajuanCuti]);
+      return $this->subject('Pengajuan cuti berhasil diajukan, silahkan konfirmasi ke pembimbing akademik!')->markdown('emails.email', ['pengajuan' => $this->pengajuanMhs]);
     }
 }

@@ -5,7 +5,7 @@ namespace App\View\Composers;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
-use App\Models\PengajuanCuti;
+use App\Models\PengajuanMhs;
 use App\Models\PengunduranDiri;
 
 class PengajuanComposer
@@ -63,7 +63,7 @@ class PengajuanComposer
       $kode_fakultas = 'kosong';
     }
 
-    $pengajuan_cuti = PengajuanCuti::where('nim', session('user_username'))->get();
+    $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))->get();
 
     foreach($pengajuan_cuti as $pengajuan){
       $cuti = $pengajuan;

@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pengajuan_cuti', function (Blueprint $table) {
+        Schema::create('pengajuan_mhs', function (Blueprint $table) {
           $table->integer('id', 11);
           $table->char('nim', 10);
           $table->char('pa', 15);
@@ -38,6 +38,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('pengajuan_cuti');
+        Schema::dropIfExists('pengajuan_mhs');
     }
 };
