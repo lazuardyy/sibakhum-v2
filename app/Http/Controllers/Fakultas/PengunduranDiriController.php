@@ -6,7 +6,7 @@ use Exception;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PengunduranDiri;
-use App\Models\PengajuanCuti;
+use App\Models\PengajuanMhs;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
@@ -38,7 +38,7 @@ class PengunduranDiriController extends Controller
       $status_md = $md->status_pengajuan;
     }
 
-    $pengajuan_cuti = PengajuanCuti::where('nim', session('user_username'))->get();
+    $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))->get();
     foreach ($pengajuan_cuti as $cuti) {
       $status_cuti = $cuti->status_pengajuan;
     }

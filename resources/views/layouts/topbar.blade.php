@@ -39,7 +39,7 @@
                 {{-- @for($i = 0; $i < $home['pengajuan']['md']; $i++) --}}
                   <div class="row border-bottom mb-3 p-2">
                     <span class="mb-2 text-sm">Halo {{ $home['user'] }}, kamu memiliki <strong>{{ $home['pengajuan']['md'] }}</strong> data pengajuan <strong>PENGUNDURAN DIRI</strong> baru.</span>
-                    <a href="{{ route('data-md.index') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
+                    <a href="{{ route('data-mhs.show', 'md') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
                   </div>
                 {{-- @endfor --}}
               </div>
@@ -62,7 +62,7 @@
               <div class="toast-header d-flex flex-column">
                 <div class="row border-bottom mb-3 p-2">
                   <span class="mb-2 text-sm">Halo {{ $home['user'] }}, kamu memiliki <strong>{{ $home['pengajuan']['md'] }}</strong> data pengajuan <strong>PENGUNDURAN DIRI</strong> baru.</span>
-                  <a href="{{ route('data-md.index') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
+                  <a href="{{ route('data-mhs.show', 'md') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
                 </div>
               </div>
             @else

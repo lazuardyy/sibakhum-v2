@@ -21,11 +21,7 @@ class PengajuanMhs extends Model
 
   protected $guarded = ['id'];
   // protected $dates= ['created_at', 'updated_at'];
-  protected $with = ['studyProgram', 'refStatusPengajuan', 'histories'];
-
-  public function studyProgram () {
-    return $this -> belongsTo(StudyProgram::class, 'kode_prodi', 'kode_prodi');
-  }
+  protected $with = ['refStatusPengajuan', 'histories'];
 
   public function refStatusPengajuan ()
   {

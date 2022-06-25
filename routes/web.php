@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Dashboard\HomeController;
+use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Mahasiswa\PengajuanMhsController;
 use App\Http\Controllers\Fakultas\PengunduranDiriController;
 use App\Http\Controllers\Dosen\VerifikasiCutiController;

@@ -12,9 +12,9 @@ class HistoryPengajuan extends Model
     protected $table = 'history_pengajuan';
     protected $primaryKey = 'id';
     protected $guarded = ['id'];
-    protected $with = ['pengajuanCuti', 'pengunduranDiri'];
+    protected $with = ['pengajuanMhs', 'pengunduranDiri'];
 
-    public function pengajuanCuti ()
+    public function pengajuanMhs ()
     {
       return $this -> belongsTo(PengajuanMhs::class, 'id_pengajuan', 'id');
     }

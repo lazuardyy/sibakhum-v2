@@ -55,13 +55,16 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{ route('data-mhs.show', 'cuti') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_cuti_active) ? $data_cuti_active : '' }}" style="margin-bottom: 0.25rem">
-                  <i class="far fa-circle nav-icon"></i>
+                  {{-- <i class="far fa-circle nav-icon"></i> --}}
+                  <i class="fa-solid fa-person-walking nav-icon"></i>
                   <p>Cuti Kuliah</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ route('data-mhs.show', 'md') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_md_active) ? $data_md_active : '' }}" style="margin-bottom: 0.25rem">
-                  <i class="far fa-circle nav-icon"></i>
+                  {{-- <i class="far fa-circle nav-icon"></i> --}}
+                  <i class="fa-solid fa-plane-up nav-icon"></i>
+                  {{-- <i class="fa-solid fa-person-walking-luggage nav-icon"></i> --}}
                   <p>Pengunduran Diri</p>
                 </a>
               </li>

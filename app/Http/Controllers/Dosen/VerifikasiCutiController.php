@@ -29,7 +29,21 @@ class VerifikasiCutiController extends Controller
       return redirect()->to('/home');
     }
 
-    $pengajuan_mhs = PengajuanMhs::where('kode_fakultas', trim($unit))->get();
+    if($cmode == config('constants.users.dekanat')) {
+      $pengajuan_mhs = PengajuanMhs::where('kode_fakultas', trim($unit))
+      ->where('status_pengajuan', '>=', '2')
+      ->where('status_pengajuan', '!=', '22')
+      ->get();
+    }
+    elseif($cmode == config('constants.users.fakultas')) {
+      $pengajuan_mhs = PengajuanMhs::where('kode_fakultas', trim($unit))
+      ->where('status_pengajuan', '>=', '4')
+      ->where('status_pengajuan', '!=', '21')
+      ->where('status_pengajuan', '!=', '22')
+      ->where('status_pengajuan', '!=', '23')
+      ->where('status_pengajuan', '!=', '24')
+      ->get();
+    }
     // $pengajuan_md   = PengunduranDiri::where('kode_fakultas', trim($unit))->get();
     // dd($pengajuan_md);
 

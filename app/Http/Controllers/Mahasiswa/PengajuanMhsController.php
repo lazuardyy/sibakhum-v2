@@ -40,15 +40,15 @@ class PengajuanMhsController extends Controller
     $periode = BukaPeriode::checkOpenPeriode();
     // dd($periode);
 
-    // if ($periode === null || $periode->aktif === '0') {
-    //   return redirect()->to('/home')->with('toast_error', 'Periode pengajuan cuti belum dibuka!');
-    //   // $tombol = "";
-    //   // $semester = $periode->semester;
-    // }
-    // else{
-    //   // $tombol = "disabled";
-    //   // $semester = "";
-    // }
+    if ($periode === null || $periode->aktif === '0') {
+      return redirect()->to('/home')->with('toast_error', 'Periode pengajuan cuti belum dibuka!');
+      // $tombol = "";
+      // $semester = $periode->semester;
+    }
+    else{
+      // $tombol = "disabled";
+      // $semester = "";
+    }
 
     // dd($semester);
 
@@ -224,7 +224,7 @@ class PengajuanMhsController extends Controller
     ]);
 
     if ($update) {
-      return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('success', 'Data berhasil diubah.');
+      return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Data berhasil diubah.');
     }
     else {
       return back()->with('toast_error', 'Data gagal diubah.');

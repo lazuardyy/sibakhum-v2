@@ -35,10 +35,12 @@ class HomeComposer
 
       $pengajuan_cuti = PengajuanMhs::where('kode_prodi', $kode_prodi)
       ->where('status_pengajuan', '0')
+      ->where('jenis_pengajuan', '1')
       ->get();
 
-      $pengunduran_diri = PengunduranDiri::where('kode_prodi', $kode_prodi)
+      $pengunduran_diri = PengajuanMhs::where('kode_prodi', $kode_prodi)
       ->where('status_pengajuan', '0')
+      ->where('jenis_pengajuan', '2')
       ->get();
 
       $cuti = $pengajuan_cuti->count('id');
@@ -52,10 +54,12 @@ class HomeComposer
     elseif($cmode === config('constants.users.prodi')) {
       $pengajuan_cuti = PengajuanMhs::where('kode_prodi', session('user_unit'))
       ->where('status_pengajuan', '1')
+      ->where('jenis_pengajuan', '1')
       ->get();
 
-      $pengunduran_diri = PengunduranDiri::where('kode_prodi', session('user_unit'))
+      $pengunduran_diri = PengajuanMhs::where('kode_prodi', session('user_unit'))
       ->where('status_pengajuan', '1')
+      ->where('jenis_pengajuan', '2')
       ->get();
 
       $cuti = $pengajuan_cuti->count('id');
@@ -69,10 +73,12 @@ class HomeComposer
     elseif($cmode === config('constants.users.dekanat') || $cmode === config('constants.users.fakultas')) {
       $pengajuan_cuti = PengajuanMhs::where('kode_fakultas', session('user_unit'))
       ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '2' : '4')
+      ->where('jenis_pengajuan', '1')
       ->get();
 
-      $pengunduran_diri = PengunduranDiri::where('kode_fakultas', session('user_unit'))
+      $pengunduran_diri = PengajuanMhs::where('kode_fakultas', session('user_unit'))
       ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '2' : '4')
+      ->where('jenis_pengajuan', '2')
       ->get();
 
       $cuti = $pengajuan_cuti->count('id');

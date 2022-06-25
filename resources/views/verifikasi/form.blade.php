@@ -24,7 +24,7 @@
       </select>
     @elseif($home['cmode'] == '8')
       @if($pengajuan->status_pengajuan < 2 || $pengajuan->status_pengajuan >= 2 && $pengajuan->status_pengajuan <= 24)
-        <div class="mb-2 form-control bg-{{ ($pengajuan->status_pengajuan <= 4 &&$pengajuan->status_pengajuan <= 24) ? 'success' : 'danger'}}">
+        <div class="mb-2 form-control bg-{{ ($pengajuan->status_pengajuan <= 4 && $pengajuan->status_pengajuan <= 24) ? 'success' : 'danger'}}">
           {{ $pengajuan->refStatusPengajuan->status_pengajuan_cuti }}
         </div>
 

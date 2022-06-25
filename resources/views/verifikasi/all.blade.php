@@ -9,12 +9,32 @@
       @csrf
       <div class="card">
         <div class="card-header">
-          <button type="button" data-bs-toggle="modal" data-bs-target="#submitModal" class="btn btn-outline-success">
+          {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#setujuModal" class="btn btn-outline-success">
             <i class="fa-solid fa-paper-plane mr-1"></i>
-            Proses
-          </button>
+            Disetujui
+          </button> --}}
 
-          <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="submitModal" aria-hidden="true">
+          {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#tolakModal" class="btn btn-outline-danger" id="tolak">
+            <i class="fa-solid fa-paper-plane mr-1"></i>
+            Ditolak
+          </button> --}}
+
+          <label for="disetujui" type="button" data-bs-toggle="modal" data-bs-target="#setujuModal" class="btn btn-outline-success" style="margin-bottom: 0" id="setuju-button">
+            <i class="fa-solid fa-paper-plane mr-1"></i>
+            Disetujui
+          </label>
+          <input type="checkbox" id="disetujui" class="d-none">
+
+          <label for="ditolak" type="button" data-bs-toggle="modal" data-bs-target="#tolakModal" class="btn btn-outline-danger" style="margin-bottom: 0" id="tolak-button">
+            <i class="fa-solid fa-paper-plane mr-1"></i>
+            Ditolak
+          </label>
+          <input type="checkbox" id="ditolak" class="d-none">
+
+
+          {{--  --}}
+
+          <div class="modal fade" id="setujuModal" tabindex="-1" aria-labelledby="submitModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header" style="justify-content: start; align-items:center; gap:.5rem;">
@@ -25,12 +45,12 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <h6>Apakah anda yakin dengan status persetujuan yang dipilih?</h6>
+                  <h6 id="keterangan">Apakah anda yakin dengan status persetujuan yang dipilih?</h6>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-danger text-white font-medium leading-tight rounded-sm shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0" data-bs-dismiss="modal">Batal</button>
 
-                  <button type="submit" class="btn btn-primary text-white font-medium leading-tight rounded-sm shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0" data-toggle="tooltip" data-placement="top" title="Verifikasi Data" >Proses</button>
+                  <button type="submit" class="btn btn-primary text-white font-medium leading-tight rounded-sm shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0" data-toggle="tooltip" data-placement="top" title="Verifikasi Data" value="1" name="persetujuan">Proses</button>
                 </div>
               </div>
             </div>
@@ -71,10 +91,10 @@
             <thead>
               <tr>
                 <th id="pilih">
-                  <label for="setujui-semua" class="mr-1 disetujui user-select-none cursor-pointer" style="margin-bottom: 0" id="1">
+                  <label for="selectAll" class="mr-1 disetujui user-select-none cursor-pointer" style="margin-bottom: 0" id="1">
                     Pilih
                   </label>
-                  <input type="checkbox" id="setujui-semua" class="cursor-pointer">
+                  <input type="checkbox" id="selectAll" value="select" class="cursor-pointer">
                 </th>
                 <th>Details</th>
                 <th>No.</th>
@@ -93,7 +113,18 @@
                 @if(isset($pengajuan->nim))
                   <tr>
                     <td>
-                      <input type="checkbox" name="status_persetujuan[]" id="checklist" {{ ($pengajuan->status_pengajuan === 5) ? 'checked' : '' }}>
+                      <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}">
+                      <input type="checkbox" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
+                      @if($pengajuan->status_pengajuan === 3 || $pengajuan->status_pengajuan === 23 )
+                        <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
+                          <span class="text-{{ ($pengajuan->status_pengajuan !== 3) ? 'danger' : 'success' }} px-2 py-0.5">{{ ($pengajuan->status_pengajuan === 3) ? 'disetujui' : 'ditolak' }}</span>
+
+                        </label>
+                      @else
+                      <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
+                        <span class="px-2 py-0.5">menunggu persetujuan</span>
+                      </label>
+                      @endif
                     </td>
 
                     <td>
@@ -104,20 +135,18 @@
 
                     <td>{{ $loop->iteration }}</td>
 
-                    <input type="hidden" name="id[]" value="{{ $pengajuan->id }}">
-                    <input type="hidden" name="nim[]" value="{{ $pengajuan->nim }}">
+                    {{-- <input type="hidden" name="id[]" value="{{ $pengajuan->id }}"> --}}
+                    {{-- <input type="hidden" name="jenis_pengajuan[]" value="{{ $pengajuan->jenis_pengajuan }}"> --}}
                     <td>{{ $pengajuan->nim }}</td>
                     <td>{{ $pengajuan->nama }}</td>
 
                     <td>{{ $pengajuan->nama_prodi }}</td>
                     <td>{{ date('d/M/Y', strtotime($pengajuan->created_at)) }}</td>
-
-                    <input type="hidden" name="jenis_pengajuan[]" value={{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}>
                     <td>{{ ($pengajuan->jenis_pengajuan === 1) ? 'Cuti' : 'Pengunduran Diri' }}</td>
 
                     @if($home['cmode'] == config('constants.users.fakultas'))
                       <td>
-                        <input type="text" name="no_surat[]" id="no_surat" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat !== null) ? $pengajuan->no_surat : '' }}>
+                        <input type="text" name="no_surat[]" value="{{ $pengajuan->id }}" id="no_surat" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat !== null) ? $pengajuan->no_surat : '' }}>
                       </td>
                     @endif
                   </tr>
@@ -140,15 +169,12 @@
       $(`#${status}`).on('change',function(){
           if($(this).val() == 2){
             var alasan = $('.alasan').attr('id');
-            // $(`#{$alasan}`).show();
             $(`#${alasan}`).show();
-            // $('#alasan').show();
 
           }
           else{
             var alasan = $('.alasan').attr('id');
             $(`#${alasan}`).hide();
-            // $('#alasan').hide();
           }
       });
 
@@ -156,9 +182,9 @@
         $('#pilih-semua').toggle();
       })
 
-      $('#setujui-semua').click(function() {
+      $('#selectAll').click(function() {
         var disetujui = $('.disetujui').attr('id');
-        $('input[type="checkbox"]').prop('checked', this.checked).val($(this).is(':checked') ? disetujui : '');
+        $('input[type="checkbox"]').prop('checked', this.checked);
       })
 
       $('#tolak-semua').click(function() {
@@ -166,11 +192,47 @@
         $('input[type="checkbox"]').prop('checked', this.checked).val($(this).is(':checked') ? ditolak : '');
       })
 
-      $('input[type="checkbox"]').click(function() {
-        $(this).val($(this).is(':checked') ? 1 : '');
-      })
+      // $('input[type="checkbox"]').click(function() {
+      //   $(this).val($(this).is(':checked') ? 1 : '');
+      // })
 
       $('#pilih').removeClass('sorting_asc');
+
+      $('#setuju-button').click(function () {
+        $('#tolakModal').attr('id', 'setujuModal');
+        $('#keterangan').text('Apakah anda yakin ingin menyetujui data terpilih?');
+        $('[name="persetujuan"]').val(1);
+      })
+
+      $('#tolak-button').click(function () {
+        $('#setujuModal').attr('id', 'tolakModal');
+        $('#keterangan').text('Apakah anda yakin ingin menolak data terpilih?');
+        $('[name="persetujuan"]').val(2);
+        // $('#tolakModal').attr('id', 'setujuModal');
+        // if($('#setujuModal').attr('id') == 'setujuModal') {
+        // }
+        // else {
+        // }
+        // $('#setujuModal').attr('id', 'setujuModal');
+        // // $('#setujuModal').attr('id', 'tolakModal');
+      })
     });
+
+    // function do_this() {
+    //     var checkboxes = document.getElementsByName('id_pengajuan[]');
+    //     var button = document.getElementById('selectAll');
+    //     if(button.value == 'select'){
+    //       for (var i in checkboxes){
+    //         checkboxes[i].checked = 'FALSE';
+    //       }
+    //       button.value = 'deselect'
+    //     }
+    //     else{
+    //       for (var i in checkboxes){
+    //         checkboxes[i].checked = '';
+    //       }
+    //       button.value = 'select';
+    //     }
+    //   }
   </script>
 @endsection

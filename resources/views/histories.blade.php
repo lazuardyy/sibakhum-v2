@@ -4,6 +4,10 @@
 <div class="container grid p-2 pb-4">
   @include('partials.header')
 
+  {{-- @foreach($history_cuti as $history)
+    {{ $history }}
+  @endforeach --}}
+
   <div class="card card-outline card-info">
     <div class="card-header">
       <h3 class="card-title">Riwayat Persetujuan</h3>
@@ -12,7 +16,7 @@
       </div>
     </div>
 
-    @if($id_cuti_history)
+    @if($id_cuti_history && $id_md_history)
       @foreach($history_cuti as $history)
         <div class="card-body">
           <div class="timeline">
@@ -31,8 +35,8 @@
                 <div class="timeline-body">
                   <ul>
                     <li>Pengajuan
-                      atas nama <strong>{{ $history->pengajuanCuti->nama }}</strong>
-                      {{ $history->refStatusPengajuan->status_pengajuan_cuti }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
+                      atas nama <strong>{{ $history->pengajuanMhs->nama }}</strong>
+                      telah {{ $history->refStatusPengajuan->status_pengajuan_cuti }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
                     </li>
                   </ul>
                 </div>
@@ -46,7 +50,7 @@
         </div>
       @endforeach
 
-      {{-- @foreach($history_md as $history)
+      @foreach($history_md as $history)
         <div class="card-body">
           <div class="timeline">
             <div class="time-label">
@@ -63,7 +67,7 @@
                 <h3 class="timeline-header">Riwayat Persetujuan Pengunduran Diri</h3>
                 <div class="timeline-body">
                   <ul>
-                    <li>Pengajuan atas nama <strong>{{ $history->pengunduranDiri->nama }}</strong> telah {{ $history->refStatusPengajuan->status_pengunduran_diri }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
+                    <li>Pengajuan atas nama <strong>{{ $history->pengajuanMhs->nama }}</strong> telah {{ $history->refStatusPengajuan->status_pengunduran_diri }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
                     </li>
                   </ul>
                 </div>
@@ -75,7 +79,7 @@
             </div>
           </div>
         </div>
-      @endforeach --}}
+      @endforeach
 
     @elseif($id_cuti_history)
       @foreach($history_cuti as $history)
@@ -95,8 +99,8 @@
                 <h3 class="timeline-header">Riwayat Persetujuan Cuti</h3>
                 <div class="timeline-body">
                   <ul>
-                    <li>Pengajuan atas nama <strong>{{ $history->pengajuanCuti->nama }}</strong>
-                      {{ $history->refStatusPengajuan->status_pengajuan_cuti }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
+                    <li>Pengajuan atas nama <strong>{{ $history->pengajuanMhs->nama }}</strong>
+                      telah {{ $history->refStatusPengajuan->status_pengajuan_cuti }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
                     </li>
                   </ul>
                 </div>
@@ -110,7 +114,7 @@
         </div>
       @endforeach
 
-    {{-- @elseif($id_md_history)
+    @elseif($id_md_history)
       @foreach($history_md as $history)
         <div class="card-body">
           <div class="timeline">
@@ -128,7 +132,7 @@
                 <h3 class="timeline-header">Riwayat Persetujuan Pengunduran Diri</h3>
                 <div class="timeline-body">
                   <ul>
-                    <li>Pengajuan atas nama <strong>{{ $history->pengunduranDiri->nama }}</strong>
+                    <li>Pengajuan atas nama <strong>{{ $history->pengajuanMhs->nama }}</strong>
                       telah {{ $history->refStatusPengajuan->status_pengunduran_diri }} pada tanggal {{ date('d M Y', strtotime($history->updated_at)) }} pukul {{ date('h:i', strtotime($history->created_at)) }} WIB.
                     </li>
                   </ul>
@@ -141,7 +145,7 @@
             </div>
           </div>
         </div>
-      @endforeach --}}
+      @endforeach
     @else
       <div class="card-body">
         <span>Belum ada riwayat persetujuan.</span>

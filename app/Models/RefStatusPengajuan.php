@@ -17,7 +17,7 @@ class RefStatusPengajuan extends Model
     //   return $this->hasMany(RefJenisPengajuan::class, 'jenis_pengajuan', 'jenis_pengajuan');
     // }
 
-    public function pengajuanCuti () {
+    public function pengajuanMhs () {
       return $this->hasMany(PengajuanMhs::class, 'status_pengajuan', 'id');
     }
 
