@@ -49,7 +49,7 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-danger text-white font-medium leading-tight rounded-sm shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0" data-bs-dismiss="modal">Batal</button>
 
-                  <button type="submit" class="btn btn-primary text-white font-medium leading-tight rounded-sm shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0" data-toggle="tooltip" data-placement="top" title="Verifikasi Data" value="1" name="persetujuan">Proses</button>
+                  <button type="submit" class="btn btn-primary text-white font-medium leading-tight rounded-sm shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0" data-toggle="tooltip" data-placement="top" title="Verifikasi Data">Proses</button>
                 </div>
               </div>
             </div>
@@ -85,11 +85,11 @@
                     <td>
                       <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}">
                       <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
+                      <input type="hidden" name="persetujuan[]" value="1">
 
                       @if($pengajuan->status_pengajuan === 3 || $pengajuan->status_pengajuan === 23 && $home['cmode'] == config('constants.users.dekanat'))
                         <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
                           <span class="text-{{ ($pengajuan->status_pengajuan !== 3) ? 'danger' : 'success' }} px-2 py-0.5">{{ ($pengajuan->status_pengajuan === 3) ? 'disetujui' : 'ditolak' }}</span>
-
                         </label>
                       @else
                       <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
@@ -168,14 +168,14 @@
       $('#setuju-button').click(function () {
         $('#tolakModal').attr('id', 'setujuModal');
         $('#keterangan').text('Apakah anda yakin ingin menyetujui data terpilih?');
-        $('[name="persetujuan"]').val(1);
+        $('[name="persetujuan[]"]').val(1);
         $('#alasan').hide();
       })
 
       $('#tolak-button').click(function () {
         $('#setujuModal').attr('id', 'tolakModal');
         $('#keterangan').text('Apakah anda yakin ingin menolak data terpilih?');
-        $('[name="persetujuan"]').val(2);
+        $('[name="persetujuan[]"]').val(2);
       })
 
       $('[name="id_pengajuan[]"]').each(function (i, d) {

@@ -24,6 +24,7 @@ class DataPengajuanController extends Controller
     $jenis_pengajuan = $request->jenis_pengajuan;
     $no_surat = $request->no_surat;
     $alasan = $request->alasan;
+    // dd($persetujuan);
 
     if($id_pengajuan === null) {
       return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
@@ -31,7 +32,7 @@ class DataPengajuanController extends Controller
 
     for($i = 0; $i < count($id_pengajuan); $i++) {
       if(session('user_cmode') == config('constants.users.dekanat')){
-        if($persetujuan == '1') {
+        if($persetujuan[$i] == '1') {
           $status_pengajuan = config('constants.status.wd_setuju');
         }
         else {
@@ -52,7 +53,7 @@ class DataPengajuanController extends Controller
         $store = PengajuanMhs::where([
           'id' => $id_pengajuan[$i]
         ])->update([
-          'status_pengajuan' => 3
+          'status_pengajuan' => $status_pengajuan
         ]);
 
         $pengajuan_jenis = PengajuanMhs::where('id', $id_pengajuan[$i])->value('jenis_pengajuan');
@@ -63,7 +64,7 @@ class DataPengajuanController extends Controller
         ],
         [
           'jenis_pengajuan' => $pengajuan_jenis,
-          'status_pengajuan' => 3,
+          'status_pengajuan' => $status_pengajuan,
           'alasan' => $alasan
         ]);
 
