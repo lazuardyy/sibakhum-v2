@@ -24,19 +24,20 @@ class DataPengajuanController extends Controller
     $jenis_pengajuan = $request->jenis_pengajuan;
     $no_surat = $request->no_surat;
     $alasan = $request->alasan;
-    // dd($persetujuan);
+    // dd($id_pengajuan, $persetujuan);
+    // dd(count($id_pengajuan));
 
-    if($id_pengajuan === null) {
-      return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
-    }
+    // if($id_pengajuan === null) {
+    //   return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
+    // }
 
     for($i = 0; $i < count($id_pengajuan); $i++) {
       if(session('user_cmode') == config('constants.users.dekanat')){
         if($persetujuan[$i] == '1') {
-          $status_pengajuan = config('constants.status.wd_setuju');
+          $persetujuan[$i] = config('constants.status.wd_setuju');
         }
         else {
-          $status_pengajuan = config('constants.status.wd_tidak_setuju');
+          $persetujuan[$i] = config('constants.status.wd_tidak_setuju');
         }
       }
       elseif(session('user_cmode') == config('constants.users.fakultas')){
@@ -49,71 +50,38 @@ class DataPengajuanController extends Controller
         }
       };
 
-      try {
-        $store = PengajuanMhs::where([
-          'id' => $id_pengajuan[$i]
-        ])->update([
-          'status_pengajuan' => $status_pengajuan
-        ]);
+      $store = PengajuanMhs::where([
+        'id' => $id_pengajuan[$i]
+      ])->update([
+        'status_pengajuan' => $persetujuan[$i]
+      ]);
 
-        $pengajuan_jenis = PengajuanMhs::where('id', $id_pengajuan[$i])->value('jenis_pengajuan');
+      // dd($store);
 
-        $histories = HistoryPengajuan::updateOrCreate([
+      $pengajuan_jenis = PengajuanMhs::where('id', $id_pengajuan[$i])->value('jenis_pengajuan');
+
+      $histories = HistoryPengajuan::updateOrCreate(
+        [
           'id_pengajuan' => $id_pengajuan[$i],
           'v_mode' => trim(session('user_cmode'))
         ],
         [
           'jenis_pengajuan' => $pengajuan_jenis,
-          'status_pengajuan' => $status_pengajuan,
+          'status_pengajuan' => $persetujuan[$i],
           'alasan' => $alasan
-        ]);
-
-        DB::commit();
-
-        return redirect()->back()->with('toast_success', 'Data Persetujuan Berhasil Diupload');
-      }
-      catch(Exeception $e) {
-        DB::rollBack();
-        return redirect()->back()->with('toast_error', 'Terjadi kesalahan saat mengunggah data' . $e);
-      }
+        ]
+      );
     }
 
-
-
-
-    // dd($histories);
-
-
-
-    // $all_data = $request->all();
-    // dd($all_data);
-
-    // dd($no_surat, $id_pengajuan);
-    // dd($jenis_pengajuan, $id_pengajuan);
-    // dd($id_pengajuan);
-
-
-
-
-
-    // try {
-    //   foreach($id_pengajuan as $key => $id) {
-    //       $store = PengajuanMhs::where([
-    //         'id' => $id,
-    //       ])->update([
-    //         'status_pengajuan' => $status_pengajuan,
-    //         (session('user_cmode') == config('constants.users.fakultas') ? 'no_surat' : '') => (session('user_cmode') == config('constants.users.fakultas') ? $surat : '')
-    //       ]);
-
-    //   }
-
-    //   DB::commit();
-
-    //   return redirect()->back()->with('toast_success', 'Data Persetujuan Berhasil Diupload');
-    // }
-    // catch (Exception $e) {
-    //   DB::rollBack();
-    //   return redirect()->back()->with('toast_error', 'Terjadi kesalahan saat mengunggah data');
-    // }
+    try {
+      if($store == '1') {
+        DB::commit();
+        return redirect()->back()->with('toast_success', 'Data Persetujuan Berhasil Diupload');
+      }
+    }
+    catch(Exeception $e) {
+      DB::rollBack();
+      return redirect()->back()->with('toast_error', 'Terjadi kesalahan saat mengunggah data' . $e);
+    }
   }
 }

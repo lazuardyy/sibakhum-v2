@@ -169,7 +169,6 @@
         $('#tolakModal').attr('id', 'setujuModal');
         $('#keterangan').text('Apakah anda yakin ingin menyetujui data terpilih?');
         $('[name="persetujuan[]"]').val(1);
-        $('#alasan').hide();
       })
 
       $('#tolak-button').click(function () {
