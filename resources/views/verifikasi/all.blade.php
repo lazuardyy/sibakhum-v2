@@ -33,9 +33,6 @@
             <input type="checkbox" id="ditolak" class="d-none">
           @endif
 
-
-          {{--  --}}
-
           <div class="modal fade" id="setujuModal" tabindex="-1" aria-labelledby="submitModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
@@ -57,35 +54,6 @@
               </div>
             </div>
           </div>
-          {{-- <button type="button" class="btn btn-outline-primary" id="btnTambahPeriode" data-bs-toggle="modal" data-bs-target="#modal-periode"><i class="ace-icon fa fa-plus"></i> Periode Baru</button> --}}
-          {{-- <div class="card-title pr-2 border-r-2 border-black">
-            <button type="button" id="menu-bar" class="btn btn-info btn-sm">
-              <i class="fa-solid fa-gear text-xs"></i>
-                Menu Bar
-            </button>
-          </div>
-          @if($verifikasi['all_pengajuan'] !== [])
-            <div class="card-tools">
-              <div id="pilih-semua">
-                <label for="setujui-semua" class="btn btn-sm btn-primary mr-1 disetujui" style="margin-bottom: 0" id="1">
-                  <i class="fa-solid fa-square-check mr-1"></i>
-                  Pilih Setujui Semua
-                </label>
-                <input type="checkbox" id="setujui-semua" class="d-none">
-
-                <label for="tolak-semua" class="btn btn-sm btn-danger mr-1 ditolak" style="margin-bottom: 0" id="2">
-                  <i class="fa-solid fa-square-xmark mr-1"></i>
-                  Pilih Tolak Semua
-                </label>
-                <input type="checkbox" id="tolak-semua" class="d-none">
-
-                <button type="button" data-bs-toggle="modal" data-bs-target="#submitModal" class="btn btn-sm btn-success mr-1">
-                  <i class="fa-solid fa-paper-plane mr-1"></i>
-                  Proses
-                </button>
-              </div>
-            </div>
-          @endif --}}
         </div>
 
         <div class="card-body p-3 overflow-x-scroll">
@@ -138,7 +106,7 @@
 
                     <td>{{ $loop->iteration }}</td>
 
-                    {{-- <input type="hidden" name="id[]" value="{{ $pengajuan->id }}"> --}}
+                    <input type="hidden" name="id[]" value="{{ $pengajuan->id }}">
                     {{-- <input type="hidden" name="jenis_pengajuan[]" value="{{ $pengajuan->jenis_pengajuan }}"> --}}
                     <td>{{ $pengajuan->nim }}</td>
                     <td>{{ $pengajuan->nama }}</td>
@@ -201,6 +169,7 @@
         $('#tolakModal').attr('id', 'setujuModal');
         $('#keterangan').text('Apakah anda yakin ingin menyetujui data terpilih?');
         $('[name="persetujuan"]').val(1);
+        $('#alasan').hide();
       })
 
       $('#tolak-button').click(function () {
