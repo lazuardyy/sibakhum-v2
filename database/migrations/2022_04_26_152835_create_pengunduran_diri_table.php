@@ -23,13 +23,32 @@ return new class extends Migration
         $table->foreignId('kode_prodi');
         $table->string('nama_fakultas');
         $table->foreignId('kode_fakultas');
+        $table->string('email')->unique();
         $table->string('no_telp', 15);
         $table->year('tahun_angkatan');
         $table->integer('semester');
         $table->text('keterangan');
-        $table->integer('status_pengajuan')->default(0);
-        $table->integer('jenis_pengajuan')->default(2);
+        $table->integer('status_pengajuan')->default(4);
+        $table->integer('jenis_pengajuan')->default(1);
+        $table->string('no_surat')->nullable();
         $table->timestamps();
+
+        // $table->integer('id', 11);
+        // $table->char('nim', 10);
+        // $table->char('pa', 15);
+        // $table->text('nama');
+        // $table->tinyInteger('jenis_kelamin');
+        // $table->string('nama_prodi');
+        // $table->foreignId('kode_prodi');
+        // $table->string('nama_fakultas');
+        // $table->foreignId('kode_fakultas');
+        // $table->string('no_telp', 15);
+        // $table->year('tahun_angkatan');
+        // $table->integer('semester');
+        // $table->text('keterangan');
+        // $table->integer('status_pengajuan')->default(0);
+        // $table->integer('jenis_pengajuan')->default(2);
+        // $table->timestamps();
       });
     }
 

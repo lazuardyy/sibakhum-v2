@@ -7,9 +7,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PengunduranDiri;
 use App\Models\PengajuanMhs;
+use App\Mail\Pengajuan;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use App\Models\HistoryPengajuan;
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -84,17 +86,12 @@ class PengunduranDiriController extends Controller
       'kode_prodi'        => ['required'],
       'nama_fakultas'     => ['required'],
       'kode_fakultas'     => ['required'],
+      'email'             => ['required'],
       'no_telp'           => ['required'],
       'tahun_angkatan'    => ['required'],
       'semester'          => ['required'],
       'keterangan'        => ['required'],
     ]);
-
-    // dd($validator);
-
-    if (!isset($validator)) {
-      return back()->with('toast_error', 'Data yang anda masukkan tidak valid!');
-    }
 
     $nim            = $request->nim;
     $nama           = $request->nama;
@@ -104,52 +101,38 @@ class PengunduranDiriController extends Controller
     $kode_prodi     = $request->kode_prodi;
     $nama_fakultas  = $request->nama_fakultas;
     $kode_fakultas  = $request->kode_fakultas;
+    $email          = $request->email;
     $no_telp        = $request->no_telp;
     $tahun_angkatan = $request->tahun_angkatan;
     $semester       = $request->semester;
     $keterangan     = $request->keterangan;
 
-    try {
-      DB::beginTransaction();
 
-      $pengunduran_diri = PengunduranDiri::create([
-        'nim'             => $nim,
-        'nama'            => $nama,
-        'pa'              => $pa,
-        'jenis_kelamin'   => $jenis_kelamin,
-        'nama_prodi'      => $nama_prodi,
-        'kode_prodi'      => $kode_prodi,
-        'nama_fakultas'   => $nama_fakultas,
-        'kode_fakultas'   => $kode_fakultas,
-        'no_telp'         => $no_telp,
-        'tahun_angkatan'  => $tahun_angkatan,
-        'semester'        => $semester,
-        'keterangan'      => $keterangan,
-      ]);
+    $pengajuan_md = PengunduranDiri::updateOrcreate([
+      'nim'             => $nim,
+      'nama'            => $nama,
+      'pa'              => $pa,
+      'jenis_kelamin'   => $jenis_kelamin,
+      'nama_prodi'      => $nama_prodi,
+      'kode_prodi'      => $kode_prodi,
+      'nama_fakultas'   => $nama_fakultas,
+      'kode_fakultas'   => $kode_fakultas,
+      'email'           => $email,
+      'no_telp'         => $no_telp,
+      'tahun_angkatan'  => $tahun_angkatan,
+      'semester'        => $semester,
+      'keterangan'      => $keterangan,
+    ]);
 
-      $pengunduran_diri = PengunduranDiri::where('nim', session('user_username'))->get();
-      // dd($pengunduran_diri);
+    // dd($validator);
+    $pengajuanMd = PengunduranDiri::where('nim', $nim)->get();
+    $pengajuanMd = json_decode($pengajuanMd);
 
-      foreach ($pengunduran_diri as $pengajuan) {
-        $id               = $pengajuan->id;
-        $jenis_pengajuan  = $pengajuan->jenis_pengajuan;
-      }
+    Mail::to($email)->send(new Pengajuan($pengajuanMd));
 
-      $history                  = new HistoryPengajuan;
-      $history->id_pengajuan    = $id;
-      $history->jenis_pengajuan = $jenis_pengajuan;
-      $history->v_mode          = trim(session('user_cmode'));
-      // $history->alasan          = 'setuju';
-      $history->save();
+    // $data = $request->all();
 
-      DB::commit();
-
-      return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('success', 'Permohonan Pengunduran Diri Diajukan.');
-    }
-    catch (Exception $ex) {
-      DB::rollBack();
-      return back() -> with('error', 'Permohonan Pengunduran Diri Gagal Diajukan.');
-    }
+    return response()->json(['success' => 'Data submitted successfully']);
   }
 
   public function show($nim)

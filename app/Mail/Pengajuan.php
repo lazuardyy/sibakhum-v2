@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\PengajuanMhs;
+use App\Models\PengunduranDiri;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -19,10 +20,13 @@ class Pengajuan extends Mailable
      */
 
     public $pengajuanMhs;
+    // public $pengajuanMd;
 
     public function __construct(array $pengajuanMhs)
     {
       $this->pengajuanMhs = $pengajuanMhs;
+      // dd($this->pengajuanMhs);
+      $this->pengajuanMd = $pengajuanMhs;
     }
 
     /**

@@ -21,15 +21,17 @@
 
           <label for="disetujui" type="button" data-bs-toggle="modal" data-bs-target="#setujuModal" class="btn btn-outline-success" style="margin-bottom: 0" id="setuju-button">
             <i class="fa-solid fa-paper-plane mr-1"></i>
-            Disetujui
+            {{ ($home['cmode'] == config('constants.users.dekanat')) ? 'Disetujui' : 'Proses' }}
           </label>
           <input type="checkbox" id="disetujui" class="d-none">
 
-          <label for="ditolak" type="button" data-bs-toggle="modal" data-bs-target="#tolakModal" class="btn btn-outline-danger" style="margin-bottom: 0" id="tolak-button">
-            <i class="fa-solid fa-paper-plane mr-1"></i>
-            Ditolak
-          </label>
-          <input type="checkbox" id="ditolak" class="d-none">
+          @if($home['cmode'] == config('constants.users.dekanat'))
+            <label for="ditolak" type="button" data-bs-toggle="modal" data-bs-target="#tolakModal" class="btn btn-outline-danger" style="margin-bottom: 0" id="tolak-button">
+              <i class="fa-solid fa-paper-plane mr-1"></i>
+              Ditolak
+            </label>
+            <input type="checkbox" id="ditolak" class="d-none">
+          @endif
 
 
           {{--  --}}
@@ -114,15 +116,16 @@
                   <tr>
                     <td>
                       <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}">
-                      <input type="checkbox" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
-                      @if($pengajuan->status_pengajuan === 3 || $pengajuan->status_pengajuan === 23 )
+                      <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
+
+                      @if($pengajuan->status_pengajuan === 3 || $pengajuan->status_pengajuan === 23 && $home['cmode'] == config('constants.users.dekanat'))
                         <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
                           <span class="text-{{ ($pengajuan->status_pengajuan !== 3) ? 'danger' : 'success' }} px-2 py-0.5">{{ ($pengajuan->status_pengajuan === 3) ? 'disetujui' : 'ditolak' }}</span>
 
                         </label>
                       @else
                       <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
-                        <span class="px-2 py-0.5">menunggu persetujuan</span>
+                        <span class="px-2 py-0.5">{{ ($home['cmode'] == config('constants.users.dekanat')) ? 'menunggu persetujuan' : 'menunggu diproses' }}</span>
                       </label>
                       @endif
                     </td>
@@ -146,7 +149,7 @@
 
                     @if($home['cmode'] == config('constants.users.fakultas'))
                       <td>
-                        <input type="text" name="no_surat[]" value="{{ $pengajuan->id }}" id="no_surat" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat !== null) ? $pengajuan->no_surat : '' }}>
+                        <input type="text" name="no_surat[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat !== null) ? $pengajuan->no_surat : '' }}>
                       </td>
                     @endif
                   </tr>
@@ -192,10 +195,6 @@
         $('input[type="checkbox"]').prop('checked', this.checked).val($(this).is(':checked') ? ditolak : '');
       })
 
-      // $('input[type="checkbox"]').click(function() {
-      //   $(this).val($(this).is(':checked') ? 1 : '');
-      // })
-
       $('#pilih').removeClass('sorting_asc');
 
       $('#setuju-button').click(function () {
@@ -208,13 +207,17 @@
         $('#setujuModal').attr('id', 'tolakModal');
         $('#keterangan').text('Apakah anda yakin ingin menolak data terpilih?');
         $('[name="persetujuan"]').val(2);
-        // $('#tolakModal').attr('id', 'setujuModal');
-        // if($('#setujuModal').attr('id') == 'setujuModal') {
-        // }
-        // else {
-        // }
-        // $('#setujuModal').attr('id', 'setujuModal');
-        // // $('#setujuModal').attr('id', 'tolakModal');
+      })
+
+      $('[name="id_pengajuan[]"]').each(function (i, d) {
+        // console.log($(this).val());
+        var id_pengajuan = $(this).val();
+        // return id_pengajuan;
+      })
+
+      $('[name="jenis_pengajuan[]"]').each(function (e) {
+        var jenis_pengajuan = $(this).val();
+        console.log(jenis_pengajuan);
       })
     });
 

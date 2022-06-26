@@ -110,6 +110,7 @@ class PengajuanMhsController extends Controller
       'kode_prodi'        => ['required'],
       'nama_fakultas'     => ['required'],
       'kode_fakultas'     => ['required'],
+      'email'             => ['required'],
       'no_telp'           => ['required'],
       'tahun_angkatan'    => ['required'],
       'semester'          => ['required'],
@@ -135,6 +136,18 @@ class PengajuanMhsController extends Controller
     $tahun_angkatan = $request->tahun_angkatan;
     $semester       = $request->semester;
     $keterangan     = $request->keterangan;
+    $jenis_pengajuan     = $request->jenis_pengajuan;
+    $status_pengajuan = $request->status_pengajuan;
+    // if($request->status_pengajuan !== null) {
+    // }
+
+    // dd($request->status_pengajuan);
+    // $status_pengajuan     = (($request->status_pengajuan !== null) ? $request->status_pengajuan : '');
+    // dd($status_pengajuan);
+
+    // if($jenis_pengajuan !== null) {
+    //   $jenis_pengajuan;
+    // }
 
     try {
       DB::beginTransaction();
@@ -153,9 +166,13 @@ class PengajuanMhsController extends Controller
         'tahun_angkatan'  => $tahun_angkatan,
         'semester'        => $semester,
         'keterangan'      => $keterangan,
+        'jenis_pengajuan'      => $jenis_pengajuan,
+        'status_pengajuan' => $status_pengajuan
+        // (($status_pengajuan !== null) ? 'status_pengajuan' : '') => (($status_pengajuan !== null) ? $status_pengajuan : '')
       ]);
+      // dd($pengajuanMhs);
 
-      $pengajuanMhs = PengajuanMhs::where('nim', session('user_username'))->get();
+      $pengajuanMhs = PengajuanMhs::where('nim', $nim)->get();
 
       foreach ($pengajuanMhs as $pengajuan) {
         $id = $pengajuan->id;
@@ -174,7 +191,12 @@ class PengajuanMhsController extends Controller
 
       DB::commit();
 
-      return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Permohonan Cuti Diajukan.');
+      if($jenis_pengajuan !== 2) {
+        return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Permohonan Cuti Diajukan.');
+      }
+      else {
+        return response()->json(['success' => 'Data submitted successfully']);
+      }
 
     }
     catch (Exception $ex) {
