@@ -42,12 +42,9 @@ class HomeComposer
       ->where('status_pengajuan', '0')
       ->where('jenis_pengajuan', '2')
       ->get();
-
-      $cuti = $pengajuan_cuti->count('id');
-      $md   = $pengunduran_diri->count('id');
       // dd($md);
 
-      $pengajuan = compact('cuti', 'md');
+      // $pengajuan = compact('cuti', 'md');
 
       // dd($pengajuan->count());
     }
@@ -61,12 +58,9 @@ class HomeComposer
       ->where('status_pengajuan', '1')
       ->where('jenis_pengajuan', '2')
       ->get();
-
-      $cuti = $pengajuan_cuti->count('id');
-      $md   = $pengunduran_diri->count('id');
       // dd($md);
 
-      $pengajuan = compact('cuti', 'md');
+      // $pengajuan = compact('cuti', 'md');
 
       // dd($pengajuan);
     }
@@ -81,18 +75,32 @@ class HomeComposer
       ->where('jenis_pengajuan', '2')
       ->get();
 
-      $cuti = $pengajuan_cuti->count('id');
-      $md   = $pengunduran_diri->count('id');
+      // $pengajuan = compact('cuti', 'md');
+    }
+    elseif($cmode == config('constants.users.bakhum') || $cmode == config('constants.users.wakil_rektor')) {
+      $pengajuan_cuti = PengajuanMhs::where('status_pengajuan',  (($cmode == config('constants.users.bakhum')) ? '5' : '3'))
+      ->where('jenis_pengajuan', '1')
+      ->get();
 
-      $pengajuan = compact('cuti', 'md');
+      $pengunduran_diri = PengajuanMhs::where('status_pengajuan',  (($cmode == config('constants.users.bakhum')) ? '5' : '3'))
+      ->where('jenis_pengajuan', '2')
+      ->get();
+
+      // $pengajuan = compact('cuti', 'md');
     }
     else {
       $cuti = '';
       $md   = '';
+      $pengajuan = '';
 
-      $pengajuan = compact('cuti', 'md');
+      // $pengajuan = compact('cuti', 'md');
     }
 
+    if($cmode != config('constants.users.mahasiswa')) {
+      $cuti = $pengajuan_cuti->count('id');
+      $md   = $pengunduran_diri->count('id');
+      $pengajuan = compact('cuti', 'md');
+    }
     $home = compact('user', 'mode', 'cmode', 'pengajuan');
   // dd($home);
 

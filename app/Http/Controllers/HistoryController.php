@@ -96,7 +96,9 @@ class HistoryController extends Controller
     else {
       $history_cuti = PengajuanMhs::where('kode_fakultas', trim(session('user_unit')))
       ->where('jenis_pengajuan', 1)
-      ->value('id');
+      ->get('id');
+
+      // dd($history_cuti);
 
       $history_cuti = HistoryPengajuan::where('id_pengajuan', $history_cuti)
       ->where('status_pengajuan', '>', 0)
@@ -104,11 +106,16 @@ class HistoryController extends Controller
 
       $history_md = PengajuanMhs::where('kode_fakultas', trim(session('user_unit')))
       ->where('jenis_pengajuan', 2)
-      ->value('id');
+      ->get('id');
 
-      $history_md = HistoryPengajuan::where('id_pengajuan', $history_md)
-      ->where('status_pengajuan', '>', 0)
-      ->get();
+      // dd(count($history_md));
+
+      for($i = 0; $i < count($history_md); $i++) {
+        $history_md = HistoryPengajuan::where('id_pengajuan', $history_md[$i])
+        ->where('status_pengajuan', '>', 0)
+        ->get();
+      }
+
       // dd($history_cuti);
 
     }

@@ -1,6 +1,6 @@
 <section class="content-header">
   <div class="container-fluid">
-    <div class="row mb-2">
+    <header class="row mb-2">
       <div class="col-sm-6">
         <h4>{{ $title }}</h4>
       </div>
@@ -10,7 +10,7 @@
           <li class="breadcrumb-item">{{ $title }}</li>
         </ol>
       </div>
-    </div>
+    </header>
   </div>
 </section>
 

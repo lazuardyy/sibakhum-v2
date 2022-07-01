@@ -29,14 +29,14 @@
   <link href="{{ asset('assets/bootstrap/css/bootstrap.css') }}" rel="stylesheet"> --}}
 </head>
 <body class="sidebar-mini layout-fixed layout-navbar-fixed sidebar-closed sidebar-collapse">
-  <div class="wrapper">
+  <main class="wrapper">
     @include('layouts.topbar')
     @include('layouts.sidebar')
     @include('flash-message')
 
-    <div class="content-wrapper">
+    <section class="content-wrapper">
       @yield('content')
-    </div>
+    </section>
 
     <footer class="main-footer">
         <div class="float-right d-none d-sm-block">

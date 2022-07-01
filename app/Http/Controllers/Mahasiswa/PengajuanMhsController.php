@@ -38,7 +38,7 @@ class PengajuanMhsController extends Controller
     // dd($cmode);
 
     $periode = BukaPeriode::checkOpenPeriode();
-    // dd($periode);
+    // dd($periode->semester);
 
     if ($periode === null || $periode->aktif === '0') {
       return redirect()->to('/home')->with('toast_error', 'Periode pengajuan cuti belum dibuka!');

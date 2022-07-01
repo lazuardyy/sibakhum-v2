@@ -11,12 +11,27 @@ function searchMhs () {
       result = data.isi[0];
       console.log(result);
 
+      $.ajax({
+        url : `http://103.8.12.212:36880/siakad_api/api/as400/programStudi/${result.kodeProdi}/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjE3MDE2MTgwNTYiLCJuYW1hX3VzZXIiOiJNVUtMQVMgTlVSIEFSRElBTlNZQUgiLCJrZWxhbWluIjoiMCIsIm1vZGVfdXNlciI6IjkiLCJ1bml0X3VzZXIiOiIgICAgICIsInN0YXR1c191c2VyIjoiMSJ9.mvnn_XFtapsJ9QkEORi3LOUoWT6j2vHNbyAlBuOg0ms`,
+        type: 'GET',
+        dataType: 'JSON',
+        success: function(response) {
+          kode_fk = response.isi[0].kodeFakProdi;
+          // console.log(response.isi[0].kodeFakProdi);
+          $('[name="kode_fakultas"]').attr('value', kode_fk);
+        },
+        error: function (jqXHR, textStatus, errorMessage) {
+          alert(errorMessage);
+        }
+      })
+
       $('#nim').attr('placeholder', result.nim).attr('value', result.nim);
       $('#nama').attr('placeholder', result.nama).attr('value', result.nama);
       $('#jenis_kelamin').attr('placeholder', (result.kelamin == 'L') ? 'Laki-Laki' : 'Perempuan');
       $('[name="jenis_kelamin"]').attr('value', (result.kelamin == 'L') ? 0 : 1);
       $('[name="pa"]').attr('value', result.pa);
       $('[name="nama_prodi"]').attr('value', result.namaProdi);
+      $('[name="kode_prodi"]').attr('value', result.kodeProdi);
       $('[name="nama_fakultas"]').attr('value', result.namaFakultas);
       $('#nama_fakultas').attr('placeholder', result.namaFakultas);
       $('#nama_prodi').attr('placeholder', result.namaProdi);
@@ -98,8 +113,4 @@ $('#save-data').click(function (e) {
       alert(error.responseJSON.message);
     }
   })
-
-
-
-
 })

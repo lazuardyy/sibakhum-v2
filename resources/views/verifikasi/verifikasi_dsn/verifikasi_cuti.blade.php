@@ -33,7 +33,7 @@
 
                 <td>{{ $pengajuan->created_at->format("M/d/Y") }}</td>
                 <td class="flex">
-                  <span class="w-full {{ ($pengajuan->status_pengajuan <= 4 &&$pengajuan->status_pengajuan <= 24) ? 'bg-success' : 'bg-danger' }} px-2 py-1 rounded-lg">
+                  <span class="w-full {{ ($pengajuan->status_pengajuan <= 5 &&$pengajuan->status_pengajuan <= 24) ? 'bg-success' : 'bg-danger' }} px-2 py-1 rounded-lg">
                     {{ ($pengajuan->status_pengajuan === 0) ? 'Menunggu Persetujuan' : $pengajuan->refStatusPengajuan->status_pengajuan_cuti }}
                   </span>
                 </td>

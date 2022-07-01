@@ -73,6 +73,11 @@ class RefModeSeeder extends Seeder
         'active' => 1,
       ]);
       DB::table('ref_modes')->insert([
+        'id' => 19,
+        'mode' => 'wakil rektor',
+        'active' => 1,
+      ]);
+      DB::table('ref_modes')->insert([
         'id' => 20,
         'mode' => 'pimpinan unj',
         'active' => 1,

@@ -21,11 +21,11 @@
 
           <label for="disetujui" type="button" data-bs-toggle="modal" data-bs-target="#setujuModal" class="btn btn-outline-success" style="margin-bottom: 0" id="setuju-button">
             <i class="fa-solid fa-paper-plane mr-1"></i>
-            {{ ($home['cmode'] == config('constants.users.dekanat')) ? 'Disetujui' : 'Proses' }}
+            {{ ($home['cmode'] != config('constants.users.fakultas')) ? 'Disetujui' : 'Proses' }}
           </label>
           <input type="checkbox" id="disetujui" class="d-none">
 
-          @if($home['cmode'] == config('constants.users.dekanat'))
+          @if($home['cmode'] != config('constants.users.fakultas'))
             <label for="ditolak" type="button" data-bs-toggle="modal" data-bs-target="#tolakModal" class="btn btn-outline-danger" style="margin-bottom: 0" id="tolak-button">
               <i class="fa-solid fa-paper-plane mr-1"></i>
               Ditolak
@@ -73,7 +73,7 @@
                 <th>Program Studi</th>
                 <th>Waktu Pengajuan</th>
                 <th>Jenis Pengajuan</th>
-                @if($home['cmode'] == config('constants.users.fakultas'))
+                @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.bakhum'))
                   <th>No. Surat</th>
                 @endif
               </tr>
@@ -83,18 +83,28 @@
                 @if(isset($pengajuan->nim))
                   <tr>
                     <td>
-                      <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}">
+                      @if(  ($home['cmode'] == config('constants.users.dekanat') && ($pengajuan->status_pengajuan < 4 && $pengajuan->status_pengajuan <= 24)) || ($home['cmode'] == config('constants.users.wakil_rektor') && ($pengajuan->status_pengajuan < 5 && $pengajuan->status_pengajuan <= 24)) || ($home['cmode'] == config('constants.users.fakultas') && ($pengajuan->status_pengajuan < 6 && $pengajuan->status_pengajuan <= 24)) )
+                        <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}">
+                      @endif
+
                       <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
                       <input type="hidden" name="persetujuan[]" value="1">
 
-                      @if($pengajuan->status_pengajuan === 3 || $pengajuan->status_pengajuan === 23 && $home['cmode'] == config('constants.users.dekanat'))
+
+                      @if( ($home['cmode'] == config('constants.users.dekanat') && $pengajuan->status_pengajuan >= 3 || $pengajuan->status_pengajuan === 23) || ($home['cmode'] == config('constants.users.wakil_rektor') && $pengajuan->status_pengajuan >= 4 || $pengajuan->status_pengajuan === 24) )
+
                         <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
-                          <span class="text-{{ ($pengajuan->status_pengajuan !== 3) ? 'danger' : 'success' }} px-2 py-0.5">{{ ($pengajuan->status_pengajuan === 3) ? 'disetujui' : 'ditolak' }}</span>
+                          <span class="text-{{ ($pengajuan->status_pengajuan <= 7) ? 'success' : 'danger' }}">{{ ($pengajuan->status_pengajuan <= 7) ? 'disetujui ' . (($pengajuan->status_pengajuan == 3) ? 'wd 1' : 'wr 1') : 'ditolak' }}</span>
                         </label>
+
+                      @elseif($home['cmode'] == config('constants.users.fakultas'))
+                      <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
+                        <span class="text-{{ ($pengajuan->status_pengajuan !== 5) ? 'warning' : 'success' }}">{{ ($pengajuan->status_pengajuan == 5) ? 'selesai diproses' : 'menunggu diproses' }}</span>
+                      </label>
+
                       @else
                       <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
-                        <span class="px-2 py-0.5">{{ ($home['cmode'] == config('constants.users.dekanat')) ? 'menunggu persetujuan' : 'menunggu diproses' }}</span>
-                      </label>
+                        <span class="">{{ ($home['cmode'] == config('constants.users.dekanat')) ? 'menunggu persetujuan' : 'menunggu diproses' }}</span>
                       @endif
                     </td>
 
@@ -115,7 +125,7 @@
                     <td>{{ date('d/M/Y', strtotime($pengajuan->created_at)) }}</td>
                     <td>{{ ($pengajuan->jenis_pengajuan === 1) ? 'Cuti' : 'Pengunduran Diri' }}</td>
 
-                    @if($home['cmode'] == config('constants.users.fakultas'))
+                    @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.bakhum'))
                       <td>
                         <input type="text" name="no_surat[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat !== null) ? $pengajuan->no_surat : '' }}>
                       </td>

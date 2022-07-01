@@ -69,7 +69,7 @@
 
         <div class="form-group mb-6">
           <label for="nama_fakultas" class="form-label inline-block mb-2 text-gray-700">Fakultas</label>
-          <input type="hidden" name="kode_fakultas" value="17">
+          <input type="hidden" name="kode_fakultas" value="">
 
           <input type="text"
             class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -83,7 +83,7 @@
 
         <div class="form-group mb-6">
           <label for="nama_prodi" class="form-label inline-block mb-2 text-gray-700">Program Studi</label>
-          <input type="hidden" name="kode_prodi" value="17016">
+          <input type="hidden" name="kode_prodi" value="">
 
           <input type="text"
             class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"

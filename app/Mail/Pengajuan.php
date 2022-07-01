@@ -26,7 +26,7 @@ class Pengajuan extends Mailable
     {
       $this->pengajuanMhs = $pengajuanMhs;
       // dd($this->pengajuanMhs);
-      $this->pengajuanMd = $pengajuanMhs;
+      // $this->pengajuanMd = $pengajuanMhs;
     }
 
     /**
@@ -36,6 +36,6 @@ class Pengajuan extends Mailable
      */
     public function build()
     {
-      return $this->subject('Pengajuan cuti berhasil diajukan, silahkan konfirmasi ke pembimbing akademik!')->markdown('emails.email', ['pengajuan' => $this->pengajuanMhs]);
+      return $this->subject((($this->pengajuanMhs[0]->jenis_pengajuan == '1') ? 'Pengajuan Cuti' : 'Pengunduran Diri') .' berhasil diajukan, silahkan konfirmasi ke pembimbing akademik!')->markdown('emails.email', ['pengajuan' => $this->pengajuanMhs]);
     }
 }

@@ -11,5 +11,6 @@ class RefMode extends Model
 
     protected $table = 'ref_modes';
     protected $primaryKey = 'id';
-    public $timestamps = false;
+    // public $timestamps = false;
+    protected $fillable = ['id', 'mode', 'active'];
 }

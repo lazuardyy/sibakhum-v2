@@ -4,9 +4,11 @@ return [
   'users' => [
     'prodi'     => '2',
     'fakultas'  => '3',
+    'bakhum'    => '4',
     'dosen'     => '8',
     'mahasiswa' => '9',
     'dekanat'   => '14',
+    'wakil_rektor'   => '19',
   ],
   'status' => [
     'pa_setuju'         => 1,

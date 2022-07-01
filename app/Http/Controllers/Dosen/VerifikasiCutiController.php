@@ -15,54 +15,6 @@ use App\Models\HistoryPengajuan;
 
 class VerifikasiCutiController extends Controller
 {
-  public function index ()
-  {
-    $user   = session('user_name');
-    $mode   = session('user_mode');
-    $cmode  = session('user_cmode');
-    $unit   = session('user_unit');
-
-    if(!Session::has('isLoggedIn')) {
-      return redirect()->to('login');
-    }
-    elseif($cmode !== config('constants.users.fakultas') && $cmode !== config('constants.users.dekanat')) {
-      return redirect()->to('/home');
-    }
-
-    if($cmode == config('constants.users.dekanat')) {
-      $pengajuan_mhs = PengajuanMhs::where('kode_fakultas', trim($unit))
-      ->where('status_pengajuan', '>=', '2')
-      ->where('status_pengajuan', '!=', '22')
-      ->get();
-    }
-    elseif($cmode == config('constants.users.fakultas')) {
-      $pengajuan_mhs = PengajuanMhs::where('kode_fakultas', trim($unit))
-      ->where('status_pengajuan', '>=', '4')
-      ->where('status_pengajuan', '!=', '21')
-      ->where('status_pengajuan', '!=', '22')
-      ->where('status_pengajuan', '!=', '23')
-      ->where('status_pengajuan', '!=', '24')
-      ->get();
-    }
-    // $pengajuan_md   = PengunduranDiri::where('kode_fakultas', trim($unit))->get();
-    // dd($pengajuan_md);
-
-    $arrData = [
-      'title'               => 'Semua Data Pengajuan',
-      'subtitle'            => 'Semua Data Pengajuan',
-      'modal_title'         => 'Detail Pengajuan',
-      'active'              => 'Home',
-      'all_data_active'     => 'active',
-
-      'pengajuan_mhs'       => $pengajuan_mhs,
-      // 'pengajuan_md'        => $pengajuan_md,
-    ];
-
-    // dd($arrData);
-
-    return view('verifikasi.all', $arrData);
-  }
-
   public function show ($jenis_pengajuan)
   {
     $user = session('user_name');
@@ -76,6 +28,7 @@ class VerifikasiCutiController extends Controller
     elseif($cmode === config('constants.users.mahasiswa')) {
       return redirect()->to('/home');
     }
+
 
     // dosen url to jenis pengajuan
     if($cmode == config('constants.users.dosen')) {
@@ -98,14 +51,22 @@ class VerifikasiCutiController extends Controller
       ->where('status_pengajuan', '!=', '22')
       ->get();
     }
+    // elseif($cmode = config('constants.users.pimpinan')) {
+    //   $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
+    //   ->where('status_pengajuan', '>=', '3')
+    //   ->where('status_pengajuan', '>=', '4')
+    //   ->where('status_pengajuan', '!=', '21')
+    //   ->where('status_pengajuan', '!=', '22')
+    //   ->where('status_pengajuan', '!=', '23')
+    //   ->get();
+    // }
     else {
       $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
-      ->where('kode_fakultas', trim($unit))
-      ->where('status_pengajuan', '>=', '4')
+      ->where('status_pengajuan', '>=', '3')
       ->where('status_pengajuan', '!=', '21')
       ->where('status_pengajuan', '!=', '22')
       ->where('status_pengajuan', '!=', '23')
-      ->where('status_pengajuan', '!=', '24')
+      // ->where('status_pengajuan', '!=', '24')
       ->get();
     }
 
@@ -202,6 +163,17 @@ class VerifikasiCutiController extends Controller
           }
           elseif ($status_persetujuan == '2'){
             $status_pengajuan = config('constants.status.wd_tidak_setuju');
+          }
+          else{
+            return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
+          }
+        }
+        else {
+          if ($status_persetujuan == '1'){
+            $status_pengajuan = config('constants.status.wr_setuju');
+          }
+          elseif ($status_persetujuan == '2'){
+            $status_pengajuan = config('constants.status.wr_tidak_setuju');
           }
           else{
             return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
