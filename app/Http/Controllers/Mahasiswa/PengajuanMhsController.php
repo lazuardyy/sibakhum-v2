@@ -42,15 +42,7 @@ class PengajuanMhsController extends Controller
 
     if ($periode === null || $periode->aktif === '0') {
       return redirect()->to('/home')->with('toast_error', 'Periode pengajuan cuti belum dibuka!');
-      // $tombol = "";
-      // $semester = $periode->semester;
     }
-    else{
-      // $tombol = "disabled";
-      // $semester = "";
-    }
-
-    // dd($semester);
 
 
     $pengajuan_mhs = PengajuanMhs::where('nim', session('user_username'))->get();
@@ -109,6 +101,7 @@ class PengajuanMhsController extends Controller
       'nama_prodi'        => ['required'],
       'kode_prodi'        => ['required'],
       'nama_fakultas'     => ['required'],
+      'jenjang'           => ['required'],
       'kode_fakultas'     => ['required'],
       'email'             => ['required'],
       'no_telp'           => ['required'],
@@ -131,6 +124,7 @@ class PengajuanMhsController extends Controller
     $kode_prodi     = $request->kode_prodi;
     $nama_fakultas  = $request->nama_fakultas;
     $kode_fakultas  = $request->kode_fakultas;
+    $jenjang        = $request->jenjang;
     $email          = $request->email;
     $no_telp        = $request->no_telp;
     $tahun_angkatan = $request->tahun_angkatan;
@@ -161,6 +155,7 @@ class PengajuanMhsController extends Controller
         'kode_prodi'      => $kode_prodi,
         'nama_fakultas'   => $nama_fakultas,
         'kode_fakultas'   => $kode_fakultas,
+        'jenjang'         => $jenjang,
         'email'           => $email,
         'no_telp'         => $no_telp,
         'tahun_angkatan'  => $tahun_angkatan,

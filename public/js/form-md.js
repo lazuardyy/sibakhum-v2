@@ -35,6 +35,7 @@ function searchMhs () {
       $('[name="nama_fakultas"]').attr('value', result.namaFakultas);
       $('#nama_fakultas').attr('placeholder', result.namaFakultas);
       $('#nama_prodi').attr('placeholder', result.namaProdi);
+      $('[name="jenjang"]').attr('value', result.jenjangProdi);
 
       $('#search-input').val('');
 
@@ -73,6 +74,7 @@ $('#save-data').click(function (e) {
   let kode_fakultas = $('[name="kode_fakultas"]').val();
   let nama_prodi = $('[name="nama_prodi"]').val();
   let kode_prodi = $('[name="kode_prodi"]').val();
+  let jenjang     = $('[name="jenjang"]').val();
   let email = $('#email').val();
   let no_telp = $('#no_telp').val();
   let tahun_angkatan = $('#tahun_angkatan').val();
@@ -95,6 +97,7 @@ $('#save-data').click(function (e) {
       kode_fakultas:kode_fakultas,
       nama_prodi:nama_prodi,
       kode_prodi:kode_prodi,
+      jenjang:jenjang,
       email:email,
       no_telp:no_telp,
       tahun_angkatan:tahun_angkatan,

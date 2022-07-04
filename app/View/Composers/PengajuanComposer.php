@@ -30,6 +30,7 @@ class PengajuanComposer
         $nama_prodi     = $mhs->namaProdi;
         $kode_prodi     = $mhs->kodeProdi;
         $nama_fakultas  = $mhs->namaFakultas;
+        $jenjang        = $mhs->jenjangProdi;
         $angkatan       = $mhs->angkatan;
         $hp             = $mhs->hpm;
       }
@@ -43,6 +44,7 @@ class PengajuanComposer
       $nama_prodi       = 'kosong';
       $kode_prodi       = 'kosong';
       $nama_fakultas    = 'kosong';
+      $jenjang          = 'kosong';
       $angkatan         = 'kosong';
       $hp               = 'kosong';
     }
@@ -101,6 +103,7 @@ class PengajuanComposer
       'kode_prodi'        => $kode_prodi,
       'nama_fakultas'     => $nama_fakultas,
       'kode_fakultas'     => $kode_fakultas,
+      'jenjang'           => $jenjang,
       'angkatan'          => $angkatan,
       'hp'                => $hp,
 

@@ -94,7 +94,29 @@
             readonly
           >
         </div>
+
+        <div class="form-group mb-6">
+          <label for="jenjang" class="form-label inline-block mb-2 text-gray-700">Jenjang</label>
+          <input type="hidden" name="jenjang" value="">
+
+          <input type="text"
+            class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            id="jenjang"
+            required
+            aria-describedby="jenjang"
+            placeholder=""
+            readonly
+          >
+
+          @error('jenjang')
+            <small id="jenjang" class="block mt-1 text-xs text-red-600">
+              {{ $message }}
+            </small>
+          @enderror
+        </div>
       </div>
+
+
 
       <div>
         <div class="form-group mb-6">

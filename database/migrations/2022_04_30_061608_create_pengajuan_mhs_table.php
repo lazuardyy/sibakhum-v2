@@ -24,6 +24,7 @@ return new class extends Migration
           $table->foreignId('kode_prodi');
           $table->string('nama_fakultas');
           $table->foreignId('kode_fakultas');
+          $table->string('jenjang');
           $table->string('email')->unique();
           $table->string('no_telp', 15);
           $table->year('tahun_angkatan');
@@ -31,7 +32,8 @@ return new class extends Migration
           $table->text('keterangan');
           $table->integer('status_pengajuan')->default(0);
           $table->integer('jenis_pengajuan')->default(1);
-          $table->string('no_surat')->nullable();
+          $table->string('no_surat_fakultas')->nullable();
+          $table->string('no_surat_bakhum')->nullable();
           $table->timestamps();
         });
     }

@@ -84,7 +84,7 @@ class AllPengajuanController extends Controller
     $id_pengajuan = $request->id_pengajuan;
     $persetujuan = $request->persetujuan;
     $jenis_pengajuan = $request->jenis_pengajuan;
-    $no_surat = $request->no_surat;
+    $no_surat_fakultas = $request->no_surat_fakultas;
     $alasan = $request->alasan;
     // dd($no_surat);
     // dd($id_pengajuan, $persetujuan);
@@ -111,7 +111,7 @@ class AllPengajuanController extends Controller
       }
       elseif(session('user_cmode') == config('constants.users.fakultas')){
           // dd($surat);
-        if($no_surat[$i] === null) {
+        if($no_surat_fakultas[$i] === null) {
           return redirect()->back()->with('toast_error', 'Ups! Nomor surat masih kosong!');
         }
         // elseif($persetujuan[$i] == '1') {
@@ -125,7 +125,7 @@ class AllPengajuanController extends Controller
         'id' => $id_pengajuan[$i]
       ])->update([
         'status_pengajuan' => $persetujuan[$i],
-        'no_surat' => ((session('user_cmode') == config('constants.users.fakultas')) ? $no_surat[$i] : '')
+        'no_surat_fakultas' => ((session('user_cmode') == config('constants.users.fakultas')) ? $no_surat_fakultas[$i] : '')
       ]);
 
       // dd($store);

@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Bakhum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+// use Illuminate\Support\Facades\Image;
 use App\Models\PengajuanMhs;
+use App\Models\HistoryPengajuan;
+use App\Models\BukaPeriode;
 use PDF;
 
 class CetakSuratController extends Controller
@@ -52,12 +55,25 @@ class CetakSuratController extends Controller
 
   public function download ($id)
   {
-    $pengajuan_mhs = PengajuanMhs::findOrFail($id)->get();
-    $pengajuan_mhs = json_decode($pengajuan_mhs)[0];
-    // dd(json_decode($pengajuan_mhs)[0]);
+    $pengajuan_mhs = PengajuanMhs::findOrFail($id);
+    $pengajuan_mhs = json_decode($pengajuan_mhs);
+    // dd($pengajuan_mhs);
+
+    $history = HistoryPengajuan::where('id_pengajuan', $pengajuan_mhs->id)
+    ->where('status_pengajuan', 4)
+    ->get();
+    $history = json_decode($history);
+    // dd($history);
+
+    $periode = BukaPeriode::where('aktif', '1')->first();
+    $periode = json_decode($periode);
+    // dd($periode);
+
 
     $pdf = PDF::loadView('bakhum.pdf', [
-      'pengajuan' => $pengajuan_mhs
+      'pengajuan' => $pengajuan_mhs,
+      'history' => $history,
+      'periode' => $periode,
     ]);
     // return $pdf->download('surat.pdf');
     return $pdf->stream();
