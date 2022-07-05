@@ -65,7 +65,23 @@ class PengajuanComposer
       $kode_fakultas = 'kosong';
     }
 
-    $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))->get();
+    if(session('user_cmode') == config('constants.users.mahasiswa')) {
+      $id_cuti = PengajuanMhs::where('nim', session('user_username'))->pluck('id')->toArray();
+      // dd($id_cuti);
+
+      for($i = 0; $i < count($id_cuti); $i++) {
+        $pengajuan_cuti = PengajuanMhs::where('id', $id_cuti)
+        ->get();
+      }
+
+      $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))->get();
+    }
+    elseif (session('user_cmode') == config('constants.users.dosen')) {
+      $pengajuan_cuti = PengajuanMhs::where('pa', session('user_username'))->get();
+    }
+    else {
+      $pengajuan_cuti = PengajuanMhs::where(((session('user_cmode') == config('constants.users.prodi')) ? 'kode_prodi' : 'kode_fakultas'), trim(session('user_unit')))->get();
+    }
 
     foreach($pengajuan_cuti as $pengajuan){
       $cuti = $pengajuan;
@@ -77,22 +93,6 @@ class PengajuanComposer
     else {
       $cuti = null;
     }
-
-    // dd($cuti);
-
-    $pengunduran_diri = PengunduranDiri::where('nim', session('user_username'))->get();
-
-    foreach($pengunduran_diri as $pengajuan){
-      $md = $pengajuan;
-    }
-
-    if(isset($md)){
-      $md;
-    }
-    else {
-      $md = null;
-    }
-    // dd($nama_fakultas);
 
     $arrData = [
       'nim'               => $nim,
@@ -108,9 +108,7 @@ class PengajuanComposer
       'hp'                => $hp,
 
       'pengajuan_cuti'    => $pengajuan_cuti,
-      'pengunduran_diri'  => $pengunduran_diri,
       'cuti'              => $cuti,
-      'md'                => $md,
       // 'pengajuan'         => $pengajuan,
     ];
 

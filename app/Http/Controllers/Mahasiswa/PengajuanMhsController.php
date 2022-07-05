@@ -44,23 +44,31 @@ class PengajuanMhsController extends Controller
       return redirect()->to('/home')->with('toast_error', 'Periode pengajuan cuti belum dibuka!');
     }
 
+    $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))
+    ->where('jenis_pengajuan', 1)
+    ->get();
 
-    $pengajuan_mhs = PengajuanMhs::where('nim', session('user_username'))->get();
-    foreach ($pengajuan_mhs as $cuti) {
-      $status_cuti = $cuti->status_pengajuan;
+    // dd($pengajuan_cuti);
+    foreach ($pengajuan_cuti as $pengajuan) {
+      $status_cuti = $pengajuan->status_pengajuan;
+      // $pengajuan_cuti = $pengajuan->jenis_pengajuan;
     }
 
-    $pengajuan_md = PengunduranDiri::where('nim', session('user_username'))->get();
+    // dd($jenis_pengajuan);
+
+    $pengajuan_md = PengajuanMhs::where('nim', session('user_username'))
+    ->where('jenis_pengajuan', 2)
+    ->get();
     foreach ($pengajuan_md as $md) {
       $status_md = $md->status_pengajuan;
     }
 
     // dd(isset($status_md) === true);
 
-    if(isset($status_cuti) === false || isset($status_cuti) !== 4){
+    if(isset($status_cuti) === false || isset($status_cuti) !== 7){
       if (isset($status_md))
       {
-        if($status_md !== 4)
+        if($status_md !== 7)
         {
           return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan pengunduran diri!');
         }
@@ -70,11 +78,11 @@ class PengajuanMhsController extends Controller
       }
       else if(isset($status_cuti) === true)
       {
-        if($status_cuti !== 4 && $status_cuti !== 21)
+        if($status_cuti !== 7 && $status_cuti < 21)
         {
           return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
         }
-        else if($pengajuan_mhs->count() >= 2)
+        else if($pengajuan_cuti->count() >= 2)
         {
           return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengajukan permohonan cuti sebanyak 2x!');
         }
@@ -194,9 +202,10 @@ class PengajuanMhsController extends Controller
       }
 
     }
-    catch (Exception $ex) {
+    catch (Exception $err) {
       DB::rollBack();
-      return back()->with('toast_error', 'Permohonan cuti gagal diajukan, terjadi kesalahan!');
+      // dd($err->errorInfo[2] = 'email sudah terdaftar');
+      return back()->with('toast_error', 'Permohonan cuti gagal diajukan, terjadi kesalahan.'. '<br>'.  ($err->errorInfo[2] = '<span class="text-danger"> Email sudah terdaftar!</span>'));
     }
   }
 

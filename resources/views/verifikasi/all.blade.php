@@ -71,7 +71,7 @@
                 <th>NIM</th>
                 <th>Nama</th>
                 <th>Program Studi</th>
-                <th>Waktu Pengajuan</th>
+                <th>Tanggal Pengajuan</th>
                 <th>Jenis Pengajuan</th>
                 @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.bakhum'))
                   <th>No. Surat</th>
@@ -83,7 +83,7 @@
                 @if(isset($pengajuan->nim))
                   <tr>
                     <td>
-                      @if(  ($home['cmode'] == config('constants.users.dekanat') && ($pengajuan->status_pengajuan < 4 && $pengajuan->status_pengajuan <= 24)) || ($home['cmode'] == config('constants.users.wakil_rektor') && ($pengajuan->status_pengajuan < 5 && $pengajuan->status_pengajuan <= 24)) || ($home['cmode'] == config('constants.users.fakultas') && ($pengajuan->status_pengajuan < 6 && $pengajuan->status_pengajuan <= 24)) )
+                      @if(  ($home['cmode'] == config('constants.users.dekanat') && ($pengajuan->status_pengajuan != 4 && $pengajuan->status_pengajuan <= 24)) || ($home['cmode'] == config('constants.users.wakil_rektor') && ($pengajuan->status_pengajuan != 5 && $pengajuan->status_pengajuan <= 24)) || ($home['cmode'] == config('constants.users.fakultas') && ($pengajuan->status_pengajuan != 6 && $pengajuan->status_pengajuan <= 24)) )
                         <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}">
                       @endif
 

@@ -7,8 +7,20 @@ function searchMhs () {
     dataType: "JSON",
     success: function(data)
     {
-      // console.log(data);
-      result = data.isi[0];
+      // console.log(data.status);
+      if(data.status === true) {
+        result = data.isi[0];
+        $('#form-md').removeClass('hidden').addClass('block');
+      }
+      else {
+        result = data.pesan;
+        $('#not-found').removeClass('hidden').addClass('block');
+        $('#buat-baru').click(function() {
+          $('#form-md').removeClass('hidden').addClass('block');
+          $('#not-found').removeClass('block').addClass('hidden');
+        })
+        // alert(result);
+      }
       console.log(result);
 
       $.ajax({
@@ -35,6 +47,7 @@ function searchMhs () {
       $('[name="nama_fakultas"]').attr('value', result.namaFakultas);
       $('#nama_fakultas').attr('placeholder', result.namaFakultas);
       $('#nama_prodi').attr('placeholder', result.namaProdi);
+      $('#jenjang').attr('placeholder', result.jenjangProdi);
       $('[name="jenjang"]').attr('value', result.jenjangProdi);
 
       $('#search-input').val('');

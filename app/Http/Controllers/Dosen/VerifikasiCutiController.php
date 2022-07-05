@@ -62,6 +62,7 @@ class VerifikasiCutiController extends Controller
     // }
     else {
       $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
+      ->where('kode_fakultas', trim($unit))
       ->where('status_pengajuan', '>=', '3')
       ->where('status_pengajuan', '!=', '21')
       ->where('status_pengajuan', '!=', '22')

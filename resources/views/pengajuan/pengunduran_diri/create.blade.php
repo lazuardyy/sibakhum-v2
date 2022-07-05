@@ -17,8 +17,8 @@
 
   <hr>
 
-  <div class="block p-6 rounded-lg shadow-md bg-white">
-    <form class="md:grid md:grid-cols-2 gap-x-7" id="form-md">
+  <div class="p-6 rounded-lg shadow-md bg-white hidden" id="form-md">
+    <form class="md:grid md:grid-cols-2 gap-x-7">
       {{-- <div class="md:grid md:grid-cols-2 gap-x-7" id="form-md"></div> --}}
       @csrf
       <div>
@@ -116,8 +116,6 @@
         </div>
       </div>
 
-
-
       <div>
         <div class="form-group mb-6">
           <label for="email" class="form-label inline-block mb-2 text-gray-700">Email</label>
@@ -200,6 +198,26 @@
         </div>
       </div>
     </form>
+  </div>
+
+  <div id="not-found" class="hidden">
+    <div class="flex flex-col items-center justify-center p-4">
+      <div class="text-center">
+        <h1 class="text-gray-700 text-4xl font-bold">
+          <i class="fa-solid fa-exclamation-triangle text-red-600"></i>
+        </h1>
+        <p class="text-gray-700 text-lg">
+          Maaf, data tidak ditemukan.
+        </p>
+      </div>
+
+      <div class="buat-baru">
+        <button id="buat-baru" class="px-3 py-2.5 bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out">
+          <i class="fa-solid fa-plus"></i>
+          <span class="text-xs lg:text-md">Buat Baru</span>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 @endsection

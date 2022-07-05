@@ -6,17 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Surat Izin Cuti Kuliah_{{ $pengajuan->nama }}_{{ $pengajuan->nim }}</title>
   <style>
-    .header {
-      display: flex;
-      flex-direction: row;
-      text-align: center;
-      justify-content: space-between;
-      /* border: 1px solid blue;  */
-      padding: 1rem 1rem;
-      margin-bottom: 0;
-      padding: 0;
-    }
-
     h1, h2, h3, h4, h5, h6 {
       margin-bottom: 0;
       padding: 0;
@@ -27,29 +16,39 @@
       display: flex;
       flex-direction: column;
     }
+
+    img {
+      width: 80px;
+      /* height: 80px; */
+    }
   </style>
 </head>
 <body>
   <header style="" class="header">
-    {{-- <div class="img" style="width: 50px; height: 100px; border: 1px solid black;">
-      test
-    </div> --}}
-    <div class="kop_surat" style="flex:1;">
-      <h3 style="margin-bottom: 0">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, <br> RISET DAN TEKNOLOGI</h3>
-      <h3 style="margin-bottom: 0; margin-top:0; letter-spacing: 2;">UNIVERSITAS NEGERI JAKARTA</h3>
-      <small>Kampus Universitas Negeri Jakarta, Jl. Rawamangun Muka, Jakarta 13220</small>
-      <br>
-      <small>Telp: Rektor: (021) 4893854, WR 1:  4895130, WR II: 4893918, WR III: 4892926, WR IV: 4893982</small>
-      <br>
-      <small> BUK: 4750930, BAKHUM: 4759081, 4893668, BK: 4752180, <br> Bag. UHTP: Telp. 4890046, Bag. Keuangan: 4892414 Bag. Kepegawaian: 4890536</small> <br>
-      <small>Laman: www.unj.ac.id</small>
-    </div>
-    <hr style="margin-bottom:0; padding: 0">
+    <table>
+      <tr>
+        <td><img src="assets/img/unj.png" alt="logo"></td>
+        <td>
+          <div class="kop_surat" style="text-align: center; padding-right: 1rem;" >
+            <h3 style="margin-bottom: 0">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, <br> RISET DAN TEKNOLOGI</h3>
+            <h3 style="margin-bottom: 0; margin-top:0; letter-spacing: 2;">UNIVERSITAS NEGERI JAKARTA</h3>
+            <small>Kampus Universitas Negeri Jakarta, Jl. Rawamangun Muka, Jakarta 13220</small>
+            <br>
+            <small>Telp: Rektor: (021) 4893854, WR 1:  4895130, WR II: 4893918, WR III: 4892926, WR IV: 4893982</small>
+            <br>
+            <small> BUK: 4750930, BAKHUM: 4759081, 4893668, BK: 4752180, <br> Bag. UHTP: Telp. 4890046, Bag. Keuangan: 4892414 Bag. Kepegawaian: 4890536</small> <br>
+            <small>Laman: www.unj.ac.id</small>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <hr>
   </header>
+
   <main>
     <section style="text-align: center;">
       <h2 style="text-transform: uppercase; text-decoration:underline;">surat izin cuti kuliah</h2>
-      <h3>Nomor: {{ $pengajuan->no_surat_fakultas }}</h3>
+      <h3>Nomor: {{ $pengajuan->no_surat_bakhum }}</h3>
     </section>
 
     <section class="content">
