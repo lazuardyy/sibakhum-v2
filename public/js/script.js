@@ -46,6 +46,16 @@ $(function() {
     "responsive": true,
   });
 
+  $('#tabel-history').DataTable({
+    columnDefs: [
+      {
+        targets: [0, 1, 2, 3, 4, 5],
+        className: ['dt-head-center'],
+      },
+    ],
+    "responsive": true,
+  });
+
   $('#tabel-md').DataTable({
     "responsive": true,
     'searching': false,

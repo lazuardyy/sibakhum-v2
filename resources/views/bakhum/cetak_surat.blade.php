@@ -14,11 +14,6 @@
           Simpan
         </label>
         <input type="checkbox" id="disetujui" class="d-none">
-
-        {{-- <label for="ditolak" type="button" data-bs-toggle="modal" data-bs-target="#tolakModal" class="btn btn-outline-danger" style="margin-bottom: 0" id="tolak-button">
-          <i class="fa-solid fa-print mr-1"></i>
-          Cetak Surat
-        </label> --}}
         <input type="checkbox" id="ditolak" class="d-none">
 
         <div class="modal fade" id="setujuModal" tabindex="-1" aria-labelledby="submitModal" aria-hidden="true">
@@ -59,6 +54,7 @@
               <th>Nama</th>
               <th>Program Studi</th>
               <th>Jenis Pengajuan</th>
+              <th>Surat Pengajuan</th>
               <th>No. Surat Fakultas</th>
               <th>No. Surat Bakhum</th>
               <th>Cetak Surat</th>
@@ -69,48 +65,34 @@
               @if(isset($pengajuan->nim))
                 <tr>
                   <td>
-                    @if(  ($home['cmode'] == config('constants.users.dekanat') && ($pengajuan->status_pengajuan < 4 && $pengajuan->status_pengajuan <= 24)) || ($home['cmode'] == config('constants.users.wakil_rektor') && ($pengajuan->status_pengajuan < 5 && $pengajuan->status_pengajuan <= 24)) || ($home['cmode'] == config('constants.users.fakultas') && ($pengajuan->status_pengajuan < 6 && $pengajuan->status_pengajuan <= 24)) )
-                      <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}">
-                    @endif
+                    <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}" @checked(old('active', ($pengajuan->status_pengajuan == 6) ? true : false))>
 
                     <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
                     <input type="hidden" name="persetujuan[]" value="1">
-
-
-                    @if( ($home['cmode'] == config('constants.users.dekanat') && $pengajuan->status_pengajuan >= 3 || $pengajuan->status_pengajuan === 23) || ($home['cmode'] == config('constants.users.wakil_rektor') && $pengajuan->status_pengajuan >= 4 || $pengajuan->status_pengajuan === 24) )
-
-                      <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
-                        <span class="text-{{ ($pengajuan->status_pengajuan <= 7) ? 'success' : 'danger' }}">{{ ($pengajuan->status_pengajuan <= 7) ? 'disetujui ' . (($pengajuan->status_pengajuan == 3) ? 'wd 1' : 'wr 1') : 'ditolak' }}</span>
-                      </label>
-
-                    @elseif($home['cmode'] == config('constants.users.fakultas'))
-                    <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
-                      <span class="text-{{ ($pengajuan->status_pengajuan !== 5) ? 'warning' : 'success' }}">{{ ($pengajuan->status_pengajuan == 5) ? 'selesai diproses' : 'menunggu diproses' }}</span>
-                    </label>
-
-                    @else
-                    <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
-                      <span class="">{{ ($home['cmode'] == config('constants.users.dekanat')) ? 'menunggu persetujuan' : 'menunggu diproses' }}</span>
-                    @endif
                   </td>
 
                   <td>{{ $loop->iteration }}</td>
 
                   <input type="hidden" name="id[]" value="{{ $pengajuan->id }}">
-                  {{-- <input type="hidden" name="jenis_pengajuan[]" value="{{ $pengajuan->jenis_pengajuan }}"> --}}
+                  <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
+
+
                   <td>{{ $pengajuan->nim }}</td>
                   <td>{{ $pengajuan->nama }}</td>
 
                   <td>{{ $pengajuan->nama_prodi }}</td>
                   <td>{{ ($pengajuan->jenis_pengajuan === 1) ? 'Cuti' : 'Pengunduran Diri' }}</td>
                   <td>
-                    <input type="text" name="no_surat[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat_fakultas !== null) ? $pengajuan->no_surat_fakultas : '' }} readonly>
+                    <a href="{{ route('file_pengajuan.show', $pengajuan->file_pengajuan_md) }}">{{ $pengajuan->nama }}_{{ $pengajuan->jenis_pengajuan == '2' ? 'md' : '' }}</a>
                   </td>
                   <td>
-                    <input type="text" name="no_surat[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat !== null) ? $pengajuan->no_surat : '' }}>
+                    <input type="text" name="no_surat_fakultas[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat_fakultas !== null) ? $pengajuan->no_surat_fakultas : '' }} readonly>
                   </td>
                   <td>
-                    <a href="{{ route('data-mhs.cetak', $pengajuan->id) }}" class="btn btn-primary btn-sm hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out rounded-md" >
+                    <input type="text" name="no_surat_bakhum[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat_bakhum !== null) ? $pengajuan->no_surat_bakhum : '' }}>
+                  </td>
+                  <td>
+                    <a href="{{ route('data-mhs.cetak', $pengajuan->id) }}" target='_blank' class="btn btn-primary btn-sm hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out rounded-md" >
                       <i class="fa-solid fa-print"></i>
                     </a>
                   </td>
@@ -124,3 +106,41 @@
   </form>
 </div>
 @endsection
+
+@section('script')
+  <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+  <script>
+    $(document).ready(function() {
+
+      $('#selectAll').click(function() {
+        var disetujui = $('.disetujui').attr('id');
+        $('input[type="checkbox"]').prop('checked', this.checked);
+      })
+
+      $('#tolak-semua').click(function() {
+        var ditolak = $('.ditolak').attr('id');
+        $('input[type="checkbox"]').prop('checked', this.checked).val($(this).is(':checked') ? ditolak : '');
+      })
+
+      $('#pilih').removeClass('sorting_asc');
+
+      $('#setuju-button').click(function () {
+        $('#tolakModal').attr('id', 'setujuModal');
+        $('#keterangan').text('Apakah anda yakin ingin menyetujui data terpilih?');
+        $('[name="persetujuan[]"]').val(1);
+      })
+
+      $('#tolak-button').click(function () {
+        $('#setujuModal').attr('id', 'tolakModal');
+        $('#keterangan').text('Apakah anda yakin ingin menolak data terpilih?');
+        $('[name="persetujuan[]"]').val(2);
+      })
+
+      $('[name="jenis_pengajuan[]"]').each(function (e) {
+        var jenis_pengajuan = $(this).val();
+        console.log(jenis_pengajuan);
+      })
+    });
+  </script>
+@endsection
+

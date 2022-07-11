@@ -73,9 +73,9 @@
                 <th>Program Studi</th>
                 <th>Tanggal Pengajuan</th>
                 <th>Jenis Pengajuan</th>
-                @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.bakhum'))
-                  <th>No. Surat</th>
-                @endif
+                <th>Surat Pengajuan</th>
+                <th>No. Surat</th>
+
               </tr>
             </thead>
             <tbody>
@@ -83,8 +83,10 @@
                 @if(isset($pengajuan->nim))
                   <tr>
                     <td>
-                      @if(  ($home['cmode'] == config('constants.users.dekanat') && ($pengajuan->status_pengajuan != 4 && $pengajuan->status_pengajuan <= 24)) || ($home['cmode'] == config('constants.users.wakil_rektor') && ($pengajuan->status_pengajuan != 5 && $pengajuan->status_pengajuan <= 24)) || ($home['cmode'] == config('constants.users.fakultas') && ($pengajuan->status_pengajuan != 6 && $pengajuan->status_pengajuan <= 24)) )
-                        <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}">
+                      @if(  ($home['cmode'] == config('constants.users.dekanat') && ($pengajuan->status_pengajuan != 5 && $pengajuan->status_pengajuan <= 24)) || ($home['cmode'] == config('constants.users.wakil_rektor') && ($pengajuan->status_pengajuan != 6 && $pengajuan->status_pengajuan <= 24)) || ($home['cmode'] == config('constants.users.fakultas') && ($pengajuan->status_pengajuan != 6 && $pengajuan->status_pengajuan <= 24)) )
+
+                        <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}" @checked(old('active', ($pengajuan->status_pengajuan == 4 || $pengajuan->status_pengajuan == 5) ? true : false))>
+
                       @endif
 
                       <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
@@ -94,7 +96,7 @@
                       @if( ($home['cmode'] == config('constants.users.dekanat') && $pengajuan->status_pengajuan >= 3 || $pengajuan->status_pengajuan === 23) || ($home['cmode'] == config('constants.users.wakil_rektor') && $pengajuan->status_pengajuan >= 4 || $pengajuan->status_pengajuan === 24) )
 
                         <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
-                          <span class="text-{{ ($pengajuan->status_pengajuan <= 7) ? 'success' : 'danger' }}">{{ ($pengajuan->status_pengajuan <= 7) ? 'disetujui ' . (($pengajuan->status_pengajuan == 3) ? 'wd 1' : 'wr 1') : 'ditolak' }}</span>
+                          <span class="text-{{ ($pengajuan->status_pengajuan <= 7) ? 'success' : 'danger' }}">{{ ($pengajuan->status_pengajuan <= 7) ? ''  : 'ditolak' }}</span>
                         </label>
 
                       @elseif($home['cmode'] == config('constants.users.fakultas'))
@@ -122,14 +124,15 @@
                     <td>{{ $pengajuan->nama }}</td>
 
                     <td>{{ $pengajuan->nama_prodi }}</td>
-                    <td>{{ date('d/M/Y', strtotime($pengajuan->created_at)) }}</td>
+                    <td>{{ $pengajuan->created_at->format('d M Y') }} <br> Pukul {{ $pengajuan->created_at->format('H:i') }} WIB</td>
                     <td>{{ ($pengajuan->jenis_pengajuan === 1) ? 'Cuti' : 'Pengunduran Diri' }}</td>
+                    <td>
+                      <a href="{{ route('file_pengajuan.show', $pengajuan->file_pengajuan_md) }}">{{ $pengajuan->nama }}_{{ $pengajuan->jenis_pengajuan == '2' ? 'md' : '' }}</a>
+                    </td>
 
-                    @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.bakhum'))
-                      <td>
-                        <input type="text" name="no_surat_fakultas[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat_fakultas !== null) ? $pengajuan->no_surat_fakultas : '' }}>
-                      </td>
-                    @endif
+                    <td>
+                        <input type="text" name="no_surat_fakultas[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat_fakultas !== null) ? $pengajuan->no_surat_fakultas : '' }} {{ ($home['cmode'] !== config('constants.users.fakultas') ? 'readonly' : '') }}>
+                    </td>
                   </tr>
                 @endif
               @endforeach

@@ -18,11 +18,6 @@ use Exception;
 
 class PengajuanMhsController extends Controller
 {
-  public function index()
-  {
-
-  }
-
   public function create()
   {
     $user = session('user_name');
@@ -44,56 +39,82 @@ class PengajuanMhsController extends Controller
       return redirect()->to('/home')->with('toast_error', 'Periode pengajuan cuti belum dibuka!');
     }
 
-    $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))
+    $status_cuti = PengajuanMhs::where('nim', session('user_username'))
     ->where('jenis_pengajuan', 1)
-    ->get();
+    ->pluck('status_pengajuan');
+    // ->get();
 
     // dd($pengajuan_cuti);
-    foreach ($pengajuan_cuti as $pengajuan) {
-      $status_cuti = $pengajuan->status_pengajuan;
-      // $pengajuan_cuti = $pengajuan->jenis_pengajuan;
+    $status_disetujui_twice = array();
+    $status_ditolak = array();
+    $status_sedang_mengajukan = array();
+
+    foreach($status_cuti as $key => $status) {
+      $status == 7 ? $status_disetujui_twice[] = $status : $status_ditolak[] = $status;
+      $status < 7 ? $status_sedang_mengajukan[] = $status : $status_ditolak[] = $status;
     }
 
-    // dd($jenis_pengajuan);
+    // dump($status_sedang_mengajukan);
 
-    $pengajuan_md = PengajuanMhs::where('nim', session('user_username'))
-    ->where('jenis_pengajuan', 2)
-    ->get();
-    foreach ($pengajuan_md as $md) {
-      $status_md = $md->status_pengajuan;
+    if(count($status_disetujui_twice) === 2) {
+      return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengajukan permohonan cuti sebanyak 2x!');
+    }
+    elseif($status_sedang_mengajukan !== []){
+      return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
     }
 
-    // dd(isset($status_md) === true);
+    $datas = array(
+      [
+        'title' => 'Email',
+        'type' => 'email',
+        'typeInput' => 'email',
+        'placeholder' => 'Masukkan google mail (gmail) kamu',
+        'note' => 'Masukkan gmail aktif',
+        'value' => '',
+      ],
+      [
+        'title' => 'No. Telp',
+        'type' => 'tel',
+        'typeInput' => 'no_telp',
+        'placeholder' => 'Masukkan nomor telephone',
+        'note' => 'Masukkan no telephone aktif',
+        'value' => '',
+      ],
+      [
+        'title' => 'Angkatan',
+        'type' => 'number',
+        'typeInput' => 'tahun_angkatan',
+        'placeholder' => '',
+        'note' => '',
+        'value' => '',
+      ],
+      [
+        'title' => 'Semester',
+        'type' => 'number',
+        'typeInput' => 'semester',
+        'placeholder' => '',
+        'note' => '',
+        'value' => '',
+      ],
+      [
+        'title' => 'Keterangan',
+        'type' => 'textarea',
+        'typeInput' => 'keterangan',
+        'placeholder' => 'Jelaskan alasan pengajuan cuti',
+        'note' => '',
+        'value' => '',
+      ],
 
-    if(isset($status_cuti) === false || isset($status_cuti) !== 7){
-      if (isset($status_md))
-      {
-        if($status_md !== 7)
-        {
-          return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan pengunduran diri!');
-        }
-        else {
-          return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengundurkan diri dari UNJ!');
-        }
-      }
-      else if(isset($status_cuti) === true)
-      {
-        if($status_cuti !== 7 && $status_cuti < 21)
-        {
-          return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
-        }
-        else if($pengajuan_cuti->count() >= 2)
-        {
-          return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengajukan permohonan cuti sebanyak 2x!');
-        }
-      }
-    }
+    );
+
 
     $arrData = [
       'title'         => 'Form Pengajuan Cuti',
       'subtitle'      => 'Form Pengajuan Cuti',
       'active'        => 'Home',
       'cuti_active'   => 'active',
+
+      'datas'         => $datas,
     ];
 
     return view('pengajuan.pengajuan_cuti.create', $arrData);
@@ -101,6 +122,8 @@ class PengajuanMhsController extends Controller
 
   public function store(Request $request)
   {
+    // return $request->file('upload_file')->store('file_pengajuan');
+
     $validator = $request->validate([
       'nim'               => ['required'],
       'pa'                => ['required'],
@@ -109,71 +132,64 @@ class PengajuanMhsController extends Controller
       'nama_prodi'        => ['required'],
       'kode_prodi'        => ['required'],
       'nama_fakultas'     => ['required'],
-      'jenjang'           => ['required'],
       'kode_fakultas'     => ['required'],
-      'email'             => ['required'],
+      'jenjang'           => ['required'],
+      'email'             => 'required | email:dns',
       'no_telp'           => ['required'],
       'tahun_angkatan'    => ['required'],
       'semester'          => ['required'],
       'keterangan'        => ['required'],
+      'upload_file'       => 'file|mimes:pdf, doc, docx|max:2048'
     ]);
 
     // dd($validator);
 
-    if (!isset($validator)) {
-      return back()->with('toast_error', 'Data yang anda masukkan tidak valid!');
-    }
+    // if (!isset($validator)) {
+    //   return back()->with('toast_error', 'Data yang anda masukkan tidak valid!');
+    // }
 
-    $nim            = $request->nim;
-    $nama           = $request->nama;
-    $pa             = $request->pa;
-    $jenis_kelamin  = $request->jenis_kelamin;
-    $nama_prodi     = $request->nama_prodi;
-    $kode_prodi     = $request->kode_prodi;
-    $nama_fakultas  = $request->nama_fakultas;
-    $kode_fakultas  = $request->kode_fakultas;
-    $jenjang        = $request->jenjang;
-    $email          = $request->email;
-    $no_telp        = $request->no_telp;
-    $tahun_angkatan = $request->tahun_angkatan;
-    $semester       = $request->semester;
-    $keterangan     = $request->keterangan;
-    $jenis_pengajuan     = $request->jenis_pengajuan;
+    $nim              = $request->nim;
+    $nama             = $request->nama;
+    $pa               = $request->pa;
+    $jenis_kelamin    = $request->jenis_kelamin;
+    $nama_prodi       = $request->nama_prodi;
+    $kode_prodi       = $request->kode_prodi;
+    $nama_fakultas    = $request->nama_fakultas;
+    $kode_fakultas    = $request->kode_fakultas;
+    $jenjang          = $request->jenjang;
+    $email            = $request->email;
+    $no_telp          = $request->no_telp;
+    $tahun_angkatan   = $request->tahun_angkatan;
+    $semester         = $request->semester;
+    $keterangan       = $request->keterangan;
+    $jenis_pengajuan  = $request->jenis_pengajuan;
     $status_pengajuan = $request->status_pengajuan;
-    // if($request->status_pengajuan !== null) {
-    // }
-
-    // dd($request->status_pengajuan);
-    // $status_pengajuan     = (($request->status_pengajuan !== null) ? $request->status_pengajuan : '');
-    // dd($status_pengajuan);
-
-    // if($jenis_pengajuan !== null) {
-    //   $jenis_pengajuan;
-    // }
+    $file_pengajuan   = $request->jenis_pengajuan == '2' ? $request->file('upload_file')->store('file_pengajuan') : null;
 
     try {
       DB::beginTransaction();
 
-      $pengajuan_mhs = PengajuanMhs::updateOrcreate([
-        'nim'             => $nim,
-        'nama'            => $nama,
-        'pa'              => $pa,
-        'jenis_kelamin'   => $jenis_kelamin,
-        'nama_prodi'      => $nama_prodi,
-        'kode_prodi'      => $kode_prodi,
-        'nama_fakultas'   => $nama_fakultas,
-        'kode_fakultas'   => $kode_fakultas,
-        'jenjang'         => $jenjang,
-        'email'           => $email,
-        'no_telp'         => $no_telp,
-        'tahun_angkatan'  => $tahun_angkatan,
-        'semester'        => $semester,
-        'keterangan'      => $keterangan,
-        'jenis_pengajuan'      => $jenis_pengajuan,
-        'status_pengajuan' => $status_pengajuan
+      $store = PengajuanMhs::updateOrcreate([
+        'nim'              => $nim,
+        'nama'             => $nama,
+        'pa'               => $pa,
+        'jenis_kelamin'    => $jenis_kelamin,
+        'nama_prodi'       => $nama_prodi,
+        'kode_prodi'       => $kode_prodi,
+        'nama_fakultas'    => $nama_fakultas,
+        'kode_fakultas'    => $kode_fakultas,
+        'jenjang'          => $jenjang,
+        'email'            => $email,
+        'no_telp'          => $no_telp,
+        'tahun_angkatan'   => $tahun_angkatan,
+        'semester'         => $semester,
+        'keterangan'       => $keterangan,
+        'jenis_pengajuan'  => $jenis_pengajuan,
+        'status_pengajuan' => $status_pengajuan,
+        'file_pengajuan_md'=> $file_pengajuan
         // (($status_pengajuan !== null) ? 'status_pengajuan' : '') => (($status_pengajuan !== null) ? $status_pengajuan : '')
       ]);
-      // dd($pengajuanMhs);
+      // dd($store);
 
       $pengajuanMhs = PengajuanMhs::where('nim', $nim)->get();
 
@@ -182,12 +198,16 @@ class PengajuanMhsController extends Controller
         $jenis_pengajuan = $pengajuan->jenis_pengajuan;
       }
 
-      $history                  = new HistoryPengajuan;
-      $history->id_pengajuan    = $id;
-      $history->jenis_pengajuan = $jenis_pengajuan;
-      $history->v_mode          = trim(session('user_cmode'));
-      // $history->alasan          = 'setuju';
-      $history->save();
+      $add_history = HistoryPengajuan::updateOrCreate(
+        [
+          'id_pengajuan'    => $id,
+          'jenis_pengajuan' => $jenis_pengajuan
+        ],
+        [
+          'v_mode'           => trim(session('user_cmode')),
+          'status_pengajuan' => $status_pengajuan
+        ]
+      );
 
       $pengajuanMhs = json_decode($pengajuanMhs);
       Mail::to($email)->send(new Pengajuan($pengajuanMhs));
@@ -198,13 +218,15 @@ class PengajuanMhsController extends Controller
         return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Permohonan Cuti Diajukan.');
       }
       else {
-        return response()->json(['success' => 'Data submitted successfully']);
+        return redirect('data-pengajuan-mhs/all')->with('toast_success', 'Permohonan Pengunduran Diri Berhasil Diajukan');
+        // return response()->json(['success' => 'Data submitted successfully', 'file' => $file_pengajuan]);
       }
 
     }
     catch (Exception $err) {
       DB::rollBack();
-      // dd($err->errorInfo[2] = 'email sudah terdaftar');
+      // dd($err->errorInfo);
+      // dd($err);
       return back()->with('toast_error', 'Permohonan cuti gagal diajukan, terjadi kesalahan.'. '<br>'.  ($err->errorInfo[2] = '<span class="text-danger"> Email sudah terdaftar!</span>'));
     }
   }

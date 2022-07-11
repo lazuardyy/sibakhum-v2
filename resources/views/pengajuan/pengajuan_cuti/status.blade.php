@@ -28,7 +28,7 @@
                   <td>{{ $pengajuan->nim }}</td>
                   <td>{{ $pengajuan->nama }}</td>
                   <td>{{ $pengajuan->nama_prodi }}</td>
-                  <td>{{ $pengajuan->created_at->format('d M Y') }}</td>
+                  <td>{{ $pengajuan->created_at->format('d M Y') }} <br> Pukul {{ $pengajuan->created_at->format('H:i') }} WIB</td>
                   <td class="flex gap-1 flex-col">
                     <span class="{{ ($pengajuan->status_pengajuan !== 0 && $pengajuan->status_pengajuan < 21) ? 'bg-success' : 'bg-red-400' }} px-2 py-1 rounded-lg">{{ $pengajuan->refStatusPengajuan->status_pengajuan_cuti }}</span>
                     <span class="bg-warning px-2 py-1 rounded-lg">{{ $pengajuan->refStatusPengajuan->keterangan_cuti }}</span>
@@ -55,13 +55,13 @@
                               <div class="modal-body">
                                   @include('verifikasi.row-form')
                                 <div class="modal-footer" style="padding: 0; margin-top:2rem">
-                                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                                    <span class="">Batal</span>
-                                  </button>
+                                  <x-button.button-submit type="button" data-bs-dismiss="modal" buttonName="batal" buttonIcon="fa-solid fa-ban" buttonColor="red"/>
 
-                                  <button type="submit" class="btn btn-primary" {{ ($pengajuan->status_pengajuan !== 0) ? 'disabled' : '' }}>
-                                    <span class="">Ajukan</span>
-                                  </button>
+                                  @if($pengajuan->status_pengajuan === 0)
+                                    <x-button.button-submit type="submit" buttonName="ajukan" buttonIcon="fa-solid fa-floppy-disk" buttonColor="green"/>
+                                  @else
+                                    <x-button.button-submit type="button" buttonName="ajukan" buttonIcon="fa-solid fa-floppy-disk" buttonColor="green" disabled/>
+                                  @endif
                                 </div>
                               </div>
                             </div>
@@ -71,6 +71,9 @@
                       </form>
 
                       <form action="{{ route('pengajuan-mhs.destroy', $pengajuan->id) }}" method="POST" style="display: inherit">
+                        @csrf
+                        @method('DELETE')
+
                         <button type="button" class="btn btn-danger btn-sm hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out rounded-md" data-bs-toggle="modal" data-bs-target="#modal_{{ $pengajuan->id }}" {{ ($pengajuan->status_pengajuan !== 0) ? 'disabled' : '' }}>
                           <i class="fa-solid fa-trash-can"></i>
                         </button>
@@ -88,18 +91,13 @@
                                 Apakah anda yakin ingin membatalkan pengajuan cuti?
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                                  <i class="fa-solid fa-ban"></i>
-                                  <span class="hidden lg:inline-block">Batal</span>
-                                </button>
+                                <x-button.button-submit type="button" data-bs-dismiss="modal" buttonName="batal" buttonIcon="fa-solid fa-ban" buttonColor="blue"/>
 
-                                @csrf
-                                @method('DELETE')
-                                {{ $pengajuan->id }}
-                                <button type="submit" class="btn btn-danger" {{ ($pengajuan->status_pengajuan !== 0) ? 'disabled' : '' }}>
-                                  <i class="fa-solid fa-trash-can"></i>
-                                  <span class="hidden lg:inline-block">Hapus</span>
-                                </button>
+                                @if($pengajuan->status_pengajuan === 0)
+                                  <x-button.button-submit type="submit" buttonName="hapus" buttonIcon="fa-solid fa-trash-can" buttonColor="red"/>
+                                @else
+                                  <x-button.button-submit type="button" buttonName="hapus" buttonIcon="fa-solid fa-trash-can" buttonColor="red" disabled/>
+                                @endif
                               </div>
                             </div>
                           </div>
@@ -119,11 +117,10 @@
       </div>
     </div>
 
-    <div class="button">
-      <a class="btn btn-primary hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-700 active:shadow-lg transition duration-150 ease-in-out" href="{{ url('home') }}">
-        <i class="nav-icon fa-solid fa-circle-arrow-left"></i>
-        Kembali
-      </a>
+
+
+    <div class="mb-2">
+      <x-button.button-href buttonName="kembali" btnColor="blue" href="/home" buttonIcon="fa-solid fa-angle-left"/>
     </div>
   </div>
 @endsection

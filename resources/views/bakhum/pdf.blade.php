@@ -17,9 +17,27 @@
       flex-direction: column;
     }
 
+    p {
+      text-align: justify;
+      /* margin: 0;
+      padding-bottom: 1rem; */
+    }
+
     img {
       width: 80px;
       /* height: 80px; */
+    }
+
+    .title, .subtitle {
+      text-align: center;
+    }
+    table:not(2) {
+      width: 100%;
+    }
+
+    section table {
+      /* border: 1px solid red; */
+      padding-left: 2rem;
     }
   </style>
 </head>
@@ -32,12 +50,7 @@
           <div class="kop_surat" style="text-align: center; padding-right: 1rem;" >
             <h3 style="margin-bottom: 0">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, <br> RISET DAN TEKNOLOGI</h3>
             <h3 style="margin-bottom: 0; margin-top:0; letter-spacing: 2;">UNIVERSITAS NEGERI JAKARTA</h3>
-            <small>Kampus Universitas Negeri Jakarta, Jl. Rawamangun Muka, Jakarta 13220</small>
-            <br>
-            <small>Telp: Rektor: (021) 4893854, WR 1:  4895130, WR II: 4893918, WR III: 4892926, WR IV: 4893982</small>
-            <br>
-            <small> BUK: 4750930, BAKHUM: 4759081, 4893668, BK: 4752180, <br> Bag. UHTP: Telp. 4890046, Bag. Keuangan: 4892414 Bag. Kepegawaian: 4890536</small> <br>
-            <small>Laman: www.unj.ac.id</small>
+            <small>Kampus Universitas Negeri Jakarta, Jl. Rawamangun Muka, Jakarta 13220 <br> Telp: Rektor: (021) 4893854, WR 1:  4895130, WR II: 4893918, WR III: 4892926, WR IV: 4893982 <br> BUK: 4750930, BAKHUM: 4759081, 4893668, BK: 4752180, <br> Bag. UHTP: Telp. 4890046, Bag. Keuangan: 4892414 Bag. Kepegawaian: 4890536 <br> Laman: www.unj.ac.id</small>
           </div>
         </td>
       </tr>

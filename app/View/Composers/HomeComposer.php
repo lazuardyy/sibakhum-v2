@@ -66,23 +66,23 @@ class HomeComposer
     }
     elseif($cmode === config('constants.users.dekanat') || $cmode === config('constants.users.fakultas')) {
       $pengajuan_cuti = PengajuanMhs::where('kode_fakultas', session('user_unit'))
-      ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '2' : '4')
+      ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '3' : '2')
       ->where('jenis_pengajuan', '1')
       ->get();
 
       $pengunduran_diri = PengajuanMhs::where('kode_fakultas', session('user_unit'))
-      ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '2' : '4')
+      ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '3' : '2')
       ->where('jenis_pengajuan', '2')
       ->get();
 
       // $pengajuan = compact('cuti', 'md');
     }
     elseif($cmode == config('constants.users.bakhum') || $cmode == config('constants.users.wakil_rektor')) {
-      $pengajuan_cuti = PengajuanMhs::where('status_pengajuan',  (($cmode == config('constants.users.bakhum')) ? '5' : '3'))
+      $pengajuan_cuti = PengajuanMhs::where('status_pengajuan',  (($cmode == config('constants.users.bakhum')) ? '5' : '4'))
       ->where('jenis_pengajuan', '1')
       ->get();
 
-      $pengunduran_diri = PengajuanMhs::where('status_pengajuan',  (($cmode == config('constants.users.bakhum')) ? '5' : '3'))
+      $pengunduran_diri = PengajuanMhs::where('status_pengajuan',  (($cmode == config('constants.users.bakhum')) ? '5' : '4'))
       ->where('jenis_pengajuan', '2')
       ->get();
 

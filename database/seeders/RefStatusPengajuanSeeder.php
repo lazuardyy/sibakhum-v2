@@ -38,8 +38,8 @@ class RefStatusPengajuanSeeder extends Seeder
         // 'jenis_pengajuan' => 1,
         'status_pengajuan_cuti' => 'Disetujui oleh koordinator prodi',
         'status_pengunduran_diri' => 'Disetujui oleh koordinator prodi',
-        'keterangan_cuti' => 'Dalam proses persetujuan Wakil Dekan 1',
-        'keterangan_md' =>'Dalam proses persetujuan Wakil Dekan 1'
+        'keterangan_cuti' => 'Data pengajuan diteruskan ke Akademik Fakultas',
+        'keterangan_md' =>'Data pengajuan diteruskan ke Akademik Fakultas'
       ]);
 
       DB::table('ref_status_pengajuan')->insert([

@@ -76,6 +76,14 @@
                 </div>
                 <div class="row border-bottom">
                   <div class="col-4">
+                    <p>Jenjang</p>
+                  </div>
+                  <div class="col-8">
+                    <p>: {{ $pengajuan->jenjangProdi }}</p>
+                  </div>
+                </div>
+                <div class="row border-bottom">
+                  <div class="col-4">
                     <p>No. Telp</p>
                   </div>
                   <div class="col-8">
@@ -140,43 +148,9 @@
 
       </div>
     </div>
-    <div class="card-footer">
-      <a href="{{ route('data-mhs.index') }}" class="btn btn-warning btn-sm">
-        <i class="nav-icon fa-solid fa-circle-arrow-left"></i>
-        Kembali
-      </a>
+    <div class="card-footer mb-2">
+      <x-button.button-href buttonName="kembali" btnColor="blue" href="{{ route('data-mhs.index') }}" buttonIcon="fa-solid fa-angle-left"/>
     </div>
   </div>
 </div>
 @endsection
-
-{{-- <div class="col-3">
-  <ul class="list-group">
-    <li class="list-group-item">NIM</li>
-    <li class="list-group-item">Nama Lengkap</li>
-    <li class="list-group-item">Jenis Kelamin</li>
-    <li class="list-group-item">Program Studi</li>
-    <li class="list-group-item">No HP</li>
-    <li class="list-group-item">Tahun Angkatan</li>
-    <li class="list-group-item">Semester</li>
-    <li class="list-group-item">Jenis Pengajuan</li>
-    <li class="list-group-item">Keterangan Pengajuan</li>
-    @if($home['cmode'] == '2' || $home['cmode'] == '8' || $home['cmode'] == '3')
-      <li class="list-group-item">Status Persetujuan</li>
-    @endif
-  </ul>
-</div>
-<div class="col-3">
-  <ul class="list-group">
-    <li class="list-group-item">{{ $pengajuan->nim }}</li>
-    <li class="list-group-item">{{ $pengajuan->nama }}</li>
-    <li class="list-group-item">{{ $pengajuan->jenis_kelamin }}</li>
-    <li class="list-group-item">{{ $pengajuan->kode_prodi }}</li>
-    <li class="list-group-item">{{ $pengajuan->no_telp }}</li>
-    <li class="list-group-item">{{ $pengajuan->tahun_angkatan }}</li>
-    <li class="list-group-item">{{ $pengajuan->semester }}</li>
-    <li class="list-group-item">{{ $pengajuan->jenis_pengajuan }}</li>
-    <li class="list-group-item">{{ $pengajuan->refStatusPengajuan->keterangan_cuti }}</li>
-    <li class="list-group-item">{{ $pengajuan->status_pengajuan }}</li>
-  </ul>
-</div> --}}

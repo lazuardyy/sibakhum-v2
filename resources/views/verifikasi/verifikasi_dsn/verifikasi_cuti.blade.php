@@ -31,7 +31,7 @@
                 <td>{{ $pengajuan->nama}}</td>
                 <td>{{ $pengajuan->nama_prodi }}</td>
 
-                <td>{{ $pengajuan->created_at->format("M/d/Y") }}</td>
+                <td>{{ $pengajuan->created_at->format('d M Y') }} <br> Pukul {{ $pengajuan->created_at->format('H:i') }} WIB</td>
                 <td class="flex">
                   <span class="w-full {{ ($pengajuan->status_pengajuan <= 7 && $pengajuan->status_pengajuan <= 24 && $pengajuan->status_pengajuan !== 0) ? 'bg-success' : 'bg-danger' }} px-2 py-1 rounded-lg">
                     {{ ($pengajuan->status_pengajuan === 0) ? 'Menunggu Persetujuan' : $pengajuan->refStatusPengajuan->status_pengajuan_cuti }}

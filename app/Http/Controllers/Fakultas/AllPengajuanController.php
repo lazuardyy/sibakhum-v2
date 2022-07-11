@@ -31,32 +31,23 @@ class AllPengajuanController extends Controller
 
     if($cmode == config('constants.users.dekanat')) {
       $pengajuan_mhs = PengajuanMhs::where('kode_fakultas', trim($unit))
-      ->where('status_pengajuan', '>=', '2')
-      ->where('status_pengajuan', '!=', '22')
+      ->whereIn('status_pengajuan', [3, 4, 23])
       ->get();
     }
     elseif($cmode == config('constants.users.wakil_rektor')) {
-      $pengajuan_mhs = PengajuanMhs::where('status_pengajuan', '>=', 3)
-      // ->where('jenis_pengajuan', $filter)
-      ->where('status_pengajuan', '!=', '21')
-      ->where('status_pengajuan', '!=', '22')
-      ->where('status_pengajuan', '!=', '23')
+      $pengajuan_mhs = PengajuanMhs::whereIn('status_pengajuan', [4, 24])
       ->get();
+
+      // dump($pengajuan_mhs);
     }
     elseif($cmode == config('constants.users.fakultas')) {
       $pengajuan_mhs = PengajuanMhs::where('kode_fakultas', trim($unit))
-      ->where('status_pengajuan', '>=', '4')
-      ->where('status_pengajuan', '!=', '21')
-      ->where('status_pengajuan', '!=', '22')
-      ->where('status_pengajuan', '!=', '23')
-      ->where('status_pengajuan', '!=', '24')
+      ->whereIn('status_pengajuan', [2])
       ->get();
     }
     else {
       $pengajuan_mhs = PengajuanMhs::where('status_pengajuan', '>=', 5)
-      ->where('status_pengajuan', '!=', '21')
-      ->where('status_pengajuan', '!=', '22')
-      ->where('status_pengajuan', '!=', '23')
+      ->whereIn('status_pengajuan', [5])
       ->get();
     }
     // $pengajuan_md   = PengunduranDiri::where('kode_fakultas', trim($unit))->get();
@@ -81,11 +72,14 @@ class AllPengajuanController extends Controller
   public function store (Request $request)
   {
     // $id_pengajuan = $request->id;
-    $id_pengajuan = $request->id_pengajuan;
-    $persetujuan = $request->persetujuan;
-    $jenis_pengajuan = $request->jenis_pengajuan;
-    $no_surat_fakultas = $request->no_surat_fakultas;
-    $alasan = $request->alasan;
+    $id_pengajuan       = $request->id_pengajuan;
+    $persetujuan        = $request->persetujuan;
+    $jenis_pengajuan    = $request->jenis_pengajuan;
+    $no_surat_fakultas  = $request->no_surat_fakultas;
+    if(session('user_cmode') == config('constants.users.bakhum')) {
+      $no_surat_bakhum = $request->no_surat_bakhum;
+    }
+    $alasan             = $request->alasan;
     // dd($no_surat);
     // dd($id_pengajuan, $persetujuan);
     // dd(count($id_pengajuan));
@@ -109,23 +103,30 @@ class AllPengajuanController extends Controller
           // config('constants.status.wd_tidak_setuju');
         }
       }
-      elseif(session('user_cmode') == config('constants.users.fakultas')){
+      elseif(session('user_cmode') == config('constants.users.fakultas')) {
           // dd($surat);
         if($no_surat_fakultas[$i] === null) {
           return redirect()->back()->with('toast_error', 'Ups! Nomor surat masih kosong!');
         }
-        // elseif($persetujuan[$i] == '1') {
-        // }
         else {
           $persetujuan[$i] = config('constants.status.fk_selesai');
         }
-      };
+      }
+      else {
+        if($no_surat_bakhum[$i] === null) {
+          return redirect()->back()->with('toast_error', 'Ups! Nomor surat masih kosong!');
+        }
+        else {
+          $persetujuan[$i] = config('constants.status.bk_selesai');
+        }
+      }
 
       $store = PengajuanMhs::where([
         'id' => $id_pengajuan[$i]
       ])->update([
         'status_pengajuan' => $persetujuan[$i],
-        'no_surat_fakultas' => ((session('user_cmode') == config('constants.users.fakultas')) ? $no_surat_fakultas[$i] : '')
+        'no_surat_fakultas' => $no_surat_fakultas[$i],
+        'no_surat_bakhum'   => $no_surat_bakhum[$i] ?? '',
       ]);
 
       // dd($store);

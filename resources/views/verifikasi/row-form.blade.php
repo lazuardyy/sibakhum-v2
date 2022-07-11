@@ -38,6 +38,14 @@
     <p>: {{ $pengajuan->nama_prodi }}</p>
   </div>
 </div>
+<div class="row border-bottom">
+  <div class="col-4">
+    <p>Jenjang</p>
+  </div>
+  <div class="col-8">
+    <p>: {{ $pengajuan->jenjang }}</p>
+  </div>
+</div>
 
 @if($home['cmode'] !== config('constants.users.mahasiswa'))
   <div class="row border-bottom">

@@ -34,40 +34,32 @@ class VerifikasiCutiController extends Controller
     if($cmode == config('constants.users.dosen')) {
       $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
       ->where('pa', session('user_username'))
-      ->where('status_pengajuan', '>=','0')
+      ->whereIn('status_pengajuan', [0, 1, 21])
       ->get();
     }
     elseif($cmode == config('constants.users.prodi')) {
       $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
       ->where('kode_prodi', trim($unit))
-      ->where('status_pengajuan', '>=', '1')
-      ->where('status_pengajuan', '!=', '21')
+      ->whereIn('status_pengajuan', [1, 2, 22])
+      ->get();
+
+      // dump($pengajuan_mhs);
+    }
+    elseif($cmode == config('constants.users.fakultas')) {
+      $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
+      ->where('kode_fakultas', trim($unit))
+      ->whereIn('status_pengajuan', [2])
       ->get();
     }
     elseif($cmode == config('constants.users.dekanat')) {
       $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
       ->where('kode_fakultas', trim($unit))
-      ->where('status_pengajuan', '>=', '2')
-      ->where('status_pengajuan', '!=', '22')
+      ->whereIn('status_pengajuan', [3, 4])
       ->get();
     }
-    // elseif($cmode = config('constants.users.pimpinan')) {
-    //   $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
-    //   ->where('status_pengajuan', '>=', '3')
-    //   ->where('status_pengajuan', '>=', '4')
-    //   ->where('status_pengajuan', '!=', '21')
-    //   ->where('status_pengajuan', '!=', '22')
-    //   ->where('status_pengajuan', '!=', '23')
-    //   ->get();
-    // }
     else {
       $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
-      ->where('kode_fakultas', trim($unit))
-      ->where('status_pengajuan', '>=', '3')
-      ->where('status_pengajuan', '!=', '21')
-      ->where('status_pengajuan', '!=', '22')
-      ->where('status_pengajuan', '!=', '23')
-      // ->where('status_pengajuan', '!=', '24')
+      ->whereIn('status_pengajuan', (($cmode == config('constants.users.wakil_rektor')) ? [4] : [5]))
       ->get();
     }
 

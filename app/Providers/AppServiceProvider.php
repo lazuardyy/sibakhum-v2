@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use ConsoleTVs\Charts\Registrar as Charts;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
+use App\View\Components\ButtonRef;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,5 +30,9 @@ class AppServiceProvider extends ServiceProvider
       $charts->register([
         \App\Charts\FakultasChart::class
       ]);
+
+      config(['app.locale' => 'id']);
+	    Carbon::setLocale('id');
+      date_default_timezone_set('Asia/Jakarta');
     }
 }

@@ -81,14 +81,13 @@
   {{-- form alasan penolakan --}}
 
   <div class="modal-footer w-100">
-    <button type="button" class="btn btn-danger text-white font-medium leading-tight rounded-sm shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0" data-bs-dismiss="modal">Batal</button>
+    <x-button.button-submit type="button" buttonName="Batal" buttonIcon="fa-solid fa-ban" buttonColor="red" title="Batal" data-toggle="tooltip" data-bs-dismiss="modal"/>
 
     @if(($home['cmode'] == '8' && ($pengajuan->status_pengajuan < 2 || $pengajuan->status_pengajuan === 21)) || ($home['cmode'] == '2' && ($pengajuan->status_pengajuan < 3 || $pengajuan->status_pengajuan === 22)) || ($home['cmode'] == '14' && ($pengajuan->status_pengajuan < 4 || $pengajuan->status_pengajuan === 23))
     )
-      <button type="submit" class="btn btn-primary text-white font-medium leading-tight rounded-sm shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0" data-toggle="tooltip" data-placement="top" title="Verifikasi Data" onclick="return confirm('Apakah Anda yakin dengan status terpilih ?')"
-      >Proses</button>
+      <x-button.button-submit type="submit" buttonName="Proses" buttonIcon="fa-solid fa-floppy-disk" buttonColor="green" title="Verifikasi Data" data-toggle="tooltip"/>
     @else
-      <button type="button" class="btn btn-primary text-white font-medium leading-tight rounded-sm shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0" data-toggle="tooltip" data-placement="top" title="Verifikasi Data" onclick="return confirm('Apakah Anda yakin dengan status terpilih ?')" disabled>Proses</button>
+      <x-button.button-submit type="button" buttonName="Proses" buttonIcon="fa-solid fa-floppy-disk" buttonColor="green" title="Verifikasi Data" data-toggle="tooltip"/>
     @endif
   </div>
 </div>
