@@ -42,26 +42,79 @@ class PengajuanMhsController extends Controller
     $status_cuti = PengajuanMhs::where('nim', session('user_username'))
     ->where('jenis_pengajuan', 1)
     ->pluck('status_pengajuan');
-    // ->get();
+
+    // dd($status_cuti);
+
+    $status_md = PengajuanMhs::where('nim', session('user_username'))
+    ->where('jenis_pengajuan', 2)
+    ->get();
+
+    // dd($status_md);
 
     // dd($pengajuan_cuti);
-    $status_disetujui_twice = array();
-    $status_ditolak = array();
-    $status_sedang_mengajukan = array();
+    // $status_disetujui_twice = array();
+    // $status_ditolak = array();
+    // $status_sedang_mengajukan = array();
+    // $telah_mengundurkan_diri = null;
+
+    // set variable mengundurkan diri
+    $md_disetujui = null;
+    $md_ditolak   = null;
+    $md_diproses  = null;
+
+    // set variable pengajuan cuti
+    $cuti_dua_kali = array();
+    $cuti_ditolak  = null;
+    $cuti_diproses = null;
 
     foreach($status_cuti as $key => $status) {
-      $status == 7 ? $status_disetujui_twice[] = $status : $status_ditolak[] = $status;
-      $status < 7 ? $status_sedang_mengajukan[] = $status : $status_ditolak[] = $status;
+      if($status == 7) {
+        $cuti_dua_kali[] = $status;
+      }
+      elseif($status < 7) {
+        $cuti_diproses = $status;
+      }
+      else {
+        $cuti_ditolak = $status;
+      }
+
+      // $status == 7 ? $status_disetujui_twice[] = $status : $status_ditolak[] = $status;
+      // $status < 7 ? $status_sedang_mengajukan[] = $status : $status_ditolak[] = $status;
     }
+    // dump($cuti_diproses);
+
+    foreach($status_md as $status) {
+      if($status->status_pengajuan == 7) {
+        $md_disetujui = $status->status_pengajuan;
+      }
+      elseif($status->status_pengajuan < 7) {
+        $md_diproses = $status->status_pengajuan;
+      }
+      else {
+        $md_ditolak = $status->status_pengajuan;
+      }
+
+
+
+      // $status->status_pengajuan == 7 && $status->status_pengajuan != 21 ? $telah_mengundurkan_diri[] = $status->status_pengajuan : $status_ditolak[] = $status->status_pengajuan;
+      // $status->status_pengajuan < 7 ? $status_sedang_mengajukan[] = $status->status_pengajuan : $status_ditolak[] = $status->status_pengajuan;
+    }
+    // dump(($md_diproses !== null)&&($md_diproses < 7));
+
+    // dd($telah_mengundurkan_diri, $status_ditolak, $status_sedang_mengajukan);
+
+    // dd($telah_mengundurkan_diri);
 
     // dump($status_sedang_mengajukan);
-
-    if(count($status_disetujui_twice) === 2) {
+    if($md_disetujui === 7 ) {
+      return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengundurkan diri dari UNJ!');
+    }
+    elseif(count($cuti_dua_kali) === 2) {
       return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengajukan permohonan cuti sebanyak 2x!');
     }
-    elseif($status_sedang_mengajukan !== []){
-      return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
-    }
+    elseif(($cuti_diproses !== null && $cuti_diproses < 7) || ($md_diproses !== null && $md_diproses < 7)) {
+      return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan ' .( ($status_cuti === []) ? 'cuti' : 'pengunduran diri') );
+    };
 
     $datas = array(
       [

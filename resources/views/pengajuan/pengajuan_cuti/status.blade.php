@@ -30,8 +30,8 @@
                   <td>{{ $pengajuan->nama_prodi }}</td>
                   <td>{{ $pengajuan->created_at->format('d M Y') }} <br> Pukul {{ $pengajuan->created_at->format('H:i') }} WIB</td>
                   <td class="flex gap-1 flex-col">
-                    <span class="{{ ($pengajuan->status_pengajuan !== 0 && $pengajuan->status_pengajuan < 21) ? 'bg-success' : 'bg-red-400' }} px-2 py-1 rounded-lg">{{ $pengajuan->refStatusPengajuan->status_pengajuan_cuti }}</span>
-                    <span class="bg-warning px-2 py-1 rounded-lg">{{ $pengajuan->refStatusPengajuan->keterangan_cuti }}</span>
+                    <span class="{{ ($pengajuan->status_pengajuan !== 0 && $pengajuan->status_pengajuan < 21) ? 'bg-success' : 'bg-red-400' }} px-2 py-1 rounded-lg">{{ ($pengajuan->jenis_pengajuan === 1) ? $pengajuan->refStatusPengajuan->status_pengajuan_cuti : $pengajuan->refStatusPengajuan->status_pengunduran_diri }}</span>
+                    <span class="bg-warning px-2 py-1 rounded-lg">{{ ($pengajuan->jenis_pengajuan === 1) ? $pengajuan->refStatusPengajuan->keterangan_cuti : $pengajuan->refStatusPengajuan->keterangan_md }}</span>
                   </td>
 
                   <td>

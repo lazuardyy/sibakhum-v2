@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PengajuanApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['prefix' => 'data-pengajuan', 'as' => 'pengajuan.'], function () {
+  Route::get('/fakultas/{kodefakultas}', [PengajuanApiController::class, 'dataPengajuanFakultas'])->name('fakultas');
+  // Route::post('/store', [PengajuanApiController::class, 'store'])->name('store');
+  // Route::post('/activate', [PengajuanApiController::class, 'activate'])->name('activate');
+  // Route::get('/edit/{id}', [PengajuanApiController::class, 'edit'])->name('edit');
+  // Route::delete('/{id}', [PengajuanApiController::class, 'destroy'])->name('destroy');
 });

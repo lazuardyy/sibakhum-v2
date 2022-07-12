@@ -4,6 +4,16 @@
 <div class="container grid p-2 pb-4">
   @include('partials.header')
 
+  <div class="flex w-full mb-4 gap-4">
+    <div class="w-1/2 bg-slate-50 shadow-md p-3 rounded-md">
+      <canvas id="totalPengajuan"></canvas>
+    </div>
+    <div class="w-1/2 bg-slate-50 shadow-md p-3 rounded-md">
+      <canvas id="diproses"></canvas>
+    </div>
+
+  </div>
+
   <div class="bg-slate-50 shadow-md p-3 rounded-md overflow-x-auto">
     <table class="table" id="tabel-history">
       <thead>
@@ -50,4 +60,8 @@
 @section('script')
   {{-- <script src="{{ asset('js/script.js') }}"></script> --}}
   <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('js/moment.min.js') }}"></script>
+  <script src="{{ asset('js/chart.min.js') }}"></script>
+  <script src="{{ asset('js/axios.min.js') }}"></script>
+  <script src="{{ asset('js/chart.js') }}" type="module"></script>
 @endsection
