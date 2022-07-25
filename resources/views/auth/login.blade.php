@@ -1,7 +1,7 @@
 @extends('layouts.front')
 
 @section('content')
-<div class="container-md">
+<div class="container-md p-2 pt-4 pb-4">
   <div class="row gy-2">
     <div class="col-md-5">
       <div class="card p-4 my-card border-0 shadow h-100" style="border-radius: 2rem">

@@ -87,7 +87,9 @@ function searchMhs () {
               let s1 = [];
               let s2 = [];
 
+
               for(const prodiItem of result) {
+                // $('#nama_prodi').remove()
                 $('#nama_prodi').append(`
                   <option value="${prodiItem.namaProdi}" id="${prodiItem.kodeProdi}">${prodiItem.namaProdi}</option>
                 `)

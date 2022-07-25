@@ -6,11 +6,12 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Mahasiswa\PengajuanMhsController;
 use App\Http\Controllers\Fakultas\PengunduranDiriController;
-use App\Http\Controllers\Dosen\VerifikasiCutiController;
-use App\Http\Controllers\Dosen\VerifikasiMdController;
-use App\Http\Controllers\Fakultas\AllPengajuanController;
-use App\Http\Controllers\Bakhum\CetakSuratController;
+use App\Http\Controllers\Dosen\DosenController;
+use App\Http\Controllers\Fakultas\VerifikasiController;
+use App\Http\Controllers\Fakultas\SuratMasukController;
+use App\Http\Controllers\Bakhum\BakhumController;
 use App\Http\Controllers\Bakhum\BukaPeriodeController;
+use App\Http\Controllers\Bakhum\UploadSkController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\Email\EmailController;
 use Illuminate\Support\Facades\Http;
@@ -34,6 +35,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'pengajuan-mhs', 'as' => 'pengajuan-mhs.'], function () {
   Route::get('/create', [PengajuanMhsController::class, 'create'])->name('create');
+  Route::get('/create-md', [PengunduranDiriController::class, 'create'])->name('create-md');
   Route::post('/store', [PengajuanMhsController::class, 'store'])->name('store');
   Route::get('/{id}/edit', [PengajuanMhsController::class, 'edit'])->name('edit');
   Route::get('/status/{nim}', [PengajuanMhsController::class, 'show'])->name('show');
@@ -42,34 +44,27 @@ Route::group(['prefix' => 'pengajuan-mhs', 'as' => 'pengajuan-mhs.'], function (
 });
 
 Route::group(['prefix' => 'data-pengajuan-mhs', 'as' => 'data-mhs.'], function () {
-  Route::get('/all', [AllPengajuanController::class, 'index'])->name('index');
-  Route::get('semua', [CetakSuratController::class, 'index'])->name('semua');
-  Route::get('cetak/{id}', [CetakSuratController::class, 'download'])->name('cetak');
-  // Route::match(['get', 'post'], 'all', [AllPengajuanController::class, 'index'])->name('index');
-  Route::get('/{jenis_pengajuan}', [VerifikasiCutiController::class, 'show'])->name('show');
-  Route::get('/detail/{nim}', [VerifikasiCutiController::class, 'detailMhs'])->name('detailMhs');
-  Route::post('/cuti-store', [VerifikasiCutiController::class, 'store'])->name('store');
-  Route::delete('/{id}', [VerifikasiCutiController::class, 'destroy'])->name('destroy');
+  Route::get('/verifikasi', [VerifikasiController::class, 'index'])->name('index');
+  Route::get('/', [BakhumController::class, 'index'])->name('semua');
+  // Route::get('/{filter}', [BakhumController::class, 'filter'])->name('filter');
+  Route::get('/cetak/{id}', [BakhumController::class, 'download'])->name('cetak');
+  Route::get('/to-pdf/{id}', [SuratMasukController::class, 'download_sk'])->name('download-sk');
+  Route::get('/kirim-sk', [UploadSkController::class, 'index_sk'])->name('index-sk');
+  Route::get('/{jenis_pengajuan}', [DosenController::class, 'show'])->name('show');
+  Route::get('/detail/{nim}', [DosenController::class, 'detailMhs'])->name('detailMhs');
+  Route::post('/verifikasi-dosen', [DosenController::class, 'verifikasiDosen'])->name('verifikasi-dosen');
+  Route::post('/verifikasi-bakhum', [BakhumController::class, 'verifikasiBakhum'])->name('verifikasi-bakhum');
+  Route::post('/verifikasi', [VerifikasiController::class, 'verifikasi'])->name('verifikasi');
+  Route::post('/kirim-sk', [UploadSkController::class, 'uploadSk'])->name('upload-sk');
 });
 
-// Route::group(['prefix' => 'data', 'as' => 'data-md.'], function () {
-//   Route::get('/pengunduran-diri', [VerifikasiMdController::class, 'index'])->name('index');
-//   Route::post('/md-store', [VerifikasiMdController::class, 'store'])->name('store');
-//   Route::get('/details-md/{detail}', [VerifikasiMdController::class, 'show'])->name('show');
-//   Route::delete('/{id}', [VerifikasiMdController::class, 'destroy'])->name('destroy');
-// });
-
+Route::get('/surat-masuk', [SuratMasukController::class, 'surat_masuk'])->name('surat-masuk');
 
 Route::group(['prefix' => 'data-pengajuan', 'as' => 'data-pengajuan.'], function () {
-  // Route::get('/', [AllPengajuanController::class, 'index'])->name('index');
-  // Route::get('/{detail}', [AllPengajuanController::class, 'show'])->name('show');
-  Route::post('/store', [AllPengajuanController::class, 'store'])->name('store');
 });
 
-// Route::get('/data-pengajuan', [AllPengajuanController::class, 'index'])->name('data-pengajuan');
-Route::resource('pengunduran-diri', PengunduranDiriController::class);
-
 Route::get('riwayat-persetujuan', [HistoryController::class, 'index'])->name('history');
+Route::get('data-grafik', [HistoryController::class, 'data_grafik'])->name('grafik');
 
 Route::group(['prefix' => 'buka-periode', 'as' => 'periode.'], function () {
   Route::get('/', [BukaPeriodeController::class, 'index'])->name('index');

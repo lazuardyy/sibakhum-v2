@@ -147,12 +147,20 @@
 
   <div class="form-group mb-6">
     <label for="semester" class="form-label inline-block mb-2 text-gray-700">Semester</label>
-    <select id="semester" name="semester"
-      class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
-      @for($i = 3; $i <= 8; $i++)
-        <option value="{{ $i }}">{{ $i }}</option>
-      @endfor
-    </select>
+      <input class = 'form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+        type="number"
+        id="semester"
+        required
+        aria-describedby="semester"
+        placeholder="Masukkan semester berjalan, contoh : 117"
+        name="semester"
+        value="{{ $pengajuan->semester }}"
+      >
+      @error('semester')
+        <small id="semester" class="block mt-1 text-xs text-red-600">
+          {{ $message }}
+        </small>
+      @enderror
   </div>
 
   <div class="form-group mb-6">

@@ -19,8 +19,8 @@ class PengunduranDiriController extends Controller
 {
   public function create()
   {
-    $user = session('user_name');
-    $mode = session('user_mode');
+    $user  = session('user_name');
+    $mode  = session('user_mode');
     $cmode = session('user_cmode');
 
     if (!Session::has('isLoggedIn')) {

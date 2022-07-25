@@ -17,7 +17,7 @@
         </span>
         <div class="info-box-content">
           <span class="info-box-text">Disetujui WD 1 dan WR 1</span>
-          <span class="info-box-number">{{ $verifikasi['pengajuan_mhs']->where('status_pengajuan', 3)->count('id') +  $verifikasi['pengajuan_mhs']->where('status_pengajuan', 4)->count('id') }}</span>
+          <span class="info-box-number">{{ $verifikasi['pengajuan_mhs']->where('status_pengajuan', 4)->count('id') +  $verifikasi['pengajuan_mhs']->where('status_pengajuan', 5)->count('id') }}</span>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
         </span>
         <div class="info-box-content">
           <span class="info-box-text">Diproses Bakhum</span>
-          <span class="info-box-number">{{ $verifikasi['pengajuan_mhs']->where('status_pengajuan', 5)->count('id') }}</span>
+          <span class="info-box-number">{{ $verifikasi['pengajuan_mhs']->where('status_pengajuan', 6)->count('id') }}</span>
         </div>
       </div>
     </div>
@@ -37,6 +37,7 @@
         <span class="info-box-icon bg-info"><i class="fa-solid fa-clipboard-check"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">Persetujuan</span>
+          <span class="info-box-number">{{ $verifikasi['pengajuan_mhs']->where('status_pengajuan', 7)->count('id') }}</span>
         </div>
       </div>
     </div>
@@ -79,7 +80,7 @@
         <span class="info-box-icon bg-info"><i class="fa-solid fa-clipboard-check"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">Disetujui Wakil Dekan 1</span>
-          <span class="info-box-number">{{ $verifikasi['pengajuan_mhs']->where('status_pengajuan', 3)->count('id') }}</span>
+          <span class="info-box-number">{{ $verifikasi['pengajuan_mhs']->where('status_pengajuan', 4)->count('id') }}</span>
         </div>
       </div>
     </div>

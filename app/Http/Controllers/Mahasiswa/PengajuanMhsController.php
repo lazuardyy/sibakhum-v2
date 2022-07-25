@@ -20,8 +20,8 @@ class PengajuanMhsController extends Controller
 {
   public function create()
   {
-    $user = session('user_name');
-    $mode = session('user_mode');
+    $user  = session('user_name');
+    $mode  = session('user_mode');
     $cmode = session('user_cmode');
 
     if (!Session::has('isLoggedIn')) {
@@ -49,14 +49,6 @@ class PengajuanMhsController extends Controller
     ->where('jenis_pengajuan', 2)
     ->get();
 
-    // dd($status_md);
-
-    // dd($pengajuan_cuti);
-    // $status_disetujui_twice = array();
-    // $status_ditolak = array();
-    // $status_sedang_mengajukan = array();
-    // $telah_mengundurkan_diri = null;
-
     // set variable mengundurkan diri
     $md_disetujui = null;
     $md_ditolak   = null;
@@ -77,11 +69,7 @@ class PengajuanMhsController extends Controller
       else {
         $cuti_ditolak = $status;
       }
-
-      // $status == 7 ? $status_disetujui_twice[] = $status : $status_ditolak[] = $status;
-      // $status < 7 ? $status_sedang_mengajukan[] = $status : $status_ditolak[] = $status;
     }
-    // dump($cuti_diproses);
 
     foreach($status_md as $status) {
       if($status->status_pengajuan == 7) {
@@ -93,19 +81,9 @@ class PengajuanMhsController extends Controller
       else {
         $md_ditolak = $status->status_pengajuan;
       }
-
-
-
-      // $status->status_pengajuan == 7 && $status->status_pengajuan != 21 ? $telah_mengundurkan_diri[] = $status->status_pengajuan : $status_ditolak[] = $status->status_pengajuan;
-      // $status->status_pengajuan < 7 ? $status_sedang_mengajukan[] = $status->status_pengajuan : $status_ditolak[] = $status->status_pengajuan;
     }
-    // dump(($md_diproses !== null)&&($md_diproses < 7));
 
-    // dd($telah_mengundurkan_diri, $status_ditolak, $status_sedang_mengajukan);
 
-    // dd($telah_mengundurkan_diri);
-
-    // dump($status_sedang_mengajukan);
     if($md_disetujui === 7 ) {
       return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengundurkan diri dari UNJ!');
     }
@@ -113,7 +91,7 @@ class PengajuanMhsController extends Controller
       return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengajukan permohonan cuti sebanyak 2x!');
     }
     elseif(($cuti_diproses !== null && $cuti_diproses < 7) || ($md_diproses !== null && $md_diproses < 7)) {
-      return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan ' .( ($status_cuti === []) ? 'cuti' : 'pengunduran diri') );
+      return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan ' . ($cuti_diproses !== null ? 'cuti' : 'pengunduran diri')) ;
     };
 
     $datas = array(
@@ -145,7 +123,7 @@ class PengajuanMhsController extends Controller
         'title' => 'Semester',
         'type' => 'number',
         'typeInput' => 'semester',
-        'placeholder' => '',
+        'placeholder' => 'Masukkan semester berjalan, contoh : 117',
         'note' => '',
         'value' => '',
       ],
@@ -263,7 +241,7 @@ class PengajuanMhsController extends Controller
       );
 
       $pengajuanMhs = json_decode($pengajuanMhs);
-      Mail::to($email)->send(new Pengajuan($pengajuanMhs));
+      // Mail::to($email)->send(new Pengajuan($pengajuanMhs));
 
       DB::commit();
 
@@ -271,7 +249,7 @@ class PengajuanMhsController extends Controller
         return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Permohonan Cuti Diajukan.');
       }
       else {
-        return redirect('data-pengajuan-mhs/all')->with('toast_success', 'Permohonan Pengunduran Diri Berhasil Diajukan');
+        return redirect('data-pengajuan-mhs/verifikasi')->with('toast_success', 'Permohonan Pengunduran Diri Berhasil Diajukan');
         // return response()->json(['success' => 'Data submitted successfully', 'file' => $file_pengajuan]);
       }
 

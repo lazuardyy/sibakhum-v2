@@ -102,16 +102,23 @@ class HistoryController extends Controller
       'active'          => 'Home',
       'riwayat_active'  => 'active',
 
-      // 'history_cuti'    => $history_cuti,
       'histories'       => $histories,
-      // 'nama_mhs'        => $nama_mhs,
-      // 'jenis_pengajuan' => $jenis_pengajuan,
-      // 'created_at'      => $created_at,
       'all_history'     => $all_history,
-      // 'id_cuti_history' => isset($id_cuti_history),
-      // 'id_md_history'   => isset($id_md_history),
 
     ];
     return view('histories', $arrData);
+  }
+
+  public function data_grafik ()
+  {
+
+    $arrData = [
+      'title'           => 'Data & Grafik',
+      'subtitle'        => 'Data & Grafik',
+      'active'          => 'Home',
+      'grafik_active'   => 'active',
+    ];
+
+    return view('grafik.data', $arrData);
   }
 }

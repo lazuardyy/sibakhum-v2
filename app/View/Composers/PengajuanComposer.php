@@ -66,15 +66,19 @@ class PengajuanComposer
     }
 
     if(session('user_cmode') == config('constants.users.mahasiswa')) {
-      $id_cuti = PengajuanMhs::where('nim', session('user_username'))->pluck('id')->toArray();
-      // dd($id_cuti);
+      // $id_cuti = PengajuanMhs::where('nim', session('user_username'))->pluck('id')->toArray();
 
-      for($i = 0; $i < count($id_cuti); $i++) {
-        $pengajuan_cuti = PengajuanMhs::where('id', $id_cuti)
-        ->get();
-      }
+      // for($i = 0; $i < count($id_cuti); $i++) {
+      //   $pengajuan_cuti = PengajuanMhs::where('id', $id_cuti)
+      //   ->get();
+      // }
 
-      $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))->get();
+      // $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))->get();
+
+      $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))
+      ->where('jenis_pengajuan', 1)
+      ->get();
+
     }
     elseif (session('user_cmode') == config('constants.users.dosen')) {
       $pengajuan_cuti = PengajuanMhs::where('pa', session('user_username'))->get();

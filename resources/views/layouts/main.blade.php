@@ -42,27 +42,10 @@
         <div class="float-right d-none d-sm-block">
             <strong>AdminLTE.io</a></strong>
         </div>
-        <strong>Copyright &copy; 2022 <a href="https://pustikom.unj.ac.id/">UPT.TIK-UNJ</a>.</strong> <b>Version</b> 1.0.0
+        <strong>Copyright &copy; {{ date('Y') }} <a href="https://pustikom.unj.ac.id/">UPT.TIK-UNJ</a>.</strong> <b>Version</b> 1.0.0
     </footer>
   </div>
 
-  {{-- <script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
-  <script src="https://unpkg.com/@chartisan/echarts/dist/chartisan_echarts.js"></script> --}}
-  {{-- <script>
-    const chart = new Chartisan({
-      el: '#chart',
-      url: "@chart('FakultasChart')",
-      loader: {
-        color: '#ff00ff',
-        size: [30, 30],
-        type: 'bar',
-        textColor: '#000',
-        text: 'Loading fakultas chart data...',
-      },
-      hooks: new ChartisanHooks()
-        .tooltip(),
-    });
-  </script> --}}
   <script src="{{ asset('js/jquery.min.js') }}"></script>
   <script src="{{ asset('js/adminlte.min.js') }}"></script>
   <script src="{{ asset('js/script.js') }}"></script>

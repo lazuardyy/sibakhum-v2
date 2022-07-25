@@ -17,6 +17,7 @@ return [
     'wr_setuju'         => 5,
     'fk_selesai'        => 3,
     'bk_selesai'        => 6,
+    'pengajuan_selesai' => 7,
 
     'pa_tidak_setuju'   => 21,
     'koor_tidak_setuju' => 22,

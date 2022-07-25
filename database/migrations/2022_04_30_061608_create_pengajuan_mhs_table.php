@@ -35,6 +35,8 @@ return new class extends Migration
           $table->string('no_surat_fakultas')->nullable();
           $table->string('no_surat_bakhum')->nullable();
           $table->string('file_pengajuan_md')->nullable();
+          $table->enum('status_pembayaran', [0, 1])->default(0);
+          $table->string('file_sk')->nullable();
           $table->timestamps();
         });
     }

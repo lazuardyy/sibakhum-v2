@@ -53,12 +53,27 @@
       @endif
 
     @elseif($home['cmode'] == '14')
-      @if($pengajuan->status_pengajuan < 4 || $pengajuan->status_pengajuan >= 4 && $pengajuan->status_pengajuan <= 24)
+      @if($pengajuan->status_pengajuan < 5 || $pengajuan->status_pengajuan >= 5 && $pengajuan->status_pengajuan <= 24)
         <div class="mb-2 form-control bg-{{ ($pengajuan->status_pengajuan <= 7 &&$pengajuan->status_pengajuan <= 24) ? 'success' : 'danger'}}">
           {{ $pengajuan->refStatusPengajuan->status_pengajuan_cuti }}
         </div>
 
-        @if($pengajuan->status_pengajuan < 4 || $pengajuan->status_pengajuan === 23)
+        @if($pengajuan->status_pengajuan < 5 || $pengajuan->status_pengajuan === 23)
+          <select class="form-control status" id="status_persetujuan" name="status_persetujuan">
+            <option value="0">Perbarui Status Persetujuan</option>
+            <option value="1">Disetujui</option>
+            <option value="2">Ditolak</option>
+          </select>
+        @endif
+      @endif
+
+    @elseif($home['cmode'] == '19')
+      @if($pengajuan->status_pengajuan < 6 || $pengajuan->status_pengajuan >= 6 && $pengajuan->status_pengajuan <= 24)
+        <div class="mb-2 form-control bg-{{ ($pengajuan->status_pengajuan <= 7 &&$pengajuan->status_pengajuan <= 24) ? 'success' : 'danger'}}">
+          {{ $pengajuan->refStatusPengajuan->status_pengajuan_cuti }}
+        </div>
+
+        @if($pengajuan->status_pengajuan < 6 || $pengajuan->status_pengajuan === 24)
           <select class="form-control status" id="status_persetujuan" name="status_persetujuan">
             <option value="0">Perbarui Status Persetujuan</option>
             <option value="1">Disetujui</option>
@@ -74,7 +89,8 @@
     <input type="hidden" name="nim"  value="{{ $pengajuan->nim }}">
     <input type="hidden" name="jenis_pengajuan"  value="{{ $pengajuan->jenis_pengajuan }}">
 
-    @if(($home['cmode'] == '8' && ($pengajuan->status_pengajuan < 2 || $pengajuan->status_pengajuan === 21)) || ($home['cmode'] == '2' && ($pengajuan->status_pengajuan < 3 || $pengajuan->status_pengajuan === 22)) || ($home['cmode'] == '14' && ($pengajuan->status_pengajuan < 4 || $pengajuan->status_pengajuan === 23)))
+    @if(($home['cmode'] == '8' && ($pengajuan->status_pengajuan < 2 || $pengajuan->status_pengajuan === 21)) || ($home['cmode'] == '2' && ($pengajuan->status_pengajuan < 3 || $pengajuan->status_pengajuan === 22)) || ($home['cmode'] == '14' && ($pengajuan->status_pengajuan < 5 || $pengajuan->status_pengajuan === 23)) || ($home['cmode'] == '19' && ($pengajuan->status_pengajuan < 6 || $pengajuan->status_pengajuan === 24)))
+
       <textarea class="form-control alasan" id='alasan_{{ $pengajuan->id }}' rows="3" cols="50" name="alasan" placeholder="Beri alasan bila pengajuan ditolak" style="resize: none;" rows="5"></textarea>
     @endif
   </div>
@@ -83,7 +99,7 @@
   <div class="modal-footer w-100">
     <x-button.button-submit type="button" buttonName="Batal" buttonIcon="fa-solid fa-ban" buttonColor="red" title="Batal" data-toggle="tooltip" data-bs-dismiss="modal"/>
 
-    @if(($home['cmode'] == '8' && ($pengajuan->status_pengajuan < 2 || $pengajuan->status_pengajuan === 21)) || ($home['cmode'] == '2' && ($pengajuan->status_pengajuan < 3 || $pengajuan->status_pengajuan === 22)) || ($home['cmode'] == '14' && ($pengajuan->status_pengajuan < 4 || $pengajuan->status_pengajuan === 23))
+    @if(($home['cmode'] == '8' && ($pengajuan->status_pengajuan < 2 || $pengajuan->status_pengajuan === 21)) || ($home['cmode'] == '2' && ($pengajuan->status_pengajuan < 3 || $pengajuan->status_pengajuan === 22)) || ($home['cmode'] == '14' && ($pengajuan->status_pengajuan < 4 || $pengajuan->status_pengajuan === 23) || ($home['cmode'] == '19' && ($pengajuan->status_pengajuan < 6 || $pengajuan->status_pengajuan === 24)))
     )
       <x-button.button-submit type="submit" buttonName="Proses" buttonIcon="fa-solid fa-floppy-disk" buttonColor="green" title="Verifikasi Data" data-toggle="tooltip"/>
     @else

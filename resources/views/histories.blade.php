@@ -4,16 +4,6 @@
 <div class="container grid p-2 pb-4">
   @include('partials.header')
 
-  <div class="flex w-full mb-4 gap-4">
-    <div class="w-1/2 bg-slate-50 shadow-md p-3 rounded-md">
-      <canvas id="totalPengajuan"></canvas>
-    </div>
-    <div class="w-1/2 bg-slate-50 shadow-md p-3 rounded-md">
-      <canvas id="diproses"></canvas>
-    </div>
-
-  </div>
-
   <div class="bg-slate-50 shadow-md p-3 rounded-md overflow-x-auto">
     <table class="table" id="tabel-history">
       <thead>

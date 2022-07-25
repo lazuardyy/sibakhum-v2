@@ -1,59 +1,50 @@
 <?php
 
-namespace App\Http\Controllers\Bakhum;
+namespace App\Http\Controllers\Fakultas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-// use Illuminate\Support\Facades\Image;
 use App\Models\PengajuanMhs;
 use App\Models\HistoryPengajuan;
 use App\Models\BukaPeriode;
 use PDF;
 
-class CetakSuratController extends Controller
+class SuratMasukController extends Controller
 {
-  public function index ()
+  public function surat_masuk ()
   {
+
     $user   = session('user_name');
     $mode   = session('user_mode');
     $cmode  = session('user_cmode');
     $unit   = session('user_unit');
 
-    if(!Session::has('isLoggedIn')) {
+    if (!Session::has('isLoggedIn')) {
       return redirect()->to('login');
     }
-    elseif($cmode == config('constants.users.dosen') && $cmode == config('constants.users.mahasiswa')) {
+    elseif($cmode === config('constants.users.mahasiswa')) {
       return redirect()->to('/home');
     }
 
-
-    $pengajuan_mhs = PengajuanMhs::where('status_pengajuan', '>=', 5)
-    ->where('status_pengajuan', '!=', '21')
-    ->where('status_pengajuan', '!=', '22')
-    ->where('status_pengajuan', '!=', '23')
+    $pengajuan_mhs = PengajuanMhs::where('kode_fakultas', trim($unit))
+    ->whereIn('status_pengajuan', [7])
     ->get();
 
-    // $pengajuan_md   = PengunduranDiri::where('kode_fakultas', trim($unit))->get();
-    // dd($pengajuan_md);
-
     $arrData = [
-      'title'               => 'Semua Data Pengajuan',
-      'subtitle'            => 'Semua Data Pengajuan',
-      'modal_title'         => 'Detail Pengajuan',
+      'title'               => 'Surat Masuk',
+      'subtitle'            => 'Surat Masuk',
       'active'              => 'Home',
-      'all_data_active'     => 'active',
+      'surat_active'        => 'active',
 
-      'pengajuan_mhs'       => $pengajuan_mhs,
-      // 'pengajuan_md'        => $pengajuan_md,
+      'pengajuan_mhs'       => $pengajuan_mhs
     ];
 
-    // dd($arrData);
 
-    return view('bakhum.cetak_surat', $arrData);
+    return view('fakultas.surat', $arrData);
   }
 
-  public function download ($id)
+  public function download_sk ($id)
   {
     $pengajuan_mhs = PengajuanMhs::findOrFail($id);
     $pengajuan_mhs = json_decode($pengajuan_mhs);
@@ -72,10 +63,13 @@ class CetakSuratController extends Controller
 
     $pdf = PDF::loadView('bakhum.pdf', [
       'pengajuan' => $pengajuan_mhs,
-      'history' => $history,
-      'periode' => $periode,
+      'history'   => $history,
+      'periode'   => $periode,
     ]);
+
+    $file_name = $pengajuan_mhs->nama . '_' . $pengajuan_mhs->nim . '_' . (($pengajuan_mhs->jenis_pengajuan == 1) ? 'Surat Keterangan Cuti' : 'Surat Keterangan Pengunduran Diri');
+    // dd($file_name);
     // return $pdf->download('surat.pdf');
-    return $pdf->stream();
+    return $pdf->download($file_name);
   }
 }

@@ -29,6 +29,6 @@ class ViewServiceProvider extends ServiceProvider
     {
       View::composer('*', HomeComposer::class);
       View::composer(['pengajuan.*',],PengajuanComposer::class);
-      View::composer(['verifikasi.*', 'home.index'], VerifikasiComposer::class);
+      View::composer(['verifikasi.*', 'home.index', 'bakhum.*', 'fakultas.*'], VerifikasiComposer::class);
     }
 }

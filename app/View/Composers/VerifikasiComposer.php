@@ -5,18 +5,23 @@ namespace App\View\Composers;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 use App\Models\PengajuanMhs;
-use App\Models\PengunduranDiri;
 
 class VerifikasiComposer
 {
+  public $request;
+
+  public function __construct(Request $request)
+  {
+    return $this->request = $request->jenis_pengajuan;
+  }
+
   public function compose(View $view)
   {
     if (!Session::has('isLoggedIn')) {
       return redirect()->to('login');
     }
-
-    // dd($view);
 
     $user   = session('user_name');
     $mode   = session('user_mode');
@@ -25,79 +30,69 @@ class VerifikasiComposer
     // dd($unit);
     // dd($cmode);
 
-    if($cmode == config('constants.users.dosen')) {
-      $pengajuan_mhs = PengajuanMhs::where('pa', session('user_username'))
-      ->where('status_pengajuan', '>=','0')
-      ->get();
+    if(!Session::has('isLoggedIn')) {
+      return redirect()->to('login');
+    }
+    elseif($cmode == config('constants.users.dosen') && $cmode == config('constants.users.mahasiswa')) {
+      return redirect()->to('/home');
+    }
 
-      // dd($pengajuan_mhs);
-      // $pengunduran_diri = PengunduranDiri::where('pa', session('user_username'))
-      // ->where('status_pengajuan', '>=', '0')
+    if($cmode == config('constants.users.dekanat') || $cmode == config('constants.users.wakil_rektor')) {
+      $dekanat  = [3, 23];
+      $rektorat = [4, 24];
+
+      if(isset($this->request) && $this->request != 'semua') {
+        $this->request == 'cuti' ? $jenis_pengajuan = 1 : $jenis_pengajuan = 2;
+
+        $pengajuan_mhs = PengajuanMhs::whereIn('status_pengajuan', ($cmode == config('constants.users.dekanat') ? $dekanat : $rektorat))
+        ->where('jenis_pengajuan', $jenis_pengajuan)
+        ->get();
+      }
+      else {
+        $pengajuan_mhs = PengajuanMhs::whereIn('status_pengajuan', ($cmode == config('constants.users.dekanat') ? $dekanat : $rektorat))
+        ->get();
+      }
+
+      // $pengajuan_mhs = PengajuanMhs::where('kode_fakultas', trim($unit))
+      // ->whereIn('status_pengajuan', [3, 4, 23])
       // ->get();
-
-      $all_pengajuan = '';
     }
-    elseif($cmode == config('constants.users.prodi')) {
-      $pengajuan_mhs = PengajuanMhs::where('kode_prodi', trim($unit))
-      ->where('status_pengajuan', '>=', '1')
-      ->where('status_pengajuan', '!=', '21')
-      ->get();
-      // dd($pengajuan_mhs);
-
-      $pengunduran_diri = PengunduranDiri::where('kode_prodi',trim($unit))
-      ->where('status_pengajuan', '>=', '1')
-      ->where('status_pengajuan', '!=', '21')
-      ->get();
-
-      $all_pengajuan = '';
-    }
-    elseif($cmode == config('constants.users.dekanat')) {
-      // dd($cmode);
-      $pengajuan_mhs   = PengajuanMhs::where('kode_fakultas', 'like', trim($unit))
-      ->where('status_pengajuan', '>=', '2')
-      ->where('status_pengajuan', '!=', '22')
-      ->get();
-      // dd($pengajuan_mhs);
-
-      $pengunduran_diri = PengunduranDiri::where('kode_fakultas', 'like', trim($unit))
-      ->where('status_pengajuan', '>=', '2')
-      ->where('status_pengajuan', '!=', '22')
-      ->get();
-
-    }
-    // elseif($cmode == config('constants.users.rektorat'))
-    // {
-
+    // elseif($cmode == config('constants.users.wakil_rektor')) {
+    //   $pengajuan_mhs = PengajuanMhs::whereIn('status_pengajuan', [4, 5, 6, 7, 24])
+    //   ->get();
     // }
-    else {
-      $pengajuan_mhs   = PengajuanMhs::where('kode_fakultas', 'like', trim($unit))
-      ->where('status_pengajuan', '>=', '4')
-      ->where('status_pengajuan', '!=', '21')
-      ->where('status_pengajuan', '!=', '22')
-      ->where('status_pengajuan', '!=', '23')
-      ->where('status_pengajuan', '!=', '24')
-      ->get();
-      // dd($pengajuan_mhs);
+    elseif($cmode == config('constants.users.fakultas')) {
+      if(isset($this->request) && $this->request != 'semua') {
+        $this->request == 'cuti' ? $jenis_pengajuan = 1 : $jenis_pengajuan = 2;
 
-      $pengunduran_diri = PengunduranDiri::where('kode_fakultas', 'like', trim($unit))
-      ->where('status_pengajuan', '>=', '4')
-      ->where('status_pengajuan', '!=', '21')
-      ->where('status_pengajuan', '!=', '22')
-      ->where('status_pengajuan', '!=', '23')
-      ->where('status_pengajuan', '!=', '24')
-      ->get();
-
-      $kode_prodi = '';
-      $nama_prodi = '';
+        $pengajuan_mhs = PengajuanMhs::whereIn('status_pengajuan', [2])
+        ->where('jenis_pengajuan', $jenis_pengajuan)
+        ->get();
+      }
+      else {
+        $pengajuan_mhs = PengajuanMhs::where('kode_fakultas', trim($unit))
+        ->whereIn('status_pengajuan', [2])
+        ->get();
+      }
     }
+    else {
 
-    // $all_pengajuan = $pengajuan_mhs->merge($pengunduran_diri);
-    // dd($all_pengajuan);
+      if(isset($this->request) && $this->request != 'semua') {
+        $this->request == 'cuti' ? $jenis_pengajuan = 1 : $jenis_pengajuan = 2;
+
+        $pengajuan_mhs = PengajuanMhs::whereIn('status_pengajuan', [5, 6, 7])
+        ->where('jenis_pengajuan', $jenis_pengajuan)
+        ->get();
+      }
+      else {
+        $pengajuan_mhs = PengajuanMhs::whereIn('status_pengajuan', [5, 6, 7])
+        ->get();
+      }
+
+    }
 
     $arrData = [
-      'pengajuan_mhs'     => $pengajuan_mhs,
-      // 'pengunduran_diri'  => $pengunduran_diri,
-      // 'all_pengajuan'     => $all_pengajuan,
+      'pengajuan_mhs'     => $pengajuan_mhs
     ];
 
     $view->with('verifikasi', $arrData);

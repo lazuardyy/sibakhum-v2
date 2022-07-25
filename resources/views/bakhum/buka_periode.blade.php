@@ -5,13 +5,12 @@
   @include('partials.header')
   @include('flash-message')
 
-  <section class="content">
+  <section class="content overflow-x-auto">
     <div class="card">
       <div class="card-header">
         <button type="button" class="btn btn-outline-primary" id="btnTambahPeriode" data-bs-toggle="modal" data-bs-target="#modal-periode"><i class="ace-icon fa fa-plus"></i> Periode Baru</button>
       </div>
       <div class="card-body">
-        {{-- <button class="btn btn-outline-primary" id="btnCetakPenerima" data-toggle="modal" data-target="#modal-Cetak"><i class="ace-icon fa fa-plus"></i> Cetak Penerima </button> --}}
         @if ($errors->any())
           <div class="alert alert-danger mt-2">
             <ul style="margin-bottom: 0">
@@ -41,12 +40,12 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>
                     <div class="form-check form-switch">
-                        <form id="formCheck" action="{{ route('periode.activate') }}" method="POST">
+                        <form id="formCheck_{{ $item->id }}" action="{{ route('periode.activate') }}" method="POST">
                             @csrf
                             @method('post')
                             <input type="hidden" id="id_periode" name="id_periode" value="{{ $item->id }}">
                             <input type="hidden" id="aktifCheck" name="aktifCheck" value="{{ $item->aktif }}">
-                            <input class="form-check-input" type="checkbox" role="switch" value="{{ $item->aktif }}" {{ ($item->aktif == '1') ? 'checked':'' }} onclick="document.getElementById('formCheck').submit()">
+                            <input class="form-check-input" type="checkbox" role="switch" value="{{ $item->aktif }}" {{ ($item->aktif == '1') ? 'checked':'' }} onclick="document.getElementById('formCheck_{{ $item->id }}').submit()">
                         </form>
 
                     </div>
@@ -123,8 +122,8 @@
             </div>
           </div>
           <div class="modal-footer py-2">
-            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
-            <button type="submit" class="btn btn-primary btn-sm" onclick="document.getElementById('formAddPeriode').submit()">Simpan</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary" onclick="document.getElementById('formAddPeriode').submit()">Simpan</button>
           </div>
         </div>
       </div>

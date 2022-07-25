@@ -19,6 +19,7 @@ class HomeComposer
     $user = session('user_name');
     $mode = session('user_mode');
     $cmode = session('user_cmode');
+    $unit = trim(session('user_unit'));
     // dd($cmode);
 
     if($cmode === config('constants.users.dosen')) {
@@ -101,8 +102,8 @@ class HomeComposer
       $md   = $pengunduran_diri->count('id');
       $pengajuan = compact('cuti', 'md');
     }
-    $home = compact('user', 'mode', 'cmode', 'pengajuan');
-  // dd($home);
+    $home = compact('user', 'mode', 'cmode', 'unit', 'pengajuan');
+    // dd($home);
 
     $view->with('home', $home);
   }

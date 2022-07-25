@@ -65,7 +65,7 @@
     </section>
 
     <section class="content">
-      <p style="text-align: justify;">Berdasarkan permohonan dari <span>{{ ($pengajuan->status_pengajuan >= 3) ? 'Wakil Dekan 1 ' . $pengajuan->nama_fakultas : '' }}</span> Nomor: <span>{{ $pengajuan->no_surat_fakultas }}</span> dan telah disetujui oleh <span>{{ ($pengajuan->status_pengajuan >= 4) ? 'Wakil Rektor Bidang Akademik UNJ' : '' }}</span> tanggal <span>{{ date('d M Y', strtotime(isset($history->created_at))) }}</span>, <span>{{ ($pengajuan->status_pengajuan >= 5) ? 'Kepala Biro Akademik, Kemahasiswaan dan Hubungan Masyarakat UNJ' : '' }}</span> memberikan izin <span>{{ ($pengajuan->jenis_pengajuan === 1) ? 'cuti kuliah' : 'pengunduran diri kuliah' }}</span> kepada mahasiswa atas nama:
+      <p style="text-align: justify;">Berdasarkan permohonan dari <span>{{ ($pengajuan->status_pengajuan >= 3) ? 'Wakil Dekan 1 ' . $pengajuan->nama_fakultas : '' }}</span> Nomor: <span>{{ $pengajuan->no_surat_fakultas }}</span> dan telah disetujui oleh <span>{{ ($pengajuan->status_pengajuan >= 4) ? 'Wakil Rektor Bidang Akademik UNJ' : '' }}</span> tanggal <span>{{ date('d M Y', strtotime( $history[0]->created_at )) }}</span>, <span>{{ ($pengajuan->status_pengajuan >= 5) ? 'Kepala Biro Akademik, Kemahasiswaan dan Hubungan Masyarakat UNJ' : '' }}</span> memberikan izin <span>{{ ($pengajuan->jenis_pengajuan === 1) ? 'cuti kuliah' : 'pengunduran diri kuliah' }}</span> kepada mahasiswa atas nama:
       </p>
     </section>
 

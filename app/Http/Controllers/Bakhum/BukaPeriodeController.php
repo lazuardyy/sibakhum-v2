@@ -59,7 +59,7 @@ class BukaPeriodeController extends Controller
 
   public function activate (Request $request)
   {
-    $id_periode = $request->id_periode;
+    $id_periode   = $request->id_periode;
     $status_aktif = ($request->aktifCheck == '1') ? '0' : '1';
 
     try {
