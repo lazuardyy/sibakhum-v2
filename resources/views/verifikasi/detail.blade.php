@@ -50,22 +50,22 @@
                     <p>: {{ $pengajuan->nama }}</p>
                   </div>
                 </div>
-                <div class="row border-bottom">
+                {{-- <div class="row border-bottom">
                   <div class="col-4">
                     <p>Jenis Kelamin</p>
                   </div>
                   <div class="col-8">
                     <p>: {{ ($pengajuan->kelamin === 'L') ? 'Laki-Laki' : 'Perempuan' }}</p>
                   </div>
-                </div>
-                <div class="row border-bottom">
+                </div> --}}
+                {{-- <div class="row border-bottom">
                   <div class="col-4">
                     <p>Fakultas</p>
                   </div>
                   <div class="col-8">
                     <p>: {{ $pengajuan->namaFakultas }}</p>
                   </div>
-                </div>
+                </div> --}}
                 <div class="row border-bottom">
                   <div class="col-4">
                     <p>Prodi</p>
@@ -95,7 +95,7 @@
                     <p>Tahun Angkatan</p>
                   </div>
                   <div class="col-8">
-                    <p>: {{ $pengajuan->tahun_angkatan ?? '-' }}</p>
+                    <p>: {{ $pengajuan->angkatan ?? '-' }}</p>
                   </div>
                 </div>
                 <div class="row border-bottom">
@@ -106,14 +106,14 @@
                     <p>: {{ $pengajuan->semester ?? '-' }}</p>
                   </div>
                 </div>
-                <div class="row border-bottom">
+                {{-- <div class="row border-bottom">
                   <div class="col-4">
                     <p>Jenis Pengajuan</p>
                   </div>
                   <div class="col-8">
                     <p>: {{ $pengajuan->jenis_pengajuan ?? '-' }}</p>
                   </div>
-                </div>
+                </div> --}}
                 <div class="row border-bottom">
                   <div class="col-4">
                     <p>Keterangan</p>
@@ -130,14 +130,14 @@
                     <p>: -</p>
                   </div>
                 </div>
-                <div class="row border-bottom">
+                {{-- <div class="row border-bottom">
                   <div class="col-4">
                     <p>Status Persetujuan</p>
                   </div>
                   <div class="col-8">
                     <p>: -</p>
                   </div>
-                </div>
+                </div> --}}
               @endforeach
             </div>
           </div>
@@ -149,7 +149,7 @@
       </div>
     </div>
     <div class="card-footer mb-2">
-      <x-button.button-href buttonName="kembali" btnColor="blue" href="{{ route('data-mhs.index') }}" buttonIcon="fa-solid fa-angle-left"/>
+      <x-button.button-href buttonName="kembali" btnColor="blue" href="{{ route('data-mhs.index') }}" buttonIcon="fa-solid fa-angle-left" class="text-sm"/>
     </div>
   </div>
 </div>

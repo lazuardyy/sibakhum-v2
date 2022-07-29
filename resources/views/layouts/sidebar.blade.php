@@ -25,19 +25,18 @@
               </a>
             </li>
 
-            <li class="nav-item">
-              <a href="{{ route('pengajuan-mhs.show', base64_encode(session('user_username'))) }}" class="nav-link text-white hover:bg-green-800 {{ isset($status_cuti_active) ? $status_cuti_active : '' }}" style="margin-bottom: 0.25rem">
+            {{-- <li class="nav-item">
+              <a href="{{ route('data-mhs.ubah-tagihan')}}" class="nav-link text-white hover:bg-green-800 {{ isset($tagihan_data_active) ? $tagihan_data_active : '' }}" style="margin-bottom: 0.25rem">
                 <i class="nav-icon fa-solid fa-square-pen"></i>
                 <p>Ubah Status Tagihan</p>
               </a>
-
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('data-mhs.semua') }}" class="nav-link text-white hover:bg-green-800 {{ isset($semua_data_active) ? $semua_data_active : '' }}" style="margin-bottom: 0.25rem">
+            </li> --}}
+            {{-- <li class="nav-item">
+              <a href="{{ route('data-mhs.index') }}" class="nav-link text-white hover:bg-green-800 {{ isset($semua_data_active) ? $semua_data_active : '' }}" style="margin-bottom: 0.25rem">
                 <i class="nav-icon fa-solid fa-database"></i>
                 <p>Semua data pengajuan</p>
               </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
               <a href="{{ route('data-mhs.upload-sk') }}" class="nav-link text-white hover:bg-green-800 {{ isset($kirim_data_active) ? $kirim_data_active : '' }}" style="margin-bottom: 0.25rem">
                 <i class="nav-icon fa-solid fa-upload"></i>
@@ -46,23 +45,25 @@
             </li>
           @endif
 
-          @if(session('user_cmode') == config('constants.users.fakultas') || session('user_cmode') == config('constants.users.dekanat') || session('user_cmode') == config('constants.users.wakil_rektor'))
+          @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.bakhum'))
             <li class="nav-item">
-              <a href="{{ route('data-mhs.verifikasi') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($all_data_active) ? $all_data_active : '' }}">
+              <a href="{{ route('data-mhs.index') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($all_data_active) ? $all_data_active : '' }}">
                 <i class="nav-icon fa-solid fa-database"></i>
                 <p>Semua data pengajuan</p>
               </a>
             </li>
           @endif
 
-          @if(session('user_cmode') == config('constants.users.fakultas'))
+          @if($home['cmode'] == config('constants.users.prodi'))
             <li class="nav-item">
               <a href="{{ route('pengajuan-mhs.create-md') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($md_active) ? $md_active : '' }}">
                 <i class="nav-icon fa-solid fa-circle-plus"></i>
-                {{-- <i class="fa-solid fa-square-plus"></i> --}}
                 <p>Pengunduran Diri</p>
               </a>
             </li>
+          @endif
+
+          @if(session('user_cmode') == config('constants.users.fakultas'))
             <li class="nav-item">
               <a href="{{ route('surat-masuk') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($surat_active) ? $surat_active : '' }}">
                 <i class="nav-icon fa-solid fa-envelope"></i>
@@ -83,16 +84,13 @@
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a href="{{ route('data-mhs.show', 'cuti') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_cuti_active) ? $data_cuti_active : '' }}" style="margin-bottom: 0.25rem">
-                    {{-- <i class="far fa-circle nav-icon"></i> --}}
                     <i class="fa-solid fa-person-walking nav-icon"></i>
                     <p>Cuti Kuliah</p>
                   </a>
                 </li>
                 <li class="nav-item">
                   <a href="{{ route('data-mhs.show', 'md') }}" class="nav-link text-white hover:bg-green-800 {{ isset($data_md_active) ? $data_md_active : '' }}" style="margin-bottom: 0.25rem">
-                    {{-- <i class="far fa-circle nav-icon"></i> --}}
                     <i class="fa-solid fa-plane-up nav-icon"></i>
-                    {{-- <i class="fa-solid fa-person-walking-luggage nav-icon"></i> --}}
                     <p>Pengunduran Diri</p>
                   </a>
                 </li>
@@ -100,14 +98,14 @@
             </li>
           @endif
 
-          @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.bakhum'))
+          @if($home['cmode'] != config('constants.users.dosen') && $home['cmode'] && config('constants.users.mahasiswa') && $home['cmode'] != config('constants.users.prodi'))
+
             <li class="nav-item">
               <a href="{{ route('grafik') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($grafik_active) ? $grafik_active : '' }}">
                 <i class="nav-icon fa-solid fa-chart-simple"></i>
                 <p>Data & Grafik</p>
               </a>
             </li>
-
           @endif
 
           <li class="nav-item">

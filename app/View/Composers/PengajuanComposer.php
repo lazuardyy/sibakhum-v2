@@ -76,7 +76,7 @@ class PengajuanComposer
       // $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))->get();
 
       $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))
-      ->where('jenis_pengajuan', 1)
+      // ->where('jenis_pengajuan', 1)
       ->get();
 
     }

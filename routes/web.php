@@ -47,7 +47,8 @@ Route::group(['prefix' => 'data-pengajuan-mhs', 'as' => 'data-mhs.'], function (
   Route::get('/verifikasi', [VerifikasiController::class, 'index'])->name('index');
   Route::get('/', [BakhumController::class, 'index'])->name('semua');
   // Route::get('/{filter}', [BakhumController::class, 'filter'])->name('filter');
-  Route::get('/cetak/{id}', [BakhumController::class, 'download'])->name('cetak');
+  Route::get('/cetak/{mhs}', [BakhumController::class, 'download'])->name('cetak');
+  Route::get('/ubah-status-tagihan', [BakhumController::class, 'ubahStatusTagihan'])->name('ubah-tagihan');
   Route::get('/to-pdf/{id}', [SuratMasukController::class, 'download_sk'])->name('download-sk');
   Route::get('/kirim-sk', [UploadSkController::class, 'index_sk'])->name('index-sk');
   Route::get('/{jenis_pengajuan}', [DosenController::class, 'show'])->name('show');
@@ -87,6 +88,7 @@ Route::get('storage/{filename}', function ($filename)
 
     $response = Response::make($file, 200);
     $response->header("Content-Type", $type);
+    // dd($response);
 
     return $response;
 })->name('file_pengajuan.show');

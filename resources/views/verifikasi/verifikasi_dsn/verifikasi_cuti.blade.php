@@ -10,16 +10,13 @@
       <table class="table hover compact" id="tabel-dosen">
         <thead>
           <tr>
-            <th rowspan="2">No.</th>
-            <th rowspan="2">NIM</th>
-            <th rowspan="2">Nama</th>
-            <th rowspan="2">Program Studi</th>
-            <th colspan="2" class="dt-head-center">Waktu</th>
-            <th rowspan="2">Details</th>
-          </tr>
-          <tr>
-            <th>Pengajuan</th>
-            <th>Persetujuan</th>
+            <th>No.</th>
+            <th>NIM</th>
+            <th>Nama</th>
+            <th>Program Studi</th>
+            <th>Waktu Pengajuan</th>
+            <th>Status Persetujuan</th>
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>
@@ -33,11 +30,17 @@
 
                 <td>{{ $pengajuan->created_at->format('d M Y') }} <br> Pukul {{ $pengajuan->created_at->format('H:i') }} WIB</td>
                 <td class="flex">
-                  <span class="w-full {{ ($pengajuan->status_pengajuan <= 7 && $pengajuan->status_pengajuan <= 24 && $pengajuan->status_pengajuan !== 0) ? 'bg-success' : 'bg-warning' }} px-2 py-1 rounded-lg">
-                    {{ ($pengajuan->status_pengajuan === 0) ? 'Menunggu Persetujuan' : $pengajuan->refStatusPengajuan->status_pengajuan_cuti }}
-                  </span>
+                  @if($pengajuan->status_pengajuan !== 0)
+                    <span class="w-full {{ ($pengajuan->status_pengajuan <= 7) ? 'bg-success' : 'bg-danger' }} px-2 py-1 rounded-lg">
+                      {{  $pengajuan->refStatusPengajuan->status_pengajuan_cuti }}
+                    </span>
+                  @else
+                    <span class="w-full bg-warning px-2 py-1 rounded-lg">
+                      Menunggu Persetujuan
+                    </span>
+                  @endif
                 </td>
-                <td>
+                <td class="text-center">
                   <button type="button" class="btn btn-primary  btn-sm" data-bs-toggle="modal" data-bs-target="#modal_{{ $pengajuan->id }}" id="details">
                     <i class="fa-solid fa-eye-slash" id="button_{{ $pengajuan->nim }}"></i>
                     <i class="fa-solid fa-eye" style="display:none" id="show__{{ $pengajuan->nim }}"></i>
@@ -83,24 +86,6 @@
       $.each([ id ], function( index, value ) {
         console.log(index, value);
       });
-
-
-      // console.log(alasan);
-      // console.log(status);
-
-      // $(`#${status}`).on('change',function(){
-      //   var selection = $(this).val();
-      //   switch(selection){
-      //     case '2':
-      //       var alasan = $('textarea.alasan').attr('id');
-      //       $(`textarea#${alasan}`).show();
-      //       break;
-      //     default:
-      //       var alasan = $('textarea.alasan').attr('id');
-      //       $(`textarea#${alasan}`).hide();
-      //       break;
-      //   }
-      // });
     });
   </script>
 @endsection

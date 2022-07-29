@@ -116,8 +116,8 @@
         <br><br>
         <br>
 
-        <span>Kamandoko, S.Sos</span> <br>
-        <span>NIP.</span>
+        <span>Dra. Tri Suparmiyati, M.Si</span> <br>
+        <span>NIP. 19670514 199303 2 001</span>
       </div>
     </section>
   </main>

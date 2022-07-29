@@ -39,9 +39,8 @@
                 <h6 id="keterangan">Apakah anda yakin dengan ingin menyimpan data terpilih?</h6>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-danger text-white font-medium leading-tight rounded-sm shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0" data-bs-dismiss="modal">Batal</button>
-
-                <button type="submit" class="btn btn-primary text-white font-medium leading-tight rounded-sm shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0" data-toggle="tooltip" data-placement="top" title="Verifikasi Data">Proses</button>
+                <x-button.button-submit type="button" data-bs-dismiss="modal" buttonName="Batal" buttonColor="red" buttonIcon="fa-solid fa-ban"/>
+                <x-button.button-submit type="submit" buttonName="Proses" buttonColor="green" buttonIcon="fa-solid fa-paper-plane" data-toggle="tooltip" data-placement="top" title="Verifikasi Data"/>
               </div>
             </div>
           </div>
@@ -61,33 +60,35 @@
               <th>No.</th>
               <th>NIM</th>
               <th>Nama</th>
+              <th>Jenis Pengajuan</th>
               <th>Pilih File</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
             @foreach($verifikasi['pengajuan_mhs'] as $index => $pengajuan)
-              @if($pengajuan->status_pembayaran != '0')
+              @if($pengajuan->jenis_pengajuan == 2 || ($pengajuan->jenis_pengajuan == 1 &&$pengajuan->status_pembayaran != 0))
                 <tr>
-                  <td>
-                    @if(($pengajuan->status_pengajuan != 7))
+                  @if(($pengajuan->status_pengajuan != 7))
+                    <td class="text-center">
                       <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}" @checked(old('active', ($pengajuan->status_pengajuan == 7) ? true : false))>
-                    @else
-                      <span><i class="fa-solid fa-check"></i></span>
-                    @endif
 
+                      <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
+                      <input type="hidden" name="persetujuan[]" value="1">
+                    </td>
+
+                    <input type="hidden" name="id[]" value="{{ $pengajuan->id }}">
                     <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
-                    <input type="hidden" name="persetujuan[]" value="1">
-                  </td>
+                  @else
+                    <td class="text-center">
+                      <span><i class="fa-solid fa-check"></i></span>
+                    </td>
+                  @endif
 
                   <td>{{ $loop->iteration }}</td>
-
-                  <input type="hidden" name="id[]" value="{{ $pengajuan->id }}">
-                  <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
-
-
                   <td>{{ $pengajuan->nim }}</td>
                   <td>{{ $pengajuan->nama }}</td>
+                  <td>{{ $pengajuan->jenis_pengajuan === 1 ? 'Cuti' : 'Pengunduran Diri' }}</td>
                   <td>
                     @if($pengajuan->file_sk === null)
                       <input class ='form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
@@ -99,9 +100,10 @@
                         name="file_sk[]"
                       >
                     @else
-                      {{ $pengajuan->file_sk }}
+                      {{ $pengajuan->file_sk  }}
                     @endif
                   </td>
+
                   <td>
                     <span class="btn btn-{{ $pengajuan->file_sk !== null ? 'success' : 'warning' }}">{{ ($pengajuan->file_sk !== null) ? 'Terkirim' : 'Belum dikirim' }}</span>
                   </td>
@@ -135,7 +137,7 @@
 
       $('#setuju-button').click(function () {
         $('#tolakModal').attr('id', 'setujuModal');
-        $('#keterangan').text('Apakah anda yakin ingin menyetujui data terpilih?');
+        $('#keterangan').text('Apakah anda sudah yakin dengan file yang dikirim?');
         $('[name="persetujuan[]"]').val(1);
       })
 

@@ -293,16 +293,27 @@ class PengajuanApiController extends Controller
     return $data;
   }
 
-  public function pengajuanDiproses ($kodeFakultas)
+  public function pengajuan_mahasiswa ($nim)
   {
-    if($kodeFakultas === 'All')
-    {
-      $pengajuan_mhs = DB::table('pengajuan_mhs');
+    $pengajuan_mhs = DB::table('pengajuan_mhs')->where('nim', $nim);
 
-    }
-    else
+    if($pengajuan_mhs->exists())
     {
+      $pengajuan_mhs = $pengajuan_mhs->get();
 
+      $data = [
+        'status'             => 200,
+        'data'               => $pengajuan_mhs,
+        'message'            => 'Data berhasil ditemukan'
+      ];
     }
+    else {
+      $data = [
+        'status'  => 404,
+        'message' => 'Data tidak ditemukan'
+      ];
+    }
+
+    return $data;
   }
 }

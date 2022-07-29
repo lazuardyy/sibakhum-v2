@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'data-pengajuan', 'as' => 'pengajuan.'], function () {
   Route::get('/fakultas/{kodefakultas}', [PengajuanApiController::class, 'dataPengajuanFakultas'])->name('fakultas');
+  Route::get('/mhs/{nim}', [PengajuanApiController::class, 'pengajuan_mahasiswa'])->name('mhs');
   // Route::post('/store', [PengajuanApiController::class, 'store'])->name('store');
   // Route::post('/activate', [PengajuanApiController::class, 'activate'])->name('activate');
   // Route::get('/edit/{id}', [PengajuanApiController::class, 'edit'])->name('edit');

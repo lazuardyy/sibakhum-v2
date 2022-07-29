@@ -60,7 +60,6 @@
                 @else
                   <select name="{{ $data['typeInput'] }}" id="{{ $data['typeInput'] }}" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
                     <option id="{{ $data['typeInput'] }}"></option>
-                    {{-- <option value="" id="prodi"></option> --}}
                   </select>
                 @endif
               </div>
@@ -98,7 +97,7 @@
         @endforeach
 
         <div class="flex gap-2 flex-end">
-          <x-button.button-href buttonName="batal" btnColor="red" href="/home" buttonIcon="fa-solid fa-ban"/>
+          <x-button.button-href buttonName="batal" btnColor="red" href="/home" buttonIcon="fa-solid fa-ban" />
           <x-button.button-submit buttonName="ajukan" type="submit" id="save-data" buttonColor="green" buttonIcon="fa-solid fa-floppy-disk"/>
         </div>
       </div>

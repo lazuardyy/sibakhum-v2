@@ -4,9 +4,9 @@
 <div class="container grid p-2 pb-4">
   @include('partials.header')
 
-  @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.bakhum'))
+  @if($home['cmode'] != config('constants.users.dosen') || $home['cmode'] != config('constants.users.mahasiswa'))
     <input type="hidden" value="{{ $home['unit'] !== '' ? $home['unit'] : 'All' }}" id="user_mode">
-    <div class="card">
+    <div class="card overflow-x-auto">
       <div class="card-header">
         <h3 class="card-title"></h3>
         <div class="card-tools">

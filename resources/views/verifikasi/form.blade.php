@@ -99,7 +99,7 @@
   <div class="modal-footer w-100">
     <x-button.button-submit type="button" buttonName="Batal" buttonIcon="fa-solid fa-ban" buttonColor="red" title="Batal" data-toggle="tooltip" data-bs-dismiss="modal"/>
 
-    @if(($home['cmode'] == '8' && ($pengajuan->status_pengajuan < 2 || $pengajuan->status_pengajuan === 21)) || ($home['cmode'] == '2' && ($pengajuan->status_pengajuan < 3 || $pengajuan->status_pengajuan === 22)) || ($home['cmode'] == '14' && ($pengajuan->status_pengajuan < 4 || $pengajuan->status_pengajuan === 23) || ($home['cmode'] == '19' && ($pengajuan->status_pengajuan < 6 || $pengajuan->status_pengajuan === 24)))
+    @if(($home['cmode'] == '8' && ($pengajuan->status_pengajuan < 2 || $pengajuan->status_pengajuan === 21)) || ($home['cmode'] == '2' && ($pengajuan->status_pengajuan < 3 || $pengajuan->status_pengajuan === 22)) || ($home['cmode'] == '14' && ($pengajuan->status_pengajuan < 5  || $pengajuan->status_pengajuan === 23) || ($home['cmode'] == '19' && ($pengajuan->status_pengajuan < 6 || $pengajuan->status_pengajuan === 24)))
     )
       <x-button.button-submit type="submit" buttonName="Proses" buttonIcon="fa-solid fa-floppy-disk" buttonColor="green" title="Verifikasi Data" data-toggle="tooltip"/>
     @else

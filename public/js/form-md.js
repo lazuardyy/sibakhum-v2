@@ -1,9 +1,9 @@
 // const { data } = require("jquery");
 
-function searchMhs () {
+function searchMhs (nim) {
   // $('#form-md').html('');
   $.ajax({
-    url : "http://103.8.12.212:36880/siakad_api/api/as400/dataMahasiswa/" + $('#search-input').val() + '/' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjE3MDE2MTgwNTYiLCJuYW1hX3VzZXIiOiJNVUtMQVMgTlVSIEFSRElBTlNZQUgiLCJrZWxhbWluIjoiMCIsIm1vZGVfdXNlciI6IjkiLCJ1bml0X3VzZXIiOiIgICAgICIsInN0YXR1c191c2VyIjoiMSJ9.mvnn_XFtapsJ9QkEORi3LOUoWT6j2vHNbyAlBuOg0ms',
+    url : "http://103.8.12.212:36880/siakad_api/api/as400/dataMahasiswa/" + nim + '/' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjE3MDE2MTgwNTYiLCJuYW1hX3VzZXIiOiJNVUtMQVMgTlVSIEFSRElBTlNZQUgiLCJrZWxhbWluIjoiMCIsIm1vZGVfdXNlciI6IjkiLCJ1bml0X3VzZXIiOiIgICAgICIsInN0YXR1c191c2VyIjoiMSJ9.mvnn_XFtapsJ9QkEORi3LOUoWT6j2vHNbyAlBuOg0ms',
     type: "GET",
     dataType: "JSON",
     beforeSend: function() {
@@ -11,6 +11,11 @@ function searchMhs () {
     },
     success: function(data)
     {
+      // let searchInputValue = $('#search-input').val()
+      // console.log(searchInputValue);
+
+      // console.log(cekStatusPengajuan(searchInputValue));
+
       if(data.status === true) {
         result = data.isi[0];
 
@@ -146,20 +151,72 @@ function searchMhs () {
   })
 }
 
+
 $('#search-button').on('click', function (e) {
   e.preventDefault();
-  searchMhs();
+
+  let searchValue = $('#search-input').val()
+  cekStatusPengajuan(searchValue)
+  // searchMhs(searchValue);
+  // console.log(searchValue);
   // console.log(datas);
 })
 
 // console.log(datas);
 
-
 $('#search-input').on('keyup', function (e) {
   e.preventDefault();
   if(e.which == 13) {
-    searchMhs();
+    let searchValue = $('#search-input').val()
+    console.log(searchValue);
+    cekStatusPengajuan(searchValue)
   }
 })
+
+const cekStatusPengajuan = (nim) => {
+  $.ajax({
+    url: 'http://localhost:3000/api/data-pengajuan/mhs/' + nim,
+    type: 'GET',
+    dataType: 'JSON',
+    success: function (data) {
+      const response = data.status
+      // console.log(response);
+
+      if(response === 404)
+      {
+        searchMhs(nim)
+      }
+      else
+      {
+        const dataScanning = data.data
+        console.log(dataScanning);
+
+        for(const dataList of dataScanning)
+        {
+          let dataCek = dataList.jenis_pengajuan == 2 || dataList.status_pengajuan < 7;
+
+          switch (dataCek) {
+            case true:
+            // case 'md':
+              swal({
+                title: `Pengajuan Gagal!`,
+                text: `Maaf ${dataList.nama} sedang mengajukan permohonan ${dataList.jenis_pengajuan == 1 ? 'cuti!' : 'pengunduran diri!'}`,
+                icon: "error",
+              });
+              break;
+
+            default:
+              searchMhs(nim)
+              break;
+          }
+        }
+      }
+    },
+    error: function (err) {
+      console.log(err);
+    }
+  })
+
+}
 
 

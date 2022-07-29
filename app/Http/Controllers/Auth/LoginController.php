@@ -70,14 +70,14 @@ class LoginController extends Controller
           $akun = DB::table('ref_modes')->where('id', $user->mode)->first();
           $mode = $akun->mode;
           session([
-              'user_name' => $user->nama,
+              'user_name'     => $user->nama,
               'user_username' => $user->username,
-              'user_cmode' => $user->mode,
-              'user_mode' => $mode,
-              'user_sex' => $user->kelamin,
-              'user_unit' => $user->unit,
-              'user_token' => $user->Authorization,
-              'isLoggedIn' => true,
+              'user_cmode'    => $user->mode,
+              'user_mode'     => $mode,
+              'user_sex'      => $user->kelamin,
+              'user_unit'     => $user->unit,
+              'user_token'    => $user->Authorization,
+              'isLoggedIn'    => true,
           ]);
 
           return true;

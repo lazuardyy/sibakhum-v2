@@ -72,15 +72,15 @@ class RefStatusPengajuanSeeder extends Seeder
         'status_pengajuan_cuti' => 'Data pengajuan selesai diproses Bakhum',
         'status_pengunduran_diri' => 'Data pengajuan selesai diproses Bakhum',
         'keterangan_cuti' => 'Silahkan lakukan pembayaran cuti kuliah',
-        'keterangan_md' =>'Menunggu surat keterangan pengunduran diri'
+        'keterangan_md' =>'Silahkan download surat keterangan pengunduran diri'
       ]);
 
       DB::table('ref_status_pengajuan')->insert([
         'id' => 7,
         'status_pengajuan_cuti' => 'Proses pengajuan cuti selesai',
-        'status_pengunduran_diri' => 'Proses pengunduran diri selesai',
+        'status_pengunduran_diri' => '',
         'keterangan_cuti' => 'Silahkan download surat keterangan cuti kuliah',
-        'keterangan_md' =>'Silahkan download surat keterangan pengunduran diri'
+        'keterangan_md' =>''
       ]);
 
       DB::table('ref_status_pengajuan')->insert([

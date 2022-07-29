@@ -34,18 +34,22 @@ class VerifikasiController extends Controller
     $id_pengajuan       = $request->id_pengajuan;
     $persetujuan        = $request->persetujuan;
     $jenis_pengajuan    = $request->jenis_pengajuan;
-    $no_surat_fakultas  = $request->no_surat_fakultas;
     $alasan             = $request->alasan;
-    // dd($id_pengajuan, $alasan);
+
+    if(session('user_cmode') == config('constants.users.fakultas'))
+    {
+      $no_surat_fakultas  = $request->no_surat_fakultas;
+    }
+    else
+    {
+      $no_surat_fakultas = null;
+    }
 
     if($id_pengajuan === null) {
       return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
     }
 
     for($i = 0; $i < count($id_pengajuan); $i++) {
-      // $cek_surat = PengajuanMhs::where('id', $id_pengajuan[$i])->get();
-      // dd($cek_surat);
-
       $users = ((session('user_cmode') == config('constants.users.dekanat')));
 
       if(session('user_cmode') == config('constants.users.dekanat') || session('user_cmode') == config('constants.users.wakil_rektor')){
@@ -68,12 +72,29 @@ class VerifikasiController extends Controller
         }
       }
 
-      $store = PengajuanMhs::where([
-        'id' => $id_pengajuan[$i]
-      ])->update([
-        'status_pengajuan' => $persetujuan[$i],
-        'no_surat_fakultas' => $no_surat_fakultas[$i],
-      ]);
+      if($no_surat_fakultas !== null)
+      {
+        $update = [
+          'status_pengajuan'  => $persetujuan[$i],
+          'no_surat_fakultas' => $no_surat_fakultas[$i],
+        ];
+      }
+      else
+      {
+        $update = [
+          'status_pengajuan'  => $persetujuan[$i],
+        ];
+      }
+
+      $store = DB::table('pengajuan_mhs')->where('id', $id_pengajuan[$i])
+              ->update($update);
+
+      // $store = PengajuanMhs::where([
+      //   'id'                => $id_pengajuan[$i]
+      // ])->update([
+      //   'status_pengajuan'  => $persetujuan[$i],
+      //   'no_surat_fakultas' => $no_surat_fakultas[$i],
+      // ]);
 
       // dd($store);
 
@@ -81,13 +102,13 @@ class VerifikasiController extends Controller
 
       $histories = HistoryPengajuan::updateOrCreate(
         [
-          'id_pengajuan' => $id_pengajuan[$i],
-          'v_mode' => trim(session('user_cmode'))
+          'id_pengajuan'     => $id_pengajuan[$i],
+          'v_mode'           => trim(session('user_cmode'))
         ],
         [
-          'jenis_pengajuan' => $pengajuan_jenis,
+          'jenis_pengajuan'  => $pengajuan_jenis,
           'status_pengajuan' => $persetujuan[$i],
-          'alasan' => $alasan
+          'alasan'           => $alasan
         ]
       );
     }

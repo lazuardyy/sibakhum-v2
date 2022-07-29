@@ -104,7 +104,7 @@
                         </div>
                       </form>
                     @else
-                      <a href="{{ route('file_pengajuan.show', $pengajuan->file_sk) }}" class="btn btn-primary btn-sm hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out rounded-md" data-bs-toggle="tooltip" title="Download SK Cuti">
+                      <a href="{{ route('file_pengajuan.show', $pengajuan->file_sk) }}" class="btn btn-primary btn-sm hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out rounded-md" data-bs-toggle="tooltip" title="Download SK {{ $pengajuan->jenis_pengajuan === 1 ? 'Cuti' : 'Pengunduran Diri' }}" download="Surat Keterangan_{{ $pengajuan->jenis_pengajuan === 1 ? 'Cuti' : 'Pengunduran Diri' }}_{{ $pengajuan->nama }}_{{ $pengajuan->nim }}">
                         <i class="fa-solid fa-print"></i>
                       </a>
                     @endif

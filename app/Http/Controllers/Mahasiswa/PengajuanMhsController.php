@@ -33,10 +33,27 @@ class PengajuanMhsController extends Controller
     // dd($cmode);
 
     $periode = BukaPeriode::checkOpenPeriode();
-    // dd($periode->semester);
+    // dd(isset($periode));
+    $semester = isset($periode) ? $periode->semester : null;
 
-    if ($periode === null || $periode->aktif === '0') {
+    // cek status beasiswa
+    $url_beasiswa = env('APP_ENDPOINT_BEASISWA') . session('user_username') . '/' . $semester . '/' . env('APP_AUTH');
+    // dd($url_beasiswa);
+    $status_beasiswa = Http::get($url_beasiswa);
+    $status_beasiswa = json_decode($status_beasiswa);
+
+    if($periode === null || $periode->aktif === '0') {
       return redirect()->to('/home')->with('toast_error', 'Periode pengajuan cuti belum dibuka!');
+    }
+    else
+    {
+      $status_beasiswa = $status_beasiswa->isi[0];
+      // dd($status_beasiswa->beasiswa);
+
+      if($status_beasiswa->beasiswa === 'yes' || $status_beasiswa->kerjasama === 'yes')
+      {
+        return redirect()->to('/home')->with('toast_error', 'Maaf anda penerima beasiswa!');
+      }
     }
 
     $status_cuti = PengajuanMhs::where('nim', session('user_username'))
@@ -249,7 +266,7 @@ class PengajuanMhsController extends Controller
         return redirect('/pengajuan-mhs/status/' . base64_encode(session('user_username')))->with('success', 'Permohonan Cuti Diajukan.');
       }
       else {
-        return redirect('data-pengajuan-mhs/verifikasi')->with('toast_success', 'Permohonan Pengunduran Diri Berhasil Diajukan');
+        return redirect('data-pengajuan-mhs/md')->with('toast_success', 'Permohonan Pengunduran Diri Berhasil Diajukan');
         // return response()->json(['success' => 'Data submitted successfully', 'file' => $file_pengajuan]);
       }
 

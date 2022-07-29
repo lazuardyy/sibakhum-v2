@@ -48,6 +48,7 @@
 
   <script src="{{ asset('js/jquery.min.js') }}"></script>
   <script src="{{ asset('js/adminlte.min.js') }}"></script>
+  <script src="{{ asset('js/sweetalert.min.js') }}"></script>
   <script src="{{ asset('js/script.js') }}"></script>
   @yield('script')
 </body>

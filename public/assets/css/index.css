@@ -226,3 +226,7 @@ html {
       transform: rotate(360deg);
     }
   }
+
+  .swal-text {
+    text-align: center !important;
+  }

@@ -14,22 +14,22 @@
     <p>: {{ $pengajuan->nama }}</p>
   </div>
 </div>
-<div class="row border-bottom">
+{{-- <div class="row border-bottom">
   <div class="col-4">
     <p>Jenis Kelamin</p>
   </div>
   <div class="col-8">
     <p>: {{ ($pengajuan->jenis_kelamin === 0) ? 'Laki-Laki' : 'Perempuan' }}</p>
   </div>
-</div>
-<div class="row border-bottom">
+</div> --}}
+{{-- <div class="row border-bottom">
   <div class="col-4">
     <p>Fakultas</p>
   </div>
   <div class="col-8">
     <p>: {{ $pengajuan->nama_fakultas }}</p>
   </div>
-</div>
+</div> --}}
 <div class="row border-bottom">
   <div class="col-4">
     <p>Prodi</p>
@@ -72,14 +72,14 @@
       <p>: {{ $pengajuan->semester }}</p>
     </div>
   </div>
-  <div class="row border-bottom">
+  {{-- <div class="row border-bottom">
     <div class="col-4">
       <p>Jenis Pengajuan</p>
     </div>
     <div class="col-8">
       <p>: {{ ($pengajuan->jenis_pengajuan == 1) ? 'Cuti' : 'Pengunduran Diri' }}</p>
     </div>
-  </div>
+  </div> --}}
   <div class="row border-bottom">
     <div class="col-4">
       <p>Keterangan</p>
@@ -96,14 +96,14 @@
       <p>: {{ $pengajuan->created_at->format("M/d/Y")  }}</p>
     </div>
   </div>
-  <div class="row border-bottom">
+  {{-- <div class="row border-bottom">
     <div class="col-4">
       <p>Status Persetujuan</p>
     </div>
     <div class="col-8">
       <p>: {{ $pengajuan->refStatusPengajuan->status_pengajuan_cuti  }}</p>
     </div>
-  </div>
+  </div> --}}
 @else
 <div class="border-2 rounded border-amber-400 mt-2 px-2">
   <div class="alert alert-warning text-center mt-2">

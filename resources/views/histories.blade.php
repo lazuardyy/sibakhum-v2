@@ -5,13 +5,13 @@
   @include('partials.header')
 
   <div class="bg-slate-50 shadow-md p-3 rounded-md overflow-x-auto">
+    <input type="hidden" value="{{ $home['cmode'] }}" id='user_mode'>
     <table class="table" id="tabel-history">
       <thead>
         <tr>
           <th scope="col">No</th>
           <th scope="col">Nama</th>
           <th scope="col">Jenis Pengajuan</th>
-          {{-- <th scope="col">Persetujuan</th> --}}
           <th scope="col">Status Persetujuan</th>
           <th scope="col">Tanggal Persetujuan</th>
           @if($home['cmode'] != config('constants.users.fakultas') && $home['cmode'] != config('constants.users.bakhum'))

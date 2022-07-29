@@ -36,8 +36,11 @@ class UploadSkController extends Controller
     $file_sk            = $request->file('file_sk');
 
     // $file_sk = array();
-    foreach($file_sk as $file) {
-      $new_sk[] = $file->store('file_sk');
+    if(isset($file_sk))
+    {
+      foreach($file_sk as $file) {
+        $new_sk[] = $file->store('file_sk');
+      }
     }
 
     // dump($id_pengajuan, $persetujuan, $jenis_pengajuan, $alasan, $file_sk);

@@ -26,7 +26,7 @@ class PengunduranDiriController extends Controller
     if (!Session::has('isLoggedIn')) {
       return redirect()->to('login');
     }
-    elseif($cmode !== config('constants.users.fakultas')) {
+    elseif($cmode !== config('constants.users.prodi')) {
       return redirect()->to('/home');
     }
 
@@ -45,10 +45,6 @@ class PengunduranDiriController extends Controller
         if($status_cuti !== 4 && $status_cuti !== 21) {
           return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
         }
-        // else {
-        //   return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengundurkan diri dari UNJ!');
-        // }
-        // return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
       }
       else if(isset($status_md)) {
         if($status_md !== 4) {

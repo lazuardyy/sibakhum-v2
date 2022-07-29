@@ -69,7 +69,7 @@
                   @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.bakhum'))
                     <a href="{{ route('data-mhs.index') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
                   @else
-                    <a href="{{ route('data-mhs.show', 'cuti') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
+                    <a href="{{ route('data-mhs.show', 'md') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
                   @endif
                 </div>
               </div>

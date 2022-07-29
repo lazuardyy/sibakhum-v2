@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Bakhum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use App\Models\PengajuanMhs;
 use App\Models\HistoryPengajuan;
@@ -40,52 +41,19 @@ class BakhumController extends Controller
       'active'              => 'Home',
       'semua_data_active'   => 'active',
 
-      // 'pengajuan_mhs'       => $pengajuan_mhs,
       'status_pembayaran'   => $status_pembayaran
     ];
 
     return view('bakhum.cetak_surat', $arrData);
   }
 
-  // public function filter ($filter)
-  // {
-  //   $status_pembayaran = PengajuanMhs::where('status_pembayaran', '0')->get();
-
-  //   foreach($status_pembayaran as $pembayaran) {
-  //     $status_pembayaran = $pembayaran->status_pembayaran;
-  //   }
-
-  //   $pengajuan_mhs = PengajuanMhs::whereIn('status_pengajuan', [5, 6, 7])
-  //   ->where('jenis_pengajuan', (isset($filter) ? $filter : '2'))
-  //   ->get();
-
-  //   $arrData = [
-  //     'title'               => 'Semua Data Pengajuan',
-  //     'subtitle'            => 'Semua Data Pengajuan',
-  //     'modal_title'         => 'Detail Pengajuan',
-  //     'active'              => 'Home',
-  //     'semua_data_active'   => 'active',
-
-  //     'pengajuan_mhs'       => $pengajuan_mhs,
-  //     'status_pembayaran'   => $status_pembayaran
-  //   ];
-
-  //   return view('bakhum.cetak_surat', $arrData);
-  // }
-
   public function verifikasiBakhum (Request $request)
   {
-    // $id_pengajuan = $request->id;
     $id_pengajuan       = $request->id_pengajuan;
     $persetujuan        = $request->persetujuan;
     $jenis_pengajuan    = $request->jenis_pengajuan;
-    $no_surat_fakultas  = $request->no_surat_fakultas;
     $no_surat_bakhum    = $request->no_surat_bakhum;
     $alasan             = $request->alasan;
-    // dd($no_surat);
-    // dd($id_pengajuan, $persetujuan);
-    // dd(count($id_pengajuan));
-    // dd(session('user_cmode'));
 
     if($id_pengajuan === null) {
       return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
@@ -100,13 +68,19 @@ class BakhumController extends Controller
         $persetujuan[$i] = config('constants.status.bk_selesai');
       }
 
-      $store = PengajuanMhs::where([
-        'id' => $id_pengajuan[$i]
-      ])->update([
-        'status_pengajuan' => $persetujuan[$i],
-        'no_surat_fakultas' => $no_surat_fakultas[$i],
-        'no_surat_bakhum'   => $no_surat_bakhum[$i] ?? '',
-      ]);
+      $store = DB::table('pengajuan_mhs')->where('id', $id_pengajuan[$i])
+              ->update([
+                'status_pengajuan'  => $persetujuan[$i],
+                'no_surat_bakhum'   => $no_surat_bakhum[$i],
+              ]);
+
+      // $store = PengajuanMhs::where([
+      //   'id' => $id_pengajuan[$i]
+      // ])->update([
+      //   'status_pengajuan' => $persetujuan[$i],
+      //   'no_surat_fakultas' => $no_surat_fakultas[$i],
+      //   'no_surat_bakhum'   => $no_surat_bakhum[$i] ?? '',
+      // ]);
 
       // dd($store);
 
@@ -137,29 +111,60 @@ class BakhumController extends Controller
     }
   }
 
-  public function download ($id)
+  public function download (PengajuanMhs $mhs)
   {
-    $pengajuan_mhs = PengajuanMhs::findOrFail($id);
+    $pengajuan_mhs = PengajuanMhs::findOrFail($mhs->id);
     $pengajuan_mhs = json_decode($pengajuan_mhs);
     // dd($pengajuan_mhs);
+
+    // get data mhs from siakad
+    $mhs_get = Http::get(env('APP_ENDPOINT_MHS') . $mhs->nim . '/' . env('APP_AUTH'));
+    $mhs_get = json_decode($mhs_get);
+
+    if($mhs_get->status === true)
+    {
+      $mhs_get = $mhs_get->isi[0];
+    }
+    else
+    {
+      $mhs_get = null;
+    }
 
     $history = HistoryPengajuan::where('id_pengajuan', $pengajuan_mhs->id)
     ->where('status_pengajuan', 4)
     ->get();
     $history = json_decode($history);
-    // dd($history);
 
     $periode = BukaPeriode::where('aktif', '1')->first();
     $periode = json_decode($periode);
     // dd($periode);
 
 
-    $pdf = PDF::loadView('bakhum.pdf', [
+    $pdf = PDF::loadView($pengajuan_mhs->jenis_pengajuan == 1 ? 'bakhum.pdf_cuti' : 'bakhum.pdf_md', [
       'pengajuan' => $pengajuan_mhs,
       'history'   => $history,
       'periode'   => $periode,
+      'mhs'       => $mhs_get,
     ]);
-    // return $pdf->download('surat.pdf');
-    return $pdf->stream();
+
+    $jenis_pengajuan = $pengajuan_mhs->jenis_pengajuan == 1 ? 'Cuti' : 'Keterangan';
+    $file_name ='Surat ' .$jenis_pengajuan. '_' .$pengajuan_mhs->nama. '_'. $pengajuan_mhs->nim . '.pdf';
+
+    return $pdf->download($file_name);
+    // return $pdf->stream();
+  }
+
+  public function ubahStatusTagihan ()
+  {
+    $arrData = [
+      'title'               => 'Ubah Status Tagihan',
+      'subtitle'            => 'Ubah Status Tagihan',
+      'modal_title'         => 'Detail Pengajuan',
+      'active'              => 'Home',
+      'tagihan_data_active' => 'active',
+
+    ];
+
+    return view('bakhum.ubah_tagihan', $arrData);
   }
 }

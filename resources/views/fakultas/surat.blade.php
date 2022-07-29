@@ -30,7 +30,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($pengajuan_mhs as $index => $pengajuan)
+            @forelse($pengajuan_mhs as $index => $pengajuan)
               @if($pengajuan->status_pembayaran != '0')
                 <tr>
                   <td>{{ $loop->iteration }}</td>
@@ -55,17 +55,16 @@
                       <a href="{{ route('file_pengajuan.show', $pengajuan->file_sk) }}">{{ $pengajuan->nama }}_{{ $pengajuan->nim }}_Surat Keterangan {{ $pengajuan->jenis_pengajuan == 1 ? 'Cuti' : 'Pengunduran Diri' }}</a>
                     @endif
                   </td>
-                  <td class="text-center">
-                    <a href="{{ route('file_pengajuan.show', $pengajuan->file_sk) }}" download class="btn btn-sm btn-primary">
-                      <i class="fa-solid fa-download">
-                    </a>
-                    {{-- <a href="{{ route('data-mhs.download-sk', $pengajuan->id) }}" class="btn btn-primary btn-sm">
-                      <i class="fa-solid fa-download"></i>
-                    </a> --}}
+                  <td class="text-center p-2">
+                    <x-button.button-href buttonName="" buttonIcon="fa-solid fa-download" btnColor="blue" href="{{ route('file_pengajuan.show', $pengajuan->file_sk) }}" download="Surat {{ $pengajuan->jenis_pengajuan == 1 ? 'Cuti' : 'Pengunduran Diri' }}_{{ $pengajuan->nama }}_{{ $pengajuan->nim }}"/>
                   </td>
                 </tr>
               @endif
-            @endforeach
+            @empty
+              <tr>
+                <td colspan="5" class="text-center">No data avalaible.</td>
+              </tr>
+            @endforelse
           </tbody>
         </table>
       </div>
