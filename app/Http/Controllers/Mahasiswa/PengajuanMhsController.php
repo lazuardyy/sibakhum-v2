@@ -243,13 +243,19 @@ class PengajuanMhsController extends Controller
 
       foreach ($pengajuanMhs as $pengajuan) {
         $id = $pengajuan->id;
+        $nim = $pengajuan->nim;
         $jenis_pengajuan = $pengajuan->jenis_pengajuan;
       }
 
+      $create_id = ['pengajuan_mhs_id' => $id,'nim' => $nim];
+
+      $add_id_surat = DB::table('ref_surat')->updateOrInsert($create_id);
+      $add_id_file  = DB::table('ref_file_pengajuan')->updateOrInsert($create_id, $create_id[] = ['file_pengajuan'=> $file_pengajuan]);
+
       $add_history = HistoryPengajuan::updateOrCreate(
         [
-          'id_pengajuan'    => $id,
-          'jenis_pengajuan' => $jenis_pengajuan
+          'id_pengajuan'     => $id,
+          'jenis_pengajuan'  => $jenis_pengajuan
         ],
         [
           'v_mode'           => trim(session('user_cmode')),
@@ -274,8 +280,8 @@ class PengajuanMhsController extends Controller
     catch (Exception $err) {
       DB::rollBack();
       // dd($err->errorInfo);
-      // dd($err);
-      return back()->with('toast_error', 'Permohonan cuti gagal diajukan, terjadi kesalahan.'. '<br>'.  ($err->errorInfo[2] = '<span class="text-danger"> Email sudah terdaftar!</span>'));
+      dd($err);
+      // return back()->with('toast_error', 'Permohonan cuti gagal diajukan, terjadi kesalahan.'. '<br>'.  ($err->errorInfo[2] = '<span class="text-danger"> Email sudah terdaftar!</span>'));
     }
   }
 
@@ -284,10 +290,6 @@ class PengajuanMhsController extends Controller
     if (!Session::has('isLoggedIn')) {
       return redirect()->to('login');
     }
-
-    // $pengajuanCuti = PengajuanMhs::where('nim', base64_decode($nim))->get();
-    // $pengajuanCuti = json_decode($pengajuanCuti);
-    // Mail::to('muklasnurardiansyah@gmail.com')->send(new Pengajuan($pengajuanCuti));
 
     $arrData = [
       'title'               => 'Status Pengajuan Cuti',
@@ -330,9 +332,14 @@ class PengajuanMhsController extends Controller
 
   public function destroy($id)
   {
-    $cuti = PengajuanMhs::findOrFail($id);
+    $cuti   = PengajuanMhs::findOrFail($id)->delete();
+    $surat  = DB::table('ref_surat')->where('id', $id)->delete();
+    $file   = DB::table('ref_file_pengajuan')->where('id', $id)->delete();
     // dd($cuti);
-    $cuti->delete();
+    // $cuti   ->delete();
+    // $surat  ->  delete();
+    // $file   ->  delete();
+
     return back()->with('success', 'Pengajuan Cuti Batal Diajukan.');
   }
 }

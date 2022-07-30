@@ -81,7 +81,7 @@
             @foreach($verifikasi['pengajuan_mhs'] as $index => $pengajuan)
               @if($pengajuan->file_sk === null)
                 <tr>
-                  @if(($pengajuan->jenis_pengajuan === 2 && $pengajuan->no_surat_bakhum === null) || ($pengajuan->jenis_pengajuan == 1 && $pengajuan->status_pembayaran == 1 && $pengajuan->no_surat_bakhum === null))
+                  @if(($pengajuan->jenis_pengajuan === 2 && $pengajuan->refSurat->no_surat_bakhum === null) || ($pengajuan->jenis_pengajuan == 1 && $pengajuan->status_pembayaran == 1 && $pengajuan->refSurat->no_surat_bakhum === null))
                     <td>
                       <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}" @checked(old('active', ($pengajuan->status_pengajuan == 6) ? true : false))>
 
@@ -100,13 +100,13 @@
 
                   <td><span>{{ $pengajuan->no_surat_fakultas }}</span></td>
 
-                  @if(($pengajuan->jenis_pengajuan === 2 && $pengajuan->no_surat_bakhum === null) || ($pengajuan->jenis_pengajuan == 1 && $pengajuan->status_pembayaran == 1 && $pengajuan->no_surat_bakhum === null))
+                  @if(($pengajuan->jenis_pengajuan === 2 && $pengajuan->refSurat->no_surat_bakhum === null) || ($pengajuan->jenis_pengajuan == 1 && $pengajuan->status_pembayaran == 1 && $pengajuan->refSurat->no_surat_bakhum === null))
                     <td>
-                      <input type="text" name="no_surat_bakhum[]" id="no_surat_{{ $pengajuan->id }}" placeholder="Masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat_bakhum !== null) ? $pengajuan->no_surat_bakhum : '' }}>
+                      <input type="text" name="no_surat_bakhum[]" id="no_surat_{{ $pengajuan->id }}" placeholder="Masukkan no surat..." class="form-control" value={{ ($pengajuan->refSurat->no_surat_bakhum !== null) ? $pengajuan->refSurat->no_surat_bakhum : '' }}>
                     </td>
-                  @elseif($pengajuan->no_surat_bakhum !== null)
+                  @elseif($pengajuan->refSurat->no_surat_bakhum !== null)
                     <td>
-                      <span class="btn w-full border-gray-300 cursor-text text-left">{{ $pengajuan->no_surat_bakhum }}</span>
+                      <span class="btn w-full border-gray-300 cursor-text text-left">{{ $pengajuan->refSurat->no_surat_bakhum }}</span>
                     </td>
                   @else
                     <td><span class="btn w-full border-gray-300 cursor-text">N/A</span></td>
@@ -129,7 +129,7 @@
                   </td>
 
                   <td class="text-center">
-                    @if( ($pengajuan->jenis_pengajuan == 1 && $pengajuan->status_pembayaran != 0 && $pengajuan->no_surat_bakhum !== null) || ($pengajuan->jenis_pengajuan == 2 && $pengajuan->no_surat_bakhum !== null))
+                    @if( ($pengajuan->jenis_pengajuan == 1 && $pengajuan->status_pembayaran != 0 && $pengajuan->refSurat->no_surat_bakhum !== null) || ($pengajuan->jenis_pengajuan == 2 && $pengajuan->refSurat->no_surat_bakhum !== null))
                       <x-button.button-href buttonName="" buttonIcon="fa-solid fa-print" btnColor="blue" href="{{ route('data-mhs.cetak', $pengajuan->id) }}" class="btn-sm"/>
                     @else
                       <span>N/A</span>

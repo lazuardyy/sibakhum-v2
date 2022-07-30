@@ -59,6 +59,10 @@ class UploadSkController extends Controller
         'file_sk'          => $new_sk[$i]
       ]);
 
+      $upload_sk = DB::table('ref_file_pengajuan')->where('pengajuan_mhs_id', $id_pengajuan[$i])->update([
+        'file_sk'          => $new_sk[$i]
+      ]);
+
 
       $pengajuan_jenis = PengajuanMhs::where('id', $id_pengajuan[$i])->value('jenis_pengajuan');
 

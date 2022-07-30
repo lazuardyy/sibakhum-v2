@@ -122,8 +122,8 @@
             </div>
           </div>
           <div class="modal-footer py-2">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-            <button type="submit" class="btn btn-primary" onclick="document.getElementById('formAddPeriode').submit()">Simpan</button>
+            <x-button.button-submit buttonName="batal" buttonIcon="fa-solid fa-ban" buttonColor="red" data-bs-dismiss="modal" type="button"/>
+            <x-button.button-submit buttonName="simpan" buttonIcon="fa-solid fa-paper-plane" buttonColor="green" type="button" onclick="document.getElementById('formAddPeriode').submit()"/>
           </div>
         </div>
       </div>

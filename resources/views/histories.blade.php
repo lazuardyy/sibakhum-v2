@@ -27,7 +27,6 @@
               <td>{{ $i + 1 }}</td>
               <td>{{ $his->pengajuanMhs->nama }}</td>
               <td>{{ ($his->pengajuanMhs->jenis_pengajuan == 1) ? 'Cuti' : 'Pengunduran Diri' }}</td>
-              {{-- <td>{{ ($his->v_mode == config('constants.users.prodi')) ? 'Koordinator Prodi' : '' }}</td> --}}
               @if($home['cmode'] != config('constants.users.fakultas') && $home['cmode'] != config('constants.users.bakhum'))
                 <td>{{ ($his->status_pengajuan < 8) ? 'Disetujui' : 'Ditolak' }}</td>
               @else

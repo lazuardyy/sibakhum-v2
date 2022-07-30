@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ref_surat', function (Blueprint $table) {
+        Schema::create('ref_file_pengajuan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pengajuan_mhs_id');
             $table->char('nim', 10);
-            $table->string('no_surat_prodi')->nullable();
-            $table->string('no_surat_fakultas')->nullable();
-            $table->string('no_surat_bakhum')->nullable();
+            $table->string('file_pengajuan_md')->nullable();
+            $table->string('file_sk')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ref_surat');
+        Schema::dropIfExists('ref_file_pengajuan');
     }
 };

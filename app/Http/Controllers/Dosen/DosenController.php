@@ -29,23 +29,21 @@ class DosenController extends Controller
       return redirect()->to('/home');
     }
 
-
     // dosen url to jenis pengajuan
-    if($cmode == config('constants.users.dosen')) {
-      $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
-      ->where('pa', session('user_username'))
-      ->whereIn('status_pengajuan', [0, 1, 21])
-      ->get();
-    }
-    elseif($cmode == config('constants.users.prodi')) {
-      $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
-      ->where('kode_prodi', trim($unit))
-      ->whereIn('status_pengajuan', [1, 2, 22])
-      ->get();
+    // if($cmode == config('constants.users.dosen')) {
+    //   $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
+    //   ->where('pa', session('user_username'))
+    //   ->whereIn('status_pengajuan', [0, 1, 21])
+    //   ->get();
 
-      // dump($pengajuan_mhs);
-    }
-    elseif($cmode == config('constants.users.fakultas')) {
+    // }
+    // if($cmode == config('constants.users.prodi')) {
+    //   $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
+    //   ->where('kode_prodi', trim($unit))
+    //   ->whereIn('status_pengajuan', [1, 2, 22])
+    //   ->get();
+    // }
+    if($cmode == config('constants.users.fakultas')) {
       $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
       ->where('kode_fakultas', trim($unit))
       ->whereIn('status_pengajuan', [2])
@@ -58,9 +56,10 @@ class DosenController extends Controller
       ->get();
     }
     else {
-      $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
-      ->whereIn('status_pengajuan', (($cmode == config('constants.users.wakil_rektor')) ? [4, 5, 24] : [5]))
-      ->get();
+      // $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
+      // ->whereIn('status_pengajuan', (($cmode == config('constants.users.wakil_rektor')) ? [4, 5, 24] : [5]))
+      // ->get();
+      $pengajuan_mhs = null;
     }
 
     $arrData = [
@@ -184,7 +183,7 @@ class DosenController extends Controller
       ]);
 
       // dd($store);
-      $pengajuan_mhs = PengajuanMhs::where('nim', $nim)->get();
+      $pengajuan_mhs = DB::table('pengajuan_mhs')->where('nim', $nim)->get('id');
 
       foreach($pengajuan_mhs as $pengajuan){
         $id = $pengajuan->id;

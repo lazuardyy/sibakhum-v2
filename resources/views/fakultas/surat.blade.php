@@ -52,7 +52,7 @@
                         name="file_sk"
                       >
                     @else
-                      <a href="{{ route('file_pengajuan.show', $pengajuan->file_sk) }}">{{ $pengajuan->nama }}_{{ $pengajuan->nim }}_Surat Keterangan {{ $pengajuan->jenis_pengajuan == 1 ? 'Cuti' : 'Pengunduran Diri' }}</a>
+                      <a href="{{ route('file_pengajuan.show', $pengajuan->refFilePengajuan->file_sk) }}">{{ $pengajuan->nama }}_{{ $pengajuan->nim }}_Surat Keterangan {{ $pengajuan->jenis_pengajuan == 1 ? 'Cuti' : 'Pengunduran Diri' }}</a>
                     @endif
                   </td>
                   <td class="text-center p-2">

@@ -125,16 +125,16 @@
 
                 <td>
                   @if($home['cmode'] == config('constants.users.fakultas'))
-                    <input type="text" name="no_surat_fakultas[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat_fakultas !== null) ? $pengajuan->no_surat_fakultas : '' }} {{ ($home['cmode'] !== config('constants.users.fakultas') ? 'readonly' : '') }}>
+                    <input type="text" name="no_surat_fakultas[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->refSurat->no_surat_fakultas !== null) ? $pengajuan->refSurat->no_surat_fakultas : '' }} {{ ($home['cmode'] !== config('constants.users.fakultas') ? 'readonly' : '') }}>
 
                   @else
-                    <span class="btn w-full border-gray-300 cursor-text text-left">{{ $pengajuan->no_surat_fakultas }}</span>
+                    <span class="btn w-full border-gray-300 cursor-text text-left">{{ $pengajuan->refSurat->no_surat_fakultas }}</span>
                   @endif
                 </td>
 
                 <td class="text-center">
                   @if($pengajuan->jenis_pengajuan === 2)
-                    <x-button.button-href buttonName="lihat surat" buttonIcon="fa-solid fa-file-pdf" btnColor="violet" href="{{ route('file_pengajuan.show', $pengajuan->file_pengajuan_md) }}" target="_blank" data-bs-toggle="tooltip" title="File Pengajuan {{ $pengajuan->jenis_pengajuan == '2' ? 'Pengunduran Diri' : '' }} {{ $pengajuan->nama }}" class="btn-sm"/>
+                    <x-button.button-href buttonName="lihat surat" buttonIcon="fa-solid fa-file-pdf" btnColor="indigo" href="{{ route('file_pengajuan.show', $pengajuan->refFilePengajuan->file_pengajuan) }}" target="_blank" data-bs-toggle="tooltip" title="File Pengajuan {{ $pengajuan->jenis_pengajuan == '2' ? 'Pengunduran Diri' : '' }} {{ $pengajuan->nama }}" class="btn-sm"/>
                   @else
                     <span>N/A</span>
                   @endif

@@ -21,7 +21,7 @@ class PengajuanMhs extends Model
 
   protected $guarded = ['id'];
   // protected $dates= ['created_at', 'updated_at'];
-  protected $with = ['refStatusPengajuan', 'histories'];
+  protected $with = ['refStatusPengajuan'];
 
   public function refStatusPengajuan ()
   {
@@ -31,5 +31,15 @@ class PengajuanMhs extends Model
   public function histories ()
   {
     return $this -> HasMany(HistoryPengajuan::class, 'id', 'id_pengajuan');
+  }
+
+  public function refSurat ()
+  {
+    return $this->hasOne(RefSurat::class);
+  }
+
+  public function refFilePengajuan ()
+  {
+    return $this->hasOne(RefFilePengajuan::class);
   }
 }

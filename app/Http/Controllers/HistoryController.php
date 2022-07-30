@@ -28,6 +28,7 @@ class HistoryController extends Controller
       $history_cuti = PengajuanMhs::where(($cmode === config('constants.users.dosen') ? 'pa' : 'kode_prodi'), ($cmode === config('constants.users.dosen') ? session('user_username') : trim(session('user_unit'))))
       ->where('jenis_pengajuan', 1)
       ->pluck('id');
+      // dd($history_cuti);
 
       $history_md = PengajuanMhs::where(($cmode === config('constants.users.dosen') ? 'pa' : 'kode_prodi'), ($cmode === config('constants.users.dosen') ? session('user_username') : trim(session('user_unit'))))
       ->where('jenis_pengajuan', 2)
@@ -44,6 +45,8 @@ class HistoryController extends Controller
 
         $histories[] = $histories_[$i];
       }
+
+      // dd($histories);
     }
     elseif($cmode === config('constants.users.fakultas') || $cmode === config('constants.users.dekanat')) {
       $history_cuti = PengajuanMhs::where('kode_fakultas', trim(session('user_unit')))
@@ -95,6 +98,9 @@ class HistoryController extends Controller
         $histories[] = $histories_[$i];
       }
     }
+
+    // dd($histories);
+    // $tests = HistoryPengajuan::all();
 
     $arrData = [
       'title'           => 'Riwayat Persetujuan',

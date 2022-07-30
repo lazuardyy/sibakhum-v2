@@ -22,6 +22,6 @@ class PengunduranDiri extends Model
 
     public function histories ()
     {
-      return $this -> HasMany(HistoryPengajuan::class, 'id', 'id_pengajuan');
+      return $this -> HasMany(HistoryPengajuan::class);
     }
 }

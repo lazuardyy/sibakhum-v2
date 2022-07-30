@@ -20,7 +20,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($pengajuan_mhs as $index => $pengajuan)
+          @foreach($verifikasi['pengajuan_mhs'] as $index => $pengajuan)
             @if(isset($pengajuan->nim))
               <tr>
                 <td>{{ $loop->iteration }}</td>

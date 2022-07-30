@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use App\Models\PengajuanMhs;
 use App\Models\PengunduranDiri;
+use Illuminate\Database\Eloquent\Builder;
 
 class HomeComposer
 {
@@ -23,26 +24,28 @@ class HomeComposer
     // dd($cmode);
 
     if($cmode === config('constants.users.dosen')) {
-      $url = env('APP_ENDPOINT_DSN') . session('user_username') . '/' . session('user_token');
-      $response = Http::get($url);
-      $data = json_decode($response);
+      // $url = env('APP_ENDPOINT_DSN') . session('user_username') . '/' . session('user_token');
+      // $response = Http::get($url);
+      // $data = json_decode($response);
 
-      if ($data->status == true) {
-        foreach ($data->isi as $dsn)
-        {
-          $kode_prodi = $dsn->prodi;
-        }
-      }
+      // if ($data->status == true) {
+      //   foreach ($data->isi as $dsn)
+      //   {
+      //     $kode_prodi = $dsn->prodi;
+      //   }
+      // }
 
-      $pengajuan_cuti = PengajuanMhs::where('kode_prodi', $kode_prodi)
+      $pengajuan_cuti = PengajuanMhs::where('pa', session('user_username'))
       ->where('status_pengajuan', '0')
       ->where('jenis_pengajuan', '1')
-      ->get();
+      ->count();
 
-      $pengunduran_diri = PengajuanMhs::where('kode_prodi', $kode_prodi)
+      // dd($pengajuan_cuti);
+
+      $pengunduran_diri = PengajuanMhs::where('pa', session('user_username'))
       ->where('status_pengajuan', '0')
       ->where('jenis_pengajuan', '2')
-      ->get();
+      ->count();
       // dd($md);
 
       // $pengajuan = compact('cuti', 'md');
@@ -53,12 +56,12 @@ class HomeComposer
       $pengajuan_cuti = PengajuanMhs::where('kode_prodi', session('user_unit'))
       ->where('status_pengajuan', '1')
       ->where('jenis_pengajuan', '1')
-      ->get();
+      ->count();
 
       $pengunduran_diri = PengajuanMhs::where('kode_prodi', session('user_unit'))
       ->where('status_pengajuan', '1')
       ->where('jenis_pengajuan', '2')
-      ->get();
+      ->count();
       // dd($md);
 
       // $pengajuan = compact('cuti', 'md');
@@ -66,26 +69,26 @@ class HomeComposer
       // dd($pengajuan);
     }
     elseif($cmode === config('constants.users.dekanat') || $cmode === config('constants.users.fakultas')) {
-      $pengajuan_cuti = PengajuanMhs::where('kode_fakultas', session('user_unit'))
+      $pengajuan_cuti = PengajuanMhs::where('kode_fakultas', trim(session('user_unit')))
       ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '3' : '2')
       ->where('jenis_pengajuan', '1')
-      ->get();
+      ->count();
 
-      $pengunduran_diri = PengajuanMhs::where('kode_fakultas', session('user_unit'))
+      $pengunduran_diri = PengajuanMhs::where('kode_fakultas', trim(session('user_unit')))
       ->where('status_pengajuan', ($cmode === config('constants.users.dekanat')) ? '3' : '2')
       ->where('jenis_pengajuan', '2')
-      ->get();
+      ->count();
 
       // $pengajuan = compact('cuti', 'md');
     }
     elseif($cmode == config('constants.users.bakhum') || $cmode == config('constants.users.wakil_rektor')) {
       $pengajuan_cuti = PengajuanMhs::where('status_pengajuan',  (($cmode == config('constants.users.bakhum')) ? '5' : '4'))
       ->where('jenis_pengajuan', '1')
-      ->get();
+      ->count();
 
       $pengunduran_diri = PengajuanMhs::where('status_pengajuan',  (($cmode == config('constants.users.bakhum')) ? '5' : '4'))
       ->where('jenis_pengajuan', '2')
-      ->get();
+      ->count();
 
       // $pengajuan = compact('cuti', 'md');
     }
@@ -98,8 +101,8 @@ class HomeComposer
     }
 
     if($cmode != config('constants.users.mahasiswa')) {
-      $cuti = $pengajuan_cuti->count('id');
-      $md   = $pengunduran_diri->count('id');
+      $cuti = $pengajuan_cuti;
+      $md   = $pengunduran_diri;
       $pengajuan = compact('cuti', 'md');
     }
     $home = compact('user', 'mode', 'cmode', 'unit', 'pengajuan');

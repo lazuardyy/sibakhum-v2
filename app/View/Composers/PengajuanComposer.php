@@ -5,6 +5,7 @@ namespace App\View\Composers;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use App\Models\PengajuanMhs;
 use App\Models\PengunduranDiri;
 
@@ -66,37 +67,25 @@ class PengajuanComposer
     }
 
     if(session('user_cmode') == config('constants.users.mahasiswa')) {
-      // $id_cuti = PengajuanMhs::where('nim', session('user_username'))->pluck('id')->toArray();
-
-      // for($i = 0; $i < count($id_cuti); $i++) {
-      //   $pengajuan_cuti = PengajuanMhs::where('id', $id_cuti)
-      //   ->get();
-      // }
-
-      // $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))->get();
-
-      $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))
-      // ->where('jenis_pengajuan', 1)
-      ->get();
-
+      $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))->get();
     }
-    elseif (session('user_cmode') == config('constants.users.dosen')) {
+    elseif(session('user_cmode') == config('constants.users.dosen')) {
       $pengajuan_cuti = PengajuanMhs::where('pa', session('user_username'))->get();
     }
     else {
-      $pengajuan_cuti = PengajuanMhs::where(((session('user_cmode') == config('constants.users.prodi')) ? 'kode_prodi' : 'kode_fakultas'), trim(session('user_unit')))->get();
+      $pengajuan_cuti = null;
     }
 
-    foreach($pengajuan_cuti as $pengajuan){
-      $cuti = $pengajuan;
-    }
+    // foreach($pengajuan_cuti as $pengajuan){
+    //   $cuti = $pengajuan;
+    // }
 
-    if(isset($cuti)){
-      $cuti;
-    }
-    else {
-      $cuti = null;
-    }
+    // if(isset($cuti)){
+    //   $cuti;
+    // }
+    // else {
+    //   $cuti = null;
+    // }
 
     $arrData = [
       'nim'               => $nim,
@@ -112,7 +101,7 @@ class PengajuanComposer
       'hp'                => $hp,
 
       'pengajuan_cuti'    => $pengajuan_cuti,
-      'cuti'              => $cuti,
+      // 'cuti'              => $cuti,
       // 'pengajuan'         => $pengajuan,
     ];
 

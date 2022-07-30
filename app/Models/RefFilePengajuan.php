@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RefSurat extends Model
+class RefFilePengajuan extends Model
 {
     use HasFactory;
 
-    protected $table = 'ref_surat';
-    protected $guarded = ['id'];
+    protected $table = 'ref_file_pengajuan';
+    protected $guarded = 'id';
 
     public function pengajuanMhs ()
     {

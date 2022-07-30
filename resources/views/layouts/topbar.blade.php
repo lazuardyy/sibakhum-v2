@@ -40,7 +40,11 @@
 
                   <div class="row border-bottom mb-3 p-2">
                     <span class="mb-2 text-sm">Halo {{ $home['user'] }}, kamu memiliki <strong>{{ $home['pengajuan']['md'] }}</strong> data pengajuan <strong>PENGUNDURAN DIRI</strong> baru.</span>
-                    <a href="{{ route('data-mhs.show', 'md') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
+                    @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.bakhum'))
+                      <a href="{{ route('data-mhs.index') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
+                    @else
+                      <a href="{{ route('data-mhs.show', 'md') }}" class="btn btn-primary btn-sm w-100">Cek disini!</a>
+                    @endif
                   </div>
               </div>
             @elseif($home['pengajuan']['cuti'] !== 0 && $home['pengajuan']['md'] === 0)

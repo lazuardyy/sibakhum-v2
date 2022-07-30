@@ -78,6 +78,10 @@ class VerifikasiController extends Controller
           'status_pengajuan'  => $persetujuan[$i],
           'no_surat_fakultas' => $no_surat_fakultas[$i],
         ];
+
+        $add_no_surat = DB::table('ref_surat')->where('pengajuan_mhs_id', $id_pengajuan[$i])->update([
+          'no_surat_fakultas' => $no_surat_fakultas[$i],
+        ]);
       }
       else
       {

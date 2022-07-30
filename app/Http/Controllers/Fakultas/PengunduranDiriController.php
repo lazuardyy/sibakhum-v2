@@ -30,32 +30,6 @@ class PengunduranDiriController extends Controller
       return redirect()->to('/home');
     }
 
-    $pengajuan_md = PengunduranDiri::where('nim', session('user_username'))->get();
-    foreach ($pengajuan_md as $md) {
-      $status_md = $md->status_pengajuan;
-    }
-
-    $pengajuan_cuti = PengajuanMhs::where('nim', session('user_username'))->get();
-    foreach ($pengajuan_cuti as $cuti) {
-      $status_cuti = $cuti->status_pengajuan;
-    }
-
-    if(isset($status_md) === false || isset($status_md) !== 4){
-      if (isset($status_cuti)) {
-        if($status_cuti !== 4 && $status_cuti !== 21) {
-          return redirect('/pengajuan-cuti/status/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan permohonan cuti!');
-        }
-      }
-      else if(isset($status_md)) {
-        if($status_md !== 4) {
-          return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('warning', 'Maaf anda sedang mengajukan pengunduran diri!');
-        }
-        else {
-          return redirect('/pengunduran-diri/' . base64_encode(session('user_username')))->with('success', 'Maaf anda sudah mengundurkan diri dari UNJ!');
-        }
-      }
-    }
-
     $datas = array(
       [
         'id' => 1,

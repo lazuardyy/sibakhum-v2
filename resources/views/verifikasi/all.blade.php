@@ -5,7 +5,7 @@
     @include('partials.header')
     @include('flash-message')
 
-    @if($home['cmode'] == config('constants.users.fakultas'))
+    @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.dekanat') || $home['cmode'] == config('constants.users.wakil_rektor'))
       @include('verifikasi.verifikasi_all')
     @else
       @include('bakhum.bakhum_verifikasi')

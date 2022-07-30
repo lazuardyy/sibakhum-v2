@@ -45,7 +45,7 @@
             </li>
           @endif
 
-          @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.bakhum'))
+          @if($home['cmode'] != config('constants.users.dosen') && $home['cmode'] != config('constants.users.mahasiswa') && $home['cmode'] != config('constants.users.prodi'))
             <li class="nav-item">
               <a href="{{ route('data-mhs.index') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($all_data_active) ? $all_data_active : '' }}">
                 <i class="nav-icon fa-solid fa-database"></i>

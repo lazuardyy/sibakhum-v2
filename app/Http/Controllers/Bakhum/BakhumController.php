@@ -74,6 +74,10 @@ class BakhumController extends Controller
                 'no_surat_bakhum'   => $no_surat_bakhum[$i],
               ]);
 
+      $add_no_surat_bakhum = DB::table('ref_surat')->where('pengajuan_mhs_id', $id_pengajuan[$i])->update([
+        'no_surat_bakhum'   => $no_surat_bakhum[$i]
+      ]);
+
       // $store = PengajuanMhs::where([
       //   'id' => $id_pengajuan[$i]
       // ])->update([
