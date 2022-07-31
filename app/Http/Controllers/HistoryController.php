@@ -104,7 +104,7 @@ class HistoryController extends Controller
 
     $arrData = [
       'title'           => 'Riwayat Persetujuan',
-      'subtitle'        => 'Riwayat Persetujuan',
+      'subtitle'        => route('informasi.persetujuan'),
       'active'          => 'Home',
       'riwayat_active'  => 'active',
 
@@ -120,7 +120,7 @@ class HistoryController extends Controller
 
     $arrData = [
       'title'           => 'Data & Grafik',
-      'subtitle'        => 'Data & Grafik',
+      'subtitle'        => route('informasi.grafik'),
       'active'          => 'Home',
       'grafik_active'   => 'active',
     ];

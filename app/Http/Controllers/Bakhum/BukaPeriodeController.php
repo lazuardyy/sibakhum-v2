@@ -46,7 +46,7 @@ class BukaPeriodeController extends Controller
 
     $arrData = [
       'title'               => 'Buka Periode Pengajuan Cuti',
-      'subtitle'            => 'Buka Periode Pengajuan Cuti',
+      'subtitle'            => route('periode.index'),
       'modal_title'         => 'Detail Pengajuan Cuti',
       'active'              => 'Home',
       'buka_periode_active' => 'active',

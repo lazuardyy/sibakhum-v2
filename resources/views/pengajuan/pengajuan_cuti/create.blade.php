@@ -51,7 +51,7 @@
         @endforeach
 
         <div class="flex gap-2">
-          <x-button.button-href buttonName="batal" btnColor="red" href="/home" buttonIcon="fa-solid fa-ban"/>
+          <x-button.button-href buttonName="batal" btnColor="red" href="/home" buttonIcon="fa-solid fa-ban" class="text-white"/>
           <x-button.button-submit buttonName="ajukan" type="submit" buttonColor="green" buttonIcon="fa-solid fa-floppy-disk"/>
         </div>
       </div>

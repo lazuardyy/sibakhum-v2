@@ -30,15 +30,14 @@ class PengajuanMhsController extends Controller
     elseif($cmode !== '9') {
       return redirect()->to('/home');
     }
-    // dd($cmode);
 
+    // cek periode pengajuan
     $periode = BukaPeriode::checkOpenPeriode();
-    // dd(isset($periode));
     $semester = isset($periode) ? $periode->semester : null;
 
     // cek status beasiswa
     $url_beasiswa = env('APP_ENDPOINT_BEASISWA') . session('user_username') . '/' . $semester . '/' . env('APP_AUTH');
-    // dd($url_beasiswa);
+
     $status_beasiswa = Http::get($url_beasiswa);
     $status_beasiswa = json_decode($status_beasiswa);
 
@@ -212,7 +211,28 @@ class PengajuanMhsController extends Controller
     $keterangan       = $request->keterangan;
     $jenis_pengajuan  = $request->jenis_pengajuan;
     $status_pengajuan = $request->status_pengajuan;
-    $file_pengajuan   = $request->jenis_pengajuan == '2' ? $request->file('upload_file')->store('file_pengajuan') : null;
+    // $file_pengajuan   = $request->jenis_pengajuan == '2' ? $request->file('upload_file')->store('file_pengajuan') : null;
+
+    if($request->hasFile('upload_file'))
+    {
+      $file_pengajuan = $request->file('upload_file');
+      $original_name  = trim($file_pengajuan->getClientOriginalName(), '.pdf');
+      $original_ext   = $file_pengajuan->getClientOriginalExtension();
+      $file_name      = $original_name. '_'. date('dmY') . $nim . '.' . $original_ext;
+      $new_file_name  = 'file_pengajuan/'.$original_name. '_'. date('dmY') . $nim . '.' . $original_ext;
+      $store          = $file_pengajuan->storeAs('file_pengajuan', $file_name);
+    }
+
+    if(session('user_cmode') == config('constants.users.prodi'))
+    {
+      $no_surat_prodi   = $request->no_surat_prodi;
+    }
+    else
+    {
+      $no_surat_prodi = null;
+    }
+
+    // dd($no_surat_prodi);
 
     try {
       DB::beginTransaction();
@@ -234,23 +254,22 @@ class PengajuanMhsController extends Controller
         'keterangan'       => $keterangan,
         'jenis_pengajuan'  => $jenis_pengajuan,
         'status_pengajuan' => $status_pengajuan,
-        'file_pengajuan_md'=> $file_pengajuan
-        // (($status_pengajuan !== null) ? 'status_pengajuan' : '') => (($status_pengajuan !== null) ? $status_pengajuan : '')
       ]);
-      // dd($store);
 
       $pengajuanMhs = PengajuanMhs::where('nim', $nim)->get();
 
       foreach ($pengajuanMhs as $pengajuan) {
-        $id = $pengajuan->id;
-        $nim = $pengajuan->nim;
+        $id              = $pengajuan->id;
+        $nim             = $pengajuan->nim;
         $jenis_pengajuan = $pengajuan->jenis_pengajuan;
       }
 
       $create_id = ['pengajuan_mhs_id' => $id,'nim' => $nim];
 
-      $add_id_surat = DB::table('ref_surat')->updateOrInsert($create_id);
-      $add_id_file  = DB::table('ref_file_pengajuan')->updateOrInsert($create_id, $create_id[] = ['file_pengajuan'=> $file_pengajuan]);
+      // create user data surat & file pengajuan
+      $add_id_surat = DB::table('ref_surat')->updateOrInsert($create_id, ['no_surat_prodi'=> $no_surat_prodi]);
+
+      $add_id_file  = DB::table('ref_file_pengajuan')->updateOrInsert($create_id, ['file_pengajuan_md'=> $new_file_name]);
 
       $add_history = HistoryPengajuan::updateOrCreate(
         [
@@ -294,6 +313,7 @@ class PengajuanMhsController extends Controller
     $arrData = [
       'title'               => 'Status Pengajuan Cuti',
       'active'              => 'Home',
+      'subtitle'            => null,
       'status_cuti_active'  => 'active',
     ];
 

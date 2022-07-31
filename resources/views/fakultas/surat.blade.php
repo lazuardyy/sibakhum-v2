@@ -15,7 +15,7 @@
     </div>
   @endif
 
-  <form action="{{ route('data-mhs.upload-sk') }}" method="post" enctype="multipart/form-data">
+  <form action="{{ route('surat.upload_sk') }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="card">
       <div class="card-body p-3 overflow-x-scroll">

@@ -98,7 +98,7 @@
                   <td>{{ $pengajuan->nama_prodi }}</td>
                   <td>{{ $pengajuan->jenis_pengajuan === 1 ? 'Cuti' : 'Pengunduran Diri' }}</td>
 
-                  <td><span>{{ $pengajuan->no_surat_fakultas }}</span></td>
+                  <td><span>{{ $pengajuan->refSurat->no_surat_fakultas }}</span></td>
 
                   @if(($pengajuan->jenis_pengajuan === 2 && $pengajuan->refSurat->no_surat_bakhum === null) || ($pengajuan->jenis_pengajuan == 1 && $pengajuan->status_pembayaran == 1 && $pengajuan->refSurat->no_surat_bakhum === null))
                     <td>
@@ -122,7 +122,7 @@
 
                   <td class="text-center">
                     @if($pengajuan->jenis_pengajuan === 2)
-                      <x-button.button-href buttonName="Lihat File" buttonIcon="fa-solid fa-file-pdf" btnColor="violet" href="{{ route('file_pengajuan.show', $pengajuan->file_pengajuan_md) }}" class="btn-sm" target="_blank"/>
+                      <x-button.button-href buttonName="Lihat File" buttonIcon="fa-solid fa-file-pdf" btnColor="violet" href="{{ route('file_pengajuan.show', $pengajuan->refFilePengajuan->file_permohonan_md) }}" class="btn-sm" target="_blank"/>
                     @else
                       <span>N/A</span>
                     @endif
@@ -137,54 +137,6 @@
                   </td>
                 </tr>
               @endif
-
-              {{-- <tr>
-                <td>
-                  <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}" @checked(old('active', ($pengajuan->status_pengajuan == 6) ? true : false))>
-
-                  <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
-                  <input type="hidden" name="persetujuan[]" value="1">
-                </td>
-
-                <td>{{ $loop->iteration }}</td>
-
-                <input type="hidden" name="id[]" value="{{ $pengajuan->id }}">
-                <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
-
-
-                <td>{{ $pengajuan->nim }}</td>
-                <td>{{ $pengajuan->nama }}</td>
-
-                <td>{{ $pengajuan->nama_prodi }}</td>
-                <td>{{ ($pengajuan->jenis_pengajuan === 1) ? 'Cuti' : 'Pengunduran Diri' }}</td>
-                <td>
-                  @if($pengajuan->jenis_pengajuan === 2)
-                    <a href="{{ route('file_pengajuan.show', $pengajuan->file_pengajuan_md) }}">{{ $pengajuan->nama }}_{{ $pengajuan->jenis_pengajuan == '2' ? 'md' : '' }}</a>
-                  @else
-                    <span>-</span>
-                  @endif
-                </td>
-                <td>
-                  <input type="text" name="no_surat_fakultas[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat_fakultas !== null) ? $pengajuan->no_surat_fakultas : '' }} readonly>
-                </td>
-                <td>
-                  <input type="text" name="no_surat_bakhum[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->no_surat_bakhum !== null) ? $pengajuan->no_surat_bakhum : '' }}>
-                </td>
-                <td>
-                  @if($pengajuan->jenis_pengajuan === 1)
-                    <span class="btn {{ ($pengajuan->status_pembayaran == 0) ? 'btn-warning' : 'btn-success' }}">{{ ($pengajuan->status_pembayaran == 0) ? 'Belum Bayar' : 'Sudah Bayar' }}</span>
-                  @else
-                    <span>-</span>
-                  @endif
-                </td>
-                @if($pengajuan->status_pembayaran != 0)
-                  <td>
-                    <a href="{{ route('data-mhs.cetak', $pengajuan->id) }}" target='_blank' class="btn btn-primary btn-sm hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out rounded-md" >
-                      <i class="fa-solid fa-print"></i>
-                    </a>
-                  </td>
-                @endif
-              </tr> --}}
             @endforeach
           </tbody>
         </table>

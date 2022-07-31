@@ -152,7 +152,7 @@ class PengunduranDiriController extends Controller
 
     $arrData = [
       'title'     => 'Form Pengunduran Diri',
-      'subtitle'  => 'Form Pengunduran Diri',
+      'subtitle'  => route('pengajuan-mhs.create-md'),
       'active'    => 'Home',
       'md_active' => 'active',
 

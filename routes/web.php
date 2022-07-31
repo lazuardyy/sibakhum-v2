@@ -8,10 +8,10 @@ use App\Http\Controllers\Mahasiswa\PengajuanMhsController;
 use App\Http\Controllers\Fakultas\PengunduranDiriController;
 use App\Http\Controllers\Dosen\DosenController;
 use App\Http\Controllers\Fakultas\VerifikasiController;
-use App\Http\Controllers\Fakultas\SuratMasukController;
+use App\Http\Controllers\Fakultas\PersuratanFakultasController;
 use App\Http\Controllers\Bakhum\BakhumController;
 use App\Http\Controllers\Bakhum\BukaPeriodeController;
-use App\Http\Controllers\Bakhum\UploadSkController;
+use App\Http\Controllers\Bakhum\PersuratanBakhumController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\Email\EmailController;
 use Illuminate\Support\Facades\Http;
@@ -49,26 +49,30 @@ Route::group(['prefix' => 'data-pengajuan-mhs', 'as' => 'data-mhs.'], function (
   // Route::get('/{filter}', [BakhumController::class, 'filter'])->name('filter');
   Route::get('/cetak/{mhs}', [BakhumController::class, 'download'])->name('cetak');
   Route::get('/ubah-status-tagihan', [BakhumController::class, 'ubahStatusTagihan'])->name('ubah-tagihan');
-  Route::get('/to-pdf/{id}', [SuratMasukController::class, 'download_sk'])->name('download-sk');
-  Route::get('/kirim-sk', [UploadSkController::class, 'index_sk'])->name('index-sk');
   Route::get('/{jenis_pengajuan}', [DosenController::class, 'show'])->name('show');
   Route::get('/detail/{nim}', [DosenController::class, 'detailMhs'])->name('detailMhs');
   Route::post('/verifikasi-dosen', [DosenController::class, 'verifikasiDosen'])->name('verifikasi-dosen');
   Route::post('/verifikasi-bakhum', [BakhumController::class, 'verifikasiBakhum'])->name('verifikasi-bakhum');
   Route::post('/verifikasi', [VerifikasiController::class, 'verifikasi'])->name('verifikasi');
-  Route::post('/kirim-sk', [UploadSkController::class, 'uploadSk'])->name('upload-sk');
 });
 
-Route::get('/surat-masuk', [SuratMasukController::class, 'surat_masuk'])->name('surat-masuk');
-
-Route::group(['prefix' => 'data-pengajuan', 'as' => 'data-pengajuan.'], function () {
+Route::group(['prefix' => 'persuratan', 'as' => 'surat.'], function () {
+  Route::get('/surat-keterangan', [PersuratanFakultasController::class, 'surat_masuk_bakhum'])->name('bakhum');
+  Route::get('/permohonan-pengunduran-diri/{pengajuan}', [PersuratanFakultasController::class, 'surat_masuk_prodi'])->name('prodi');
+  Route::get('/download-sk/{id}', [PersuratanFakultasController::class, 'download_sk'])->name('download_sk');
+  Route::get('/kirim-surat', [PersuratanBakhumController::class, 'index_surat'])->name('index_surat');
+  Route::post('/kirim-sk', [PersuratanBakhumController::class, 'upload_sk'])->name('upload_sk');
+  Route::post('/kirim-permohonan', [PersuratanFakultasController::class, 'kirim_permohonan'])->name('kirim_permohonan');
 });
 
-Route::get('riwayat-persetujuan', [HistoryController::class, 'index'])->name('history');
-Route::get('data-grafik', [HistoryController::class, 'data_grafik'])->name('grafik');
+Route::group(['prefix' => 'informasi', 'as' => 'informasi.'], function () {
+  Route::get('riwayat-persetujuan', [HistoryController::class, 'index'])->name('persetujuan');
+  Route::get('data-grafik', [HistoryController::class, 'data_grafik'])->name('grafik');
+});
 
-Route::group(['prefix' => 'buka-periode', 'as' => 'periode.'], function () {
-  Route::get('/', [BukaPeriodeController::class, 'index'])->name('index');
+
+Route::group(['prefix' => 'periode', 'as' => 'periode.'], function () {
+  Route::get('/buka-periode', [BukaPeriodeController::class, 'index'])->name('index');
   Route::post('/store', [BukaPeriodeController::class, 'store'])->name('store');
   Route::post('/activate', [BukaPeriodeController::class, 'activate'])->name('activate');
   Route::get('/edit/{id}', [BukaPeriodeController::class, 'edit'])->name('edit');

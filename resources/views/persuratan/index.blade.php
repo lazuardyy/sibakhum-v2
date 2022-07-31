@@ -15,7 +15,7 @@
     </div>
   @endif
 
-  <form action="{{ route('data-mhs.upload-sk') }}" method="post" enctype="multipart/form-data">
+  <form action="{{ $route }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="card">
       <div class="card-header">
@@ -69,16 +69,11 @@
             @foreach($verifikasi['pengajuan_mhs'] as $index => $pengajuan)
               @if($pengajuan->jenis_pengajuan == 2 || ($pengajuan->jenis_pengajuan == 1 &&$pengajuan->status_pembayaran != 0))
                 <tr>
-                  @if(($pengajuan->status_pengajuan != 7))
+                  @if(($pengajuan->status_pengajuan != 3))
                     <td class="text-center">
                       <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}" @checked(old('active', ($pengajuan->status_pengajuan == 7) ? true : false))>
-
-                      <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
                       <input type="hidden" name="persetujuan[]" value="1">
                     </td>
-
-                    <input type="hidden" name="id[]" value="{{ $pengajuan->id }}">
-                    <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
                   @else
                     <td class="text-center">
                       <span><i class="fa-solid fa-check"></i></span>
@@ -90,22 +85,22 @@
                   <td>{{ $pengajuan->nama }}</td>
                   <td>{{ $pengajuan->jenis_pengajuan === 1 ? 'Cuti' : 'Pengunduran Diri' }}</td>
                   <td>
-                    @if($pengajuan->file_sk === null)
+                    @if($pengajuan->refFilePengajuan->file_permohonan_md === null)
                       <input class ='form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                         type="file"
                         id="file_sk"
                         required
                         aria-describedby="file_sk"
                         placeholder="Pilih File SK"
-                        name="file_sk[]"
+                        name="{{ $home['cmode'] == config('constants.users.fakultas') ? 'file_permohonan_md[]' : 'file_sk[]' }}"
                       >
                     @else
-                      {{ $pengajuan->file_sk  }}
+                      {{ basename($pengajuan->refFilePengajuan->file_permohonan_md)  }}
                     @endif
                   </td>
 
                   <td>
-                    <span class="btn btn-{{ $pengajuan->file_sk !== null ? 'success' : 'warning' }}">{{ ($pengajuan->file_sk !== null) ? 'Terkirim' : 'Belum dikirim' }}</span>
+                    <span class="btn btn-{{ $pengajuan->refFilePengajuan->file_permohonan_md !== null ? 'success' : 'warning' }}">{{ ($pengajuan->refFilePengajuan->file_permohonan_md !== null) ? 'Terkirim' : 'Belum dikirim' }}</span>
                   </td>
                 </tr>
               @endif
@@ -145,11 +140,6 @@
         $('#setujuModal').attr('id', 'tolakModal');
         $('#keterangan').text('Apakah anda yakin ingin menolak data terpilih?');
         $('[name="persetujuan[]"]').val(2);
-      })
-
-      $('[name="jenis_pengajuan[]"]').each(function (e) {
-        var jenis_pengajuan = $(this).val();
-        console.log(jenis_pengajuan);
       })
     });
   </script>

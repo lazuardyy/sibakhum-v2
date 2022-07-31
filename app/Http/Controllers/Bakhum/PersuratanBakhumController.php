@@ -9,21 +9,27 @@ use App\Models\PengajuanMhs;
 use App\Models\HistoryPengajuan;
 use Exception;
 
-class UploadSkController extends Controller
+class PersuratanBakhumController extends Controller
 {
-  public function index_sk ()
+  public function index_surat ()
   {
+    // dd($slug);
+    $user = session('user_cmode');
+
+    $user == config('constants.users.bakhum') ? $route = route('surat.upload_sk') : $route = route('surat.kirim_permohonan');
+
     $arrData = [
       'title'               => 'Kirim Surat Keterangan',
-      'subtitle'            => 'Kirim Surat Keterangan',
+      'subtitle'            => route('surat.index_surat'),
       'active'              => 'Home',
+      'route'               => $route,
       'kirim_data_active'   => 'active',
     ];
 
-    return view('bakhum.upload_sk', $arrData);
+    return view('persuratan.index', $arrData);
   }
 
-  public function uploadSk (Request $request)
+  public function upload_sk (Request $request)
   {
     // $validate = $request->validate([
     //   'file_sk' => 'file|mimes:pdf, doc, docx|max:2048'
@@ -43,7 +49,6 @@ class UploadSkController extends Controller
       }
     }
 
-    // dump($id_pengajuan, $persetujuan, $jenis_pengajuan, $alasan, $file_sk);
 
     if($id_pengajuan === null) {
       return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
@@ -62,7 +67,6 @@ class UploadSkController extends Controller
       $upload_sk = DB::table('ref_file_pengajuan')->where('pengajuan_mhs_id', $id_pengajuan[$i])->update([
         'file_sk'          => $new_sk[$i]
       ]);
-
 
       $pengajuan_jenis = PengajuanMhs::where('id', $id_pengajuan[$i])->value('jenis_pengajuan');
 

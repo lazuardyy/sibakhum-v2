@@ -97,8 +97,31 @@
         @endforeach
 
         <div class="flex gap-2 flex-end">
-          <x-button.button-href buttonName="batal" btnColor="red" href="/home" buttonIcon="fa-solid fa-ban" />
-          <x-button.button-submit buttonName="ajukan" type="submit" id="save-data" buttonColor="green" buttonIcon="fa-solid fa-floppy-disk"/>
+          <x-button.button-href buttonName="batal" btnColor="red" href="/home" buttonIcon="fa-solid fa-ban" class="text-white"/>
+          <x-button.button-submit buttonName="proses" type="button" buttonColor="blue" buttonIcon="fa-solid fa-floppy-disk" data-bs-target="#no_surat_prodi" data-bs-toggle="modal"/>
+        </div>
+
+        <div class="modal fade" id="no_surat_prodi" tabindex="-1" aria-labelledby="submit_surat_prodi" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header" style="justify-content: start; align-items:center; gap:.5rem;">
+                <div class="bg-warning d-flex align-items-center gap-1 pl-2 pr-2 rounded-md">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                  <h5 class="modal-title" id="submit_surat_prodi">Kirim Pengajuan</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                {{-- <h6 id="keterangan">Masukkan nomor surat</h6> --}}
+                <input type="text" name="no_surat_prodi" placeholder="Masukkan nomor surat..." class="form-control" required>
+                <small class="text-info">*Pastikan semua data terisi dengan benar sebelum pengiriman dilakukan.</small>
+              </div>
+              <div class="modal-footer">
+                <x-button.button-submit buttonName="Batal" buttonColor="red" buttonIcon="fa-solid fa-ban" type="button" data-bs-dismiss="modal"/>
+                <x-button.button-submit buttonName="ajukan" type="submit" id="save-data" buttonColor="green" buttonIcon="fa-solid fa-floppy-disk"/>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </form>

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('pengajuan_mhs_id');
             $table->char('nim', 10);
             $table->string('file_pengajuan_md')->nullable();
+            $table->string('file_permohonan_md')->nullable();
             $table->string('file_sk')->nullable();
             $table->timestamps();
         });

@@ -37,21 +37,25 @@
                 <p>Semua data pengajuan</p>
               </a>
             </li> --}}
-            <li class="nav-item">
-              <a href="{{ route('data-mhs.upload-sk') }}" class="nav-link text-white hover:bg-green-800 {{ isset($kirim_data_active) ? $kirim_data_active : '' }}" style="margin-bottom: 0.25rem">
-                <i class="nav-icon fa-solid fa-upload"></i>
-                <p>Kirim Surat Keterangan</p>
-              </a>
-            </li>
+
           @endif
 
-          @if($home['cmode'] != config('constants.users.dosen') && $home['cmode'] != config('constants.users.mahasiswa') && $home['cmode'] != config('constants.users.prodi'))
+          @if($home['cmode'] != config('constants.users.mahasiswa') && $home['cmode'] != config('constants.users.dosen') && $home['cmode'] != config('constants.users.prodi'))
             <li class="nav-item">
               <a href="{{ route('data-mhs.index') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($all_data_active) ? $all_data_active : '' }}">
                 <i class="nav-icon fa-solid fa-database"></i>
                 <p>Semua data pengajuan</p>
               </a>
             </li>
+
+            @if($home['cmode'] == config('constants.users.fakultas') || $home['cmode'] == config('constants.users.bakhum'))
+              <li class="nav-item">
+                <a href="{{ route('surat.index_surat') }}" class="nav-link text-white hover:bg-green-800 {{ isset($kirim_data_active) ? $kirim_data_active : '' }}" style="margin-bottom: 0.25rem">
+                  <i class="nav-icon fa-solid fa-upload"></i>
+                  <p>Kirim Surat</p>
+                </a>
+              </li>
+            @endif
           @endif
 
           @if($home['cmode'] == config('constants.users.prodi'))
@@ -65,7 +69,7 @@
 
           @if(session('user_cmode') == config('constants.users.fakultas'))
             <li class="nav-item">
-              <a href="{{ route('surat-masuk') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($surat_active) ? $surat_active : '' }}">
+              <a href="{{ route('surat.bakhum') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($surat_active) ? $surat_active : '' }}">
                 <i class="nav-icon fa-solid fa-envelope"></i>
                 <p>Surat Masuk</p>
               </a>
@@ -101,7 +105,7 @@
           @if($home['cmode'] != config('constants.users.dosen') && $home['cmode'] && config('constants.users.mahasiswa') && $home['cmode'] != config('constants.users.prodi'))
 
             <li class="nav-item">
-              <a href="{{ route('grafik') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($grafik_active) ? $grafik_active : '' }}">
+              <a href="{{ route('informasi.grafik') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($grafik_active) ? $grafik_active : '' }}">
                 <i class="nav-icon fa-solid fa-chart-simple"></i>
                 <p>Data & Grafik</p>
               </a>
@@ -109,7 +113,7 @@
           @endif
 
           <li class="nav-item">
-            <a href="{{ route('history') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($riwayat_active) ? $riwayat_active : '' }}">
+            <a href="{{ route('informasi.persetujuan') }}" class="nav-link side-nav hover:bg-green-800 {{ isset($riwayat_active) ? $riwayat_active : '' }}">
               <i class="nav-icon fa-solid fa-clock-rotate-left"></i>
               <p>Riwayat Persetujuan</p>
             </a>

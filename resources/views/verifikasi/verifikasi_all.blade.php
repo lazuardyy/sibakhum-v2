@@ -3,7 +3,7 @@
     <div class="card-title">
       <label for="disetujui" type="button" data-bs-toggle="modal" data-bs-target="#setujuModal" class="btn btn-outline-success" style="margin-bottom: 0" id="setuju-button">
         <i class="fa-solid fa-paper-plane mr-1"></i>
-        {{ ($home['cmode'] != config('constants.users.fakultas')) ? 'Disetujui' : 'Proses' }}
+        {{ ($home['cmode'] != config('constants.users.fakultas')) ? 'Disetujui' : 'Simpan' }}
       </label>
       <input type="checkbox" id="disetujui" class="d-none">
 
@@ -49,7 +49,7 @@
             </div>
             <div class="modal-footer">
               <x-button.button-submit buttonName="Batal" buttonColor="red" buttonIcon="fa-solid fa-ban" type="button" data-bs-dismiss="modal"/>
-              <x-button.button-submit buttonName="Proses" buttonColor="green" buttonIcon="fa-solid fa-paper-plane" type="button" data-bs-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Verifikasi Data" onclick="document.getElementById('form-data').submit()"/>
+              <x-button.button-submit buttonName="Proses" buttonColor="green" buttonIcon="fa-solid fa-paper-plane" type="button" data-toggle="tooltip" data-placement="top" title="Verifikasi Data" onclick="document.getElementById('form-data').submit()"/>
             </div>
           </div>
         </div>
@@ -73,6 +73,9 @@
             <th>Jenis Pengajuan</th>
             <th>No. Surat</th>
             <th>Surat Pengajuan</th>
+            @if($home['cmode'] == config('constants.users.fakultas'))
+              <th>Cetak Surat</th>
+            @endif
 
           </tr>
         </thead>
@@ -84,26 +87,37 @@
                   <input type="hidden" name="jenis_pengajuan[]" value="{{ ($pengajuan->jenis_pengajuan === 1) ? 1 : 2 }}" id="checklist_{{ $pengajuan->id }}">
                   <input type="hidden" name="persetujuan[]" value="1">
 
-                  @if(($home['cmode'] == config('constants.users.dekanat') && ($pengajuan->status_pengajuan != 5 && $pengajuan->status_pengajuan <= 24)))
-                    <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}" @checked(old('active', ($pengajuan->status_pengajuan == 4 ? true : false)))>
+                  @if($home['cmode'] == config('constants.users.dekanat'))
+                    @if(($pengajuan->status_pengajuan != 4 && $pengajuan->status_pengajuan <= 23))
+                      <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}" @checked(old('active', ($pengajuan->status_pengajuan == 4 ? true : false)))>
+                    @endif
 
-                    <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
-                      <span class="text-{{ ($pengajuan->status_pengajuan <= 7) ? 'success' : 'danger' }}">{{ ($pengajuan->status_pengajuan <= 7) ? ''  : 'Ditolak' }}</span>
-                    </label>
-                  @elseif(($home['cmode'] == config('constants.users.wakil_rektor') && ($pengajuan->status_pengajuan != 6 && $pengajuan->status_pengajuan <= 24)))
-                    <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}" @checked(old('active', ($pengajuan->status_pengajuan == 5 ? true : false)))>
+                  @elseif($home['cmode'] == config('constants.users.wakil_rektor'))
+                    @if(($pengajuan->status_pengajuan != 5 && $pengajuan->status_pengajuan <= 24))
+                      <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}" @checked(old('active', ($pengajuan->status_pengajuan == 5 ? true : false)))>
+                    @endif
 
-                    <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
-                      <span class="text-{{ ($pengajuan->status_pengajuan <= 7) ? 'success' : 'danger' }}">{{ ($pengajuan->status_pengajuan <= 7) ? ''  : 'Ditolak' }}</span>
-                    </label>
+                  @elseif($home['cmode'] == config('constants.users.fakultas'))
+                    @if(($pengajuan->status_pengajuan !== 3 && $pengajuan->refSurat->no_surat_fakultas === null))
+                      <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}" @checked(old('active', ($pengajuan->status_pengajuan == 3 ? true : false)))>
+                    @endif
 
-                  @elseif(($home['cmode'] == config('constants.users.fakultas') && ($pengajuan->status_pengajuan != 6 && $pengajuan->status_pengajuan <= 24)))
-                    <input type="checkbox" name="id_pengajuan[]" value="{{ $pengajuan->id }}" id="checklist_{{ $pengajuan->id }}" @checked(old('active', ($pengajuan->status_pengajuan == 3 ? true : false)))>
-
-                    <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
-                      <span class="text-{{ ($pengajuan->status_pengajuan !== 5) ? 'warning' : 'success' }}">{{ ($pengajuan->status_pengajuan == 5) ? 'Selesai diproses' : 'Menunggu diproses' }}</span>
-                    </label>
+                    {{-- <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
+                      <span class="text-{{ ($pengajuan->refSurat->no_surat_fakultas !== null) ? 'success' : 'warning' }}">{{ ($pengajuan->refSurat->no_surat_fakultas !== null) ? 'Data tersimpan' : 'Menunggu diproses' }}</span>
+                    </label> --}}
                   @endif
+
+                  <label for="checklist_{{ $pengajuan->id }}" class="text-sm user-select-none">
+                    @if(($home['cmode'] == config('constants.users.dekanat') && $pengajuan->status_pengajuan == 4 || $pengajuan->status_pengajuan == 23) || ($home['cmode'] == config('constants.users.wakil_rektor') && $pengajuan->status_pengajuan == 5 || $pengajuan->status_pengajuan == 24))
+
+                      <span class="text-{{ ($pengajuan->status_pengajuan == 4 || $pengajuan->status_pengajuan == 5) ? 'success' : 'danger' }}">{{ ($pengajuan->status_pengajuan == 4 || $pengajuan->status_pengajuan == 5) ? 'Disetujui'  : 'Ditolak' }}</span>
+
+                    @elseif($home['cmode'] == config('constants.users.fakultas'))
+                      <span class="text-{{ ($pengajuan->refSurat->no_surat_fakultas !== null) ? 'success' : 'warning' }}">{{ ($pengajuan->refSurat->no_surat_fakultas !== null) ? 'Data tersimpan' : 'Menunggu diproses' }}</span>
+                    @else
+                      <span class="text-warning">Menunggu diproses</span>
+                    @endif
+                  </label>
                 </td>
 
                 <td class="text-center">
@@ -113,9 +127,6 @@
                 </td>
 
                 <td>{{ $loop->iteration }}</td>
-
-                <input type="hidden" name="id[]" value="{{ $pengajuan->id }}">
-                {{-- <input type="hidden" name="jenis_pengajuan[]" value="{{ $pengajuan->jenis_pengajuan }}"> --}}
                 <td>{{ $pengajuan->nim }}</td>
                 <td>{{ $pengajuan->nama }}</td>
 
@@ -124,7 +135,7 @@
                 <td>{{ ($pengajuan->jenis_pengajuan === 1) ? 'Cuti' : 'Pengunduran Diri' }}</td>
 
                 <td>
-                  @if($home['cmode'] == config('constants.users.fakultas'))
+                  @if($home['cmode'] == config('constants.users.fakultas') && $pengajuan->refSurat->no_surat_fakultas === null)
                     <input type="text" name="no_surat_fakultas[]" id="no_surat_{{ $pengajuan->id }}" placeholder="masukkan no surat..." class="form-control" value={{ ($pengajuan->refSurat->no_surat_fakultas !== null) ? $pengajuan->refSurat->no_surat_fakultas : '' }} {{ ($home['cmode'] !== config('constants.users.fakultas') ? 'readonly' : '') }}>
 
                   @else
@@ -132,13 +143,30 @@
                   @endif
                 </td>
 
-                <td class="text-center">
                   @if($pengajuan->jenis_pengajuan === 2)
-                    <x-button.button-href buttonName="lihat surat" buttonIcon="fa-solid fa-file-pdf" btnColor="indigo" href="{{ route('file_pengajuan.show', $pengajuan->refFilePengajuan->file_pengajuan) }}" target="_blank" data-bs-toggle="tooltip" title="File Pengajuan {{ $pengajuan->jenis_pengajuan == '2' ? 'Pengunduran Diri' : '' }} {{ $pengajuan->nama }}" class="btn-sm"/>
+                    <td class="text-center">
+                        <x-button.button-href buttonName="lihat surat" buttonIcon="fa-solid fa-file-pdf" btnColor="emerald" href="{{ route('file_pengajuan.show', $pengajuan->refFilePengajuan->file_permohonan_md) }}" target="_blank" data-bs-toggle="tooltip" title="File Pengajuan {{ $pengajuan->jenis_pengajuan == '2' ? 'Pengunduran Diri' : '' }} {{ $pengajuan->nama }}" class="btn-sm"/>
+
+                    </td>
+                    @if($home['cmode'] == config('constants.users.fakultas'))
+                      <td class="text-center">
+                        @if($pengajuan->refSurat->no_surat_fakultas !== null)
+                          <x-button.button-href buttonName="" buttonIcon="fa-solid fa-print" btnColor="blue" href="{{ route('surat.prodi', $pengajuan->id) }}" class="btn-sm text-white"/>
+                        @else
+                          <span class="cursor-pointer" data-bs-toggle="tooltip" title="Masukkan nomor surat untuk mencetak file"><i class="fa-solid fa-circle-question text-md text-info"></i></span>
+                        @endif
+                      </td>
+                    @endif
                   @else
-                    <span>N/A</span>
+                    <td class="text-center">
+                      <span class="cursor-pointer" data-bs-toggle="tooltip" title="Tidak terdapat file pengajuan"><i class="fa-solid fa-circle-minus text-danger"></i></span>
+                    </td>
+                    @if($home['cmode'] == config('constants.users.fakultas'))
+                      <td class="text-center">
+                        <span class="cursor-pointer" data-bs-toggle="tooltip" title="Tidak terdapat file untuk dicetak"><i class="fa-solid fa-circle-minus text-danger"></i></span>
+                      </td>
+                    @endif
                   @endif
-                </td>
               </tr>
             @endif
           @empty

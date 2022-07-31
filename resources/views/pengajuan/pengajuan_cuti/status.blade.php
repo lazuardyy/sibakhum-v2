@@ -120,7 +120,7 @@
 
 
     <div class="mb-2">
-      <x-button.button-href buttonName="kembali" btnColor="blue" href="/home" buttonIcon="fa-solid fa-angle-left"/>
+      <x-button.button-href buttonName="kembali" btnColor="blue" href="/home" buttonIcon="fa-solid fa-angle-left" class="text-white"/>
     </div>
   </div>
 @endsection

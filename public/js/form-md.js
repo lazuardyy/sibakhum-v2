@@ -29,15 +29,17 @@ function searchMhs (nim) {
         $('#nim').attr('placeholder', result.nim).attr('value', result.nim);
         $('#nama').attr('placeholder', result.nama).attr('value', result.nama);
         $(`select option[value=${(result.kelamin == 'L') ? '0' : '1'}]`).attr("selected","selected");
-        $('select option[id="nama_fakultas"]').text('Pilih fakultas')
+        $('select option[id="nama_fakultas"]').text('Pilih Fakultas')
         $('#nama_fakultas').append(`
           <option value="${result.namaFakultas}" selected="selected">${result.namaFakultas}</option>
         `)
         $('[name="kode_fakultas"]').attr('value', kode_fk);
         $('[name="kode_prodi"]').attr('value', result.kodeProdi);
+        $('select option[id="nama_prodi"]').text('Pilih Prodi');
         $('#nama_prodi').append(`
           <option value="${result.namaProdi}" selected="selected">${result.namaProdi}</option>
         `)
+        $('select option[id="jenjang"]').text('Pilih Jenjang');
         $('#jenjang').append(`
           <option value="${result.jenjangProdi}" selected="selected">${result.jenjangProdi}</option>
         `)

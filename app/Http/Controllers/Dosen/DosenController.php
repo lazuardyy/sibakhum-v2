@@ -43,33 +43,33 @@ class DosenController extends Controller
     //   ->whereIn('status_pengajuan', [1, 2, 22])
     //   ->get();
     // }
-    if($cmode == config('constants.users.fakultas')) {
-      $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
-      ->where('kode_fakultas', trim($unit))
-      ->whereIn('status_pengajuan', [2])
-      ->get();
-    }
-    elseif($cmode == config('constants.users.dekanat')) {
-      $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
-      ->where('kode_fakultas', trim($unit))
-      ->whereIn('status_pengajuan', [3, 4, 23])
-      ->get();
-    }
-    else {
-      // $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
-      // ->whereIn('status_pengajuan', (($cmode == config('constants.users.wakil_rektor')) ? [4, 5, 24] : [5]))
-      // ->get();
-      $pengajuan_mhs = null;
-    }
+    // if($cmode == config('constants.users.fakultas')) {
+    //   $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
+    //   ->where('kode_fakultas', trim($unit))
+    //   ->whereIn('status_pengajuan', [2])
+    //   ->get();
+    // }
+    // elseif($cmode == config('constants.users.dekanat')) {
+    //   $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
+    //   ->where('kode_fakultas', trim($unit))
+    //   ->whereIn('status_pengajuan', [3, 4, 23])
+    //   ->get();
+    // }
+    // else {
+    //   $pengajuan_mhs = PengajuanMhs::where('jenis_pengajuan', ($jenis_pengajuan == 'cuti') ? 1 : 2)
+    //   ->whereIn('status_pengajuan', (($cmode == config('constants.users.wakil_rektor')) ? [4, 5, 24] : [5]))
+    //   ->get();
+    //   $pengajuan_mhs = null;
+    // }
 
     $arrData = [
       'title'               => ($jenis_pengajuan == 'cuti') ? 'Data Pengajuan Cuti' : 'Data Pengunduran Diri',
-      'subtitle'            => ($jenis_pengajuan == 'cuti') ? 'Data Pengajuan Cuti' : 'Data Pengunduran Diri',
+      'subtitle'            => route('data-mhs.show', $jenis_pengajuan),
       'modal_title'         => ($jenis_pengajuan == 'cuti') ? 'Detail Pengajuan Cuti' : 'Detail Pengunduran Diri',
       'active'              => 'Home',
       ($jenis_pengajuan == 'cuti') ? 'data_cuti_active' : 'data_md_active'    => 'active',
 
-      'pengajuan_mhs'       => $pengajuan_mhs
+      // 'pengajuan_mhs'       => $pengajuan_mhs
     ];
 
     return view('verifikasi.verifikasi_dsn.verifikasi_cuti', $arrData);

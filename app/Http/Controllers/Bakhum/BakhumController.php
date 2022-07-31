@@ -51,9 +51,37 @@ class BakhumController extends Controller
   {
     $id_pengajuan       = $request->id_pengajuan;
     $persetujuan        = $request->persetujuan;
-    $jenis_pengajuan    = $request->jenis_pengajuan;
     $no_surat_bakhum    = $request->no_surat_bakhum;
-    $alasan             = $request->alasan;
+
+    if(session('user_cmode') == config('constants.users.fakultas'))
+    {
+      $no_surat_fakultas  = $request->no_surat_fakultas;
+      // dd($no_surat_fakultas);
+
+      foreach($no_surat_fakultas as $key => $no_surat)
+      {
+        if ($no_surat_fakultas[$key] === null)
+        {
+          unset($no_surat_fakultas[$key]);
+        }
+
+      }
+
+      $no_surat_fakultas = array_values($no_surat_fakultas);
+    }
+    else
+    {
+      $no_surat_fakultas = null;
+    }
+
+    // dd($id_pengajuan, $no_surat_fakultas);
+
+    if($id_pengajuan === null) {
+      return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
+    }
+    elseif($no_surat_fakultas === []) {
+      return redirect()->back()->with('toast_error', 'Ups! Nomor surat masih kosong!');
+    }
 
     if($id_pengajuan === null) {
       return redirect()->back()->with('toast_error', 'Belum Ada Pilihan Status Persetujuan');
@@ -71,7 +99,7 @@ class BakhumController extends Controller
       $store = DB::table('pengajuan_mhs')->where('id', $id_pengajuan[$i])
               ->update([
                 'status_pengajuan'  => $persetujuan[$i],
-                'no_surat_bakhum'   => $no_surat_bakhum[$i],
+                // 'no_surat_bakhum'   => $no_surat_bakhum[$i],
               ]);
 
       $add_no_surat_bakhum = DB::table('ref_surat')->where('pengajuan_mhs_id', $id_pengajuan[$i])->update([

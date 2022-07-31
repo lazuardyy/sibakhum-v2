@@ -40,12 +40,12 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>
                     <div class="form-check form-switch">
-                        <form id="formCheck_{{ $item->id }}" action="{{ route('periode.activate') }}" method="POST">
+                        <form id="formCheck" action="{{ route('periode.activate') }}" method="POST">
                             @csrf
                             @method('post')
                             <input type="hidden" id="id_periode" name="id_periode" value="{{ $item->id }}">
                             <input type="hidden" id="aktifCheck" name="aktifCheck" value="{{ $item->aktif }}">
-                            <input class="form-check-input" type="checkbox" role="switch" value="{{ $item->aktif }}" {{ ($item->aktif == '1') ? 'checked':'' }} onclick="document.getElementById('formCheck_{{ $item->id }}').submit()">
+                            <input class="form-check-input" type="checkbox" role="switch" value="{{ $item->aktif }}" {{ ($item->aktif == '1') ? 'checked':'' }} onclick="document.getElementById('formCheck').submit()">
                         </form>
 
                     </div>

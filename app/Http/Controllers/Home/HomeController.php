@@ -20,6 +20,7 @@ class HomeController extends Controller
     $arrData = [
       'title'             => 'Dashboard',
       'active'            => 'Home',
+      'subtitle'          =>  null,
       'home_active'       => 'active',
     ];
 

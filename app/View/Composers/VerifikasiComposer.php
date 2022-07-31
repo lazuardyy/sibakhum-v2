@@ -55,8 +55,8 @@ class VerifikasiComposer
     }
 
     elseif($cmode == config('constants.users.dekanat') || $cmode == config('constants.users.wakil_rektor')) {
-      $dekanat  = [3, 23];
-      $rektorat = [4, 24];
+      $dekanat  = [3, 4, 23];
+      $rektorat = [4, 5, 24];
 
       if(isset($this->jenis_pengajuan) && $this->jenis_pengajuan != 'semua') {
         $this->jenis_pengajuan == 'cuti' ? $jenis_pengajuan = 1 : $jenis_pengajuan = 2;
@@ -74,13 +74,13 @@ class VerifikasiComposer
       if(isset($this->jenis_pengajuan) && $this->jenis_pengajuan != 'semua') {
         $this->jenis_pengajuan == 'cuti' ? $jenis_pengajuan = 1 : $jenis_pengajuan = 2;
 
-        $pengajuan_mhs = PengajuanMhs::with('refSurat', 'refFilePengajuan')->whereIn('status_pengajuan', [2])
+        $pengajuan_mhs = PengajuanMhs::with('refSurat', 'refFilePengajuan')->whereIn('status_pengajuan', [2, 3])
         ->where('jenis_pengajuan', $jenis_pengajuan)
         ->get();
       }
       else {
         $pengajuan_mhs = PengajuanMhs::where('kode_fakultas', trim($unit))
-        ->whereIn('status_pengajuan', [2])
+        ->whereIn('status_pengajuan', [2, 3])
         ->get();
       }
     }

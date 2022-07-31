@@ -19,7 +19,9 @@ class BukaPeriode extends Model
     // dd($current_time);
     $data = self::where('start_date', '<=', $current_time)
     ->where('end_date', '>=', $current_time)
+    ->where('aktif', '1')
     ->first();
+    // ->get();
     // dd($data);
 
     return $data;
